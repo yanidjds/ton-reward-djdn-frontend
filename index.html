@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +65,40 @@
 
         .balance {
             font-size: 18px;
+        }
+
+        /* Page Header with Support Button */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        /* Support Button on Pages */
+        .support-btn {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .support-btn:active {
+            transform: scale(0.9);
         }
 
         /* Main Content */
@@ -232,6 +266,7 @@
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
+            flex-shrink: 0;
         }
 
         .task-info {
@@ -258,6 +293,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .task-button:disabled {
@@ -296,6 +332,24 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
+        }
+
+        .invite-info {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .invite-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .invite-info strong {
+            color: #ffd700;
         }
 
         .stats-grid {
@@ -337,6 +391,24 @@
             margin-bottom: 20px;
         }
 
+        .ad-info {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .ad-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ad-info strong {
+            color: #ffd700;
+        }
+
         .watch-button {
             width: 100%;
             max-width: 300px;
@@ -353,6 +425,19 @@
             display: block;
         }
 
+        .watch-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .cooldown-timer {
+            margin-top: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         /* Withdraw */
         .withdraw-form {
             background: rgba(255, 255, 255, 0.05);
@@ -360,6 +445,25 @@
             border-radius: 20px;
             padding: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .withdraw-info {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .withdraw-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+        }
+
+        .withdraw-info strong {
+            color: #ffd700;
         }
 
         .form-group {
@@ -451,6 +555,8 @@
             z-index: 2000;
             opacity: 0;
             transition: opacity 0.3s ease;
+            max-width: 90%;
+            text-align: center;
         }
 
         .notification.show {
@@ -498,7 +604,7 @@
         <div class="user-info">
             <div class="avatar">👤</div>
             <div>
-                <div class="username" id="username">Chargement...</div>
+                <div class="username" id="username">Loading...</div>
             </div>
         </div>
         <div class="balance-container">
@@ -514,23 +620,23 @@
                 <div class="mining-icon">⛏️</div>
                 <div class="mining-title">MINING TON</div>
                 <div class="mining-reward" id="miningReward">+0.005 TON</div>
-                <div class="timer" id="miningTimer">Prêt à miner!</div>
+                <div class="timer" id="miningTimer">Ready to mine!</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
                 <button class="mine-button" id="mineButton" onclick="startMining()">
-                    🚀 COMMENCER LE MINING
+                    🚀 START MINING
                 </button>
             </div>
 
             <div class="quick-actions">
                 <div class="action-card" onclick="showPage('tasks')">
                     <div class="action-icon">📋</div>
-                    <div class="action-title">Tâches</div>
+                    <div class="action-title">Tasks</div>
                 </div>
                 <div class="action-card" onclick="showPage('invite')">
                     <div class="action-icon">👥</div>
-                    <div class="action-title">Invitations</div>
+                    <div class="action-title">Invite</div>
                 </div>
                 <div class="action-card" onclick="showPage('watch')">
                     <div class="action-icon">📺</div>
@@ -538,65 +644,109 @@
                 </div>
                 <div class="action-card" onclick="showPage('withdraw')">
                     <div class="action-icon">💰</div>
-                    <div class="action-title">Retrait</div>
+                    <div class="action-title">Withdraw</div>
                 </div>
             </div>
         </div>
 
         <!-- Page Tasks -->
         <div class="page" id="page-tasks">
-            <h2 style="margin-bottom: 20px; font-size: 24px;">📋 Tâches</h2>
+            <div class="page-header">
+                <h2>📋 Tasks</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
+                    💬
+                </a>
+            </div>
+            
+            <!-- Task 1: Join Main Channel -->
             <div class="task-card">
                 <div class="task-icon">📢</div>
                 <div class="task-info">
-                    <div class="task-title">Rejoindre notre canal</div>
-                    <div class="task-reward">+0.001 TON</div>
+                    <div class="task-title">Join our channel</div>
+                    <div class="task-reward">+0.0001 TON</div>
                 </div>
-                <button class="task-button" id="taskButton" onclick="handleTask()">
-                    Rejoindre
+                <button class="task-button" id="taskButton1" onclick="handleTask('join_channel')">
+                    Join
+                </button>
+            </div>
+
+            <!-- Task 2: Join Withdraw Channel -->
+            <div class="task-card">
+                <div class="task-icon">💸</div>
+                <div class="task-info">
+                    <div class="task-title">Join withdraw proofs</div>
+                    <div class="task-reward">+0.0001 TON</div>
+                </div>
+                <button class="task-button" id="taskButton2" onclick="handleTask('join_withdraw_channel')">
+                    Join
                 </button>
             </div>
         </div>
 
         <!-- Page Invite -->
         <div class="page" id="page-invite">
-            <h2 style="margin-bottom: 20px; font-size: 24px;">👥 Invitations</h2>
-            <div class="invite-link-box">
-                <div class="invite-link" id="inviteLink">Chargement...</div>
-                <button class="copy-button" onclick="copyInviteLink()">📋 Copier</button>
+            <div class="page-header">
+                <h2>👥 Invite Friends</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
+                    💬
+                </a>
             </div>
+            
+            <div class="invite-info">
+                <p><strong>How it works:</strong></p>
+                <p>• Invite new users to the app</p>
+                <p>• They must open the app to validate</p>
+                <p>• You earn <strong>0.00035 TON</strong> per validated friend!</p>
+            </div>
+
+            <div class="invite-link-box">
+                <div class="invite-link" id="inviteLink">Loading...</div>
+                <button class="copy-button" onclick="copyInviteLink()">📋 Copy</button>
+            </div>
+            
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="inviteCount">0</div>
-                    <div class="stat-label">Amis invités</div>
+                    <div class="stat-label">Friends invited</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="inviteEarnings">0.000</div>
-                    <div class="stat-label">Gagné (TON)</div>
+                    <div class="stat-value" id="inviteEarnings">0.00000</div>
+                    <div class="stat-label">Earned (TON)</div>
                 </div>
             </div>
         </div>
 
         <!-- Page Watch & Earn -->
         <div class="page" id="page-watch">
-            <h2 style="margin-bottom: 20px; font-size: 24px;">📺 Watch & Earn</h2>
+            <div class="page-header">
+                <h2>📺 Watch & Earn</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
+                    💬
+                </a>
+            </div>
+            
+            <div class="ad-info">
+                <p><strong>Earn TON watching ads!</strong></p>
+                <p>• Watch ads: <strong>+0.000012 TON</strong> per ad</p>
+                <p>• Wait <strong>15 seconds</strong> between ads</p>
+                <p>• No limits per day!</p>
+            </div>
+
             <div class="ad-container">
                 <div class="ad-icon">🎬</div>
-                <h3>Regardez des publicités</h3>
-                <p style="margin: 15px 0; color: rgba(255,255,255,0.7);">
-                    Gagnez 0.0001 TON par pub (20s)
-                </p>
-                <button class="watch-button" onclick="watchAd()">
-                    ▶️ REGARDER UNE PUB
+                <button class="watch-button" id="watchButton" onclick="watchAd()">
+                    ▶️ WATCH AD
                 </button>
+                <div class="cooldown-timer" id="cooldownTimer"></div>
+                
                 <div class="stats-grid" style="margin-top: 30px;">
                     <div class="stat-card">
                         <div class="stat-value" id="adsWatched">0</div>
-                        <div class="stat-label">Pubs vues</div>
+                        <div class="stat-label">Ads watched</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="adsEarnings">0.0000</div>
-                        <div class="stat-label">Gagné (TON)</div>
+                        <div class="stat-value" id="adsEarnings">0.000000</div>
+                        <div class="stat-label">Earned (TON)</div>
                     </div>
                 </div>
             </div>
@@ -604,28 +754,42 @@
 
         <!-- Page Withdraw -->
         <div class="page" id="page-withdraw">
-            <h2 style="margin-bottom: 20px; font-size: 24px;">💰 Retrait</h2>
+            <div class="page-header">
+                <h2>💰 Withdraw</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
+                    💬
+                </a>
+            </div>
+            
+            <div class="withdraw-info">
+                <p><strong>Withdraw your TON to FaucetPay:</strong></p>
+                <p>• Minimum: <strong>0.001 TON</strong></p>
+                <p>• <strong>No gas fees!</strong> 🎉</p>
+                <p>• Instant payment to your FaucetPay account</p>
+            </div>
+
             <div class="withdraw-form">
                 <div class="form-group">
-                    <label class="form-label">Email FaucetPay</label>
-                    <input type="email" class="form-input" id="faucetpayEmail" placeholder="votre@email.com">
+                    <label class="form-label">FaucetPay Email</label>
+                    <input type="email" class="form-input" id="faucetpayEmail" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Montant (min 0.01 TON)</label>
-                    <input type="number" class="form-input" id="withdrawAmount" placeholder="0.01" min="0.01" step="0.001">
+                    <label class="form-label">Amount (min 0.001 TON)</label>
+                    <input type="number" class="form-input" id="withdrawAmount" placeholder="0.001" min="0.001" step="0.000001">
                 </div>
                 <button class="submit-button" onclick="handleWithdraw()">
-                    💸 RETIRER
+                    💸 WITHDRAW NOW
                 </button>
             </div>
+            
             <div class="stats-grid" style="margin-top: 20px;">
                 <div class="stat-card">
                     <div class="stat-value" id="totalWithdrawn">0.000</div>
-                    <div class="stat-label">Total retiré</div>
+                    <div class="stat-label">Total withdrawn</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="withdrawCount">0</div>
-                    <div class="stat-label">Retraits</div>
+                    <div class="stat-label">Withdrawals</div>
                 </div>
             </div>
         </div>
@@ -635,23 +799,23 @@
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home')">
             <div class="nav-icon">🏠</div>
-            <div class="nav-label">Accueil</div>
+            <div class="nav-label">Home</div>
         </div>
         <div class="nav-item" onclick="showPage('tasks')">
             <div class="nav-icon">📋</div>
-            <div class="nav-label">Tâches</div>
+            <div class="nav-label">Tasks</div>
         </div>
         <div class="nav-item" onclick="showPage('invite')">
             <div class="nav-icon">👥</div>
-            <div class="nav-label">Inviter</div>
+            <div class="nav-label">Invite</div>
         </div>
         <div class="nav-item" onclick="showPage('watch')">
             <div class="nav-icon">📺</div>
-            <div class="nav-label">Regarder</div>
+            <div class="nav-label">Watch</div>
         </div>
         <div class="nav-item" onclick="showPage('withdraw')">
             <div class="nav-icon">💰</div>
-            <div class="nav-label">Retrait</div>
+            <div class="nav-label">Withdraw</div>
         </div>
     </div>
 
@@ -668,7 +832,9 @@
         const API_URL = 'https://ton-reward-djdn-backend.onrender.com'; // REMPLACER PAR VOTRE URL
         const BOT_USERNAME = 'TONRewardCrewBot'; // REMPLACER PAR VOTRE BOT
         const CHANNEL_USERNAME = 'ton_reward_djdn';
-        const ADSGRAM_BLOCK_ID = '14697'; // Votre Block ID Adsgram
+        const WITHDRAW_CHANNEL_USERNAME = 'djdn_withdraw_payments';
+        const SUPPORT_USERNAME = 'djdn_crew_support';
+        const ADSGRAM_BLOCK_ID = '14697';
         
         // Telegram WebApp
         let tg = window.Telegram.WebApp;
@@ -679,20 +845,22 @@
         let userData = null;
         let telegramId = null;
         let username = null;
+        let firstName = null;
         let miningInterval = null;
         let adsgramController = null;
+        let adCooldownInterval = null;
 
         // Initialiser Adsgram
         function initAdsgram() {
             try {
                 if (window.Adsgram) {
                     adsgramController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-                    console.log('✅ Adsgram initialisé avec Block ID:', ADSGRAM_BLOCK_ID);
+                    console.log('✅ Adsgram initialized with Block ID:', ADSGRAM_BLOCK_ID);
                 } else {
-                    console.warn('⚠️ Adsgram SDK non chargé');
+                    console.warn('⚠️ Adsgram SDK not loaded');
                 }
             } catch (error) {
-                console.error('❌ Erreur init Adsgram:', error);
+                console.error('❌ Adsgram init error:', error);
             }
         }
 
@@ -701,25 +869,27 @@
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
                 username = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name || 'User';
+                firstName = tg.initDataUnsafe.user.first_name || username;
                 const startParam = tg.initDataUnsafe.start_param;
-                return { telegramId, username, referrerId: startParam };
+                return { telegramId, username, firstName, referrerId: startParam };
             }
             // Mode test
             telegramId = 'test_' + Date.now();
             username = 'Test User';
-            return { telegramId, username, referrerId: null };
+            firstName = 'Test';
+            return { telegramId, username, firstName, referrerId: null };
         }
 
         // Charger données utilisateur
         async function loadUserData() {
             try {
                 showLoading(true);
-                const { telegramId, username, referrerId } = getTelegramUser();
+                const { telegramId, username, firstName, referrerId } = getTelegramUser();
                 
                 const response = await fetch(`${API_URL}/user/${telegramId}?referrer=${referrerId || ''}`);
                 
                 if (response.status === 404) {
-                    await createUser(telegramId, username, referrerId);
+                    await createUser(telegramId, username, firstName, referrerId);
                     return;
                 }
                 
@@ -729,13 +899,13 @@
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Erreur de connexion', 'error');
+                showNotification('Connection error', 'error');
                 showLoading(false);
             }
         }
 
         // Créer utilisateur
-        async function createUser(tid, uname, refId) {
+        async function createUser(tid, uname, fname, refId) {
             try {
                 const response = await fetch(`${API_URL}/user`, {
                     method: 'POST',
@@ -743,6 +913,7 @@
                     body: JSON.stringify({
                         telegram_id: tid,
                         username: uname,
+                        first_name: fname,
                         referrer_id: refId
                     })
                 });
@@ -752,27 +923,32 @@
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Erreur création compte', 'error');
+                showNotification('Account creation error', 'error');
                 showLoading(false);
             }
         }
 
         // Mettre à jour l'interface
         function updateUI() {
-            document.getElementById('username').textContent = userData.username;
+            document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
             document.getElementById('inviteLink').textContent = `https://t.me/${BOT_USERNAME}?start=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
-            document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.0025).toFixed(4);
+            document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
             document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
-            document.getElementById('adsEarnings').textContent = ((userData.ads_watched_total || 0) * 0.0001).toFixed(4);
-            document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(3);
+            document.getElementById('adsEarnings').textContent = ((userData.ads_watched_total || 0) * 0.000012).toFixed(6);
+            document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(6);
             document.getElementById('withdrawCount').textContent = userData.withdraw_history?.length || 0;
             
-            // Task button state
+            // Task buttons state
             if (userData.tasks_done && userData.tasks_done.includes('join_channel')) {
-                document.getElementById('taskButton').textContent = '✅ Complété';
-                document.getElementById('taskButton').disabled = true;
+                document.getElementById('taskButton1').textContent = '✅ Completed';
+                document.getElementById('taskButton1').disabled = true;
+            }
+            
+            if (userData.tasks_done && userData.tasks_done.includes('join_withdraw_channel')) {
+                document.getElementById('taskButton2').textContent = '✅ Completed';
+                document.getElementById('taskButton2').disabled = true;
             }
         }
 
@@ -789,14 +965,14 @@
                     userData = data;
                     updateUI();
                     startMiningCheck();
-                    showNotification('⛏️ Mining démarré!');
+                    showNotification('⛏️ Mining started!');
                 } else {
                     showNotification(data.error, 'error');
                 }
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Erreur mining', 'error');
+                showNotification('Mining error', 'error');
                 showLoading(false);
             }
         }
@@ -807,15 +983,15 @@
             miningInterval = setInterval(() => {
                 if (!userData || !userData.mining_start_time) {
                     document.getElementById('mineButton').disabled = false;
-                    document.getElementById('mineButton').textContent = '🚀 COMMENCER LE MINING';
-                    document.getElementById('miningTimer').textContent = 'Prêt à miner!';
+                    document.getElementById('mineButton').textContent = '🚀 START MINING';
+                    document.getElementById('miningTimer').textContent = 'Ready to mine!';
                     document.getElementById('progressFill').style.width = '0%';
                     return;
                 }
 
                 const now = Date.now();
                 const start = new Date(userData.mining_start_time).getTime();
-                const duration = 3 * 60 * 60 * 1000; // 3 heures
+                const duration = 3 * 60 * 60 * 1000; // 3 hours
                 const elapsed = now - start;
                 const remaining = duration - elapsed;
 
@@ -832,7 +1008,7 @@
                     const progress = (elapsed / duration) * 100;
                     document.getElementById('progressFill').style.width = progress + '%';
                     document.getElementById('mineButton').disabled = true;
-                    document.getElementById('mineButton').textContent = '⏳ MINING EN COURS...';
+                    document.getElementById('mineButton').textContent = '⏳ MINING IN PROGRESS...';
                 }
             }, 1000);
         }
@@ -848,7 +1024,7 @@
                 if (response.ok) {
                     userData = data;
                     updateUI();
-                    showNotification('🎉 +0.005 TON réclamé!');
+                    showNotification('🎉 +0.005 TON claimed!');
                     clearInterval(miningInterval);
                     startMiningCheck();
                 } else {
@@ -857,60 +1033,70 @@
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Erreur claim', 'error');
+                showNotification('Claim error', 'error');
                 showLoading(false);
             }
         }
 
         // Tasks
-        async function handleTask() {
-            const btn = document.getElementById('taskButton');
+        async function handleTask(taskType) {
+            const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
+            const btn = document.getElementById(btnId);
             const btnText = btn.textContent;
             
-            if (btnText === 'Rejoindre') {
-                window.open(`https://t.me/${CHANNEL_USERNAME}`, '_blank');
-                btn.textContent = 'Vérifier';
-            } else if (btnText === 'Vérifier') {
+            const channelUrl = taskType === 'join_channel' 
+                ? `https://t.me/${CHANNEL_USERNAME}` 
+                : `https://t.me/${WITHDRAW_CHANNEL_USERNAME}`;
+            
+            if (btnText === 'Join') {
+                // Ouvrir le canal dans Telegram
+                window.open(channelUrl, '_blank');
+                btn.textContent = 'Verify';
+            } else if (btnText === 'Verify') {
                 try {
                     showLoading(true);
                     const response = await fetch(`${API_URL}/task/${userData.telegram_id}/verify`, {
-                        method: 'POST'
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ task_type: taskType })
                     });
                     const data = await response.json();
                     
                     if (response.ok && data.verified) {
-                        btn.textContent = 'Réclamer';
-                        showNotification('✅ Vérification réussie!');
+                        btn.textContent = 'Claim';
+                        showNotification('✅ Verification successful!');
                     } else {
-                        showNotification('❌ Veuillez rejoindre le canal', 'error');
+                        showNotification('❌ Please join the channel first', 'error');
                     }
                     showLoading(false);
                 } catch (error) {
                     console.error('Error:', error);
-                    showNotification('Erreur vérification', 'error');
+                    showNotification('Verification error', 'error');
                     showLoading(false);
                 }
-            } else if (btnText === 'Réclamer') {
+            } else if (btnText === 'Claim') {
                 try {
                     showLoading(true);
                     const response = await fetch(`${API_URL}/task/${userData.telegram_id}/claim`, {
-                        method: 'POST'
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ task_type: taskType })
                     });
                     const data = await response.json();
                     
                     if (response.ok) {
                         userData = data;
                         updateUI();
-                        btn.textContent = '✅ Complété';
+                        btn.textContent = '✅ Completed';
                         btn.disabled = true;
-                        showNotification('🎉 +0.001 TON gagné!');
+                        showNotification('🎉 +0.0001 TON earned!');
                     } else {
                         showNotification(data.error, 'error');
                     }
                     showLoading(false);
                 } catch (error) {
                     console.error('Error:', error);
-                    showNotification('Erreur claim', 'error');
+                    showNotification('Claim error', 'error');
                     showLoading(false);
                 }
             }
@@ -920,15 +1106,27 @@
         function copyInviteLink() {
             const link = document.getElementById('inviteLink').textContent;
             navigator.clipboard.writeText(link).then(() => {
-                showNotification('📋 Lien copié!');
+                showNotification('📋 Link copied!');
             });
         }
 
-        // Watch Ad (Adsgram integration)
+        // Watch Ad with cooldown
         async function watchAd() {
             if (!adsgramController) {
-                showNotification('⚠️ Adsgram non disponible', 'error');
+                showNotification('⚠️ Adsgram not available', 'error');
                 return;
+            }
+
+            // Vérifier si on est en cooldown
+            if (userData.last_ad_watch) {
+                const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
+                const cooldownMs = 15 * 1000; // 15 secondes
+                
+                if (timeSinceLastAd < cooldownMs) {
+                    const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastAd) / 1000);
+                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
+                    return;
+                }
             }
 
             try {
@@ -938,7 +1136,7 @@
                 adsgramController.show().then(async (result) => {
                     // Pub visionnée avec succès
                     if (result.done) {
-                        console.log('✅ Publicité visionnée avec succès');
+                        console.log('✅ Ad watched successfully');
                         
                         // Enregistrer la pub vue dans le backend
                         try {
@@ -950,33 +1148,62 @@
                             if (response.ok) {
                                 userData = data;
                                 updateUI();
-                                showNotification('🎉 +0.0001 TON gagné!');
+                                showNotification('🎉 +0.000012 TON earned!');
+                                startAdCooldown();
                             } else {
-                                showNotification(data.error, 'error');
+                                if (data.cooldown) {
+                                    showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
+                                } else {
+                                    showNotification(data.error, 'error');
+                                }
                             }
                         } catch (error) {
-                            console.error('❌ Erreur enregistrement pub:', error);
-                            showNotification('Erreur lors de l\'enregistrement', 'error');
+                            console.error('❌ Error recording ad:', error);
+                            showNotification('Error recording ad', 'error');
                         }
                     } else {
                         // Pub non complétée ou fermée
-                        console.log('⚠️ Publicité non complétée');
-                        showNotification('Publicité non complétée', 'error');
+                        console.log('⚠️ Ad not completed');
+                        showNotification('Ad not completed', 'error');
                     }
                     
                     showLoading(false);
                 }).catch((error) => {
                     // Erreur lors de l'affichage de la pub
-                    console.error('❌ Erreur Adsgram:', error);
-                    showNotification('Erreur lors de l\'affichage de la pub', 'error');
+                    console.error('❌ Adsgram error:', error);
+                    showNotification('Error displaying ad', 'error');
                     showLoading(false);
                 });
 
             } catch (error) {
-                console.error('❌ Erreur watch ad:', error);
-                showNotification('Erreur publicité', 'error');
+                console.error('❌ Watch ad error:', error);
+                showNotification('Ad error', 'error');
                 showLoading(false);
             }
+        }
+
+        // Gérer le cooldown des pubs
+        function startAdCooldown() {
+            if (adCooldownInterval) clearInterval(adCooldownInterval);
+            
+            const watchBtn = document.getElementById('watchButton');
+            const cooldownDisplay = document.getElementById('cooldownTimer');
+            
+            let remainingSeconds = 15;
+            
+            watchBtn.disabled = true;
+            
+            adCooldownInterval = setInterval(() => {
+                if (remainingSeconds <= 0) {
+                    clearInterval(adCooldownInterval);
+                    watchBtn.disabled = false;
+                    cooldownDisplay.textContent = '';
+                    return;
+                }
+                
+                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
+                remainingSeconds--;
+            }, 1000);
         }
 
         // Withdraw
@@ -985,17 +1212,17 @@
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             
             if (!email || !amount) {
-                showNotification('Veuillez remplir tous les champs', 'error');
+                showNotification('Please fill all fields', 'error');
                 return;
             }
             
-            if (amount < 0.01) {
-                showNotification('Minimum 0.01 TON', 'error');
+            if (amount < 0.001) {
+                showNotification('Minimum 0.001 TON', 'error');
                 return;
             }
             
             if (amount > userData.balance) {
-                showNotification('Solde insuffisant', 'error');
+                showNotification('Insufficient balance', 'error');
                 return;
             }
             
@@ -1016,14 +1243,14 @@
                     updateUI();
                     document.getElementById('faucetpayEmail').value = '';
                     document.getElementById('withdrawAmount').value = '';
-                    showNotification('🎉 Retrait effectué avec succès!');
+                    showNotification('🎉 Withdrawal successful! No gas fees! 💚');
                 } else {
                     showNotification(data.error, 'error');
                 }
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Erreur retrait', 'error');
+                showNotification('Withdrawal error', 'error');
                 showLoading(false);
             }
         }
@@ -1034,7 +1261,13 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
             document.getElementById('page-' + pageName).classList.add('active');
-            event.currentTarget.classList.add('active');
+            
+            // Mettre à jour le nav-item actif
+            const navItems = document.querySelectorAll('.nav-item');
+            const pageIndex = ['home', 'tasks', 'invite', 'watch', 'withdraw'].indexOf(pageName);
+            if (pageIndex !== -1 && navItems[pageIndex]) {
+                navItems[pageIndex].classList.add('active');
+            }
         }
 
         // Notifications
@@ -1055,7 +1288,7 @@
 
         // Init
         window.addEventListener('load', () => {
-            initAdsgram(); // Initialiser Adsgram
+            initAdsgram();
             loadUserData();
         });
     </script>
