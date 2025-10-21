@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TON Reward DJDN</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .balance-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .balance {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mining Section */
+        .mining-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .mining-icon {
+            font-size: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+        }
+
+        .mining-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mining-reward {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .mine-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .mine-button:active {
+            transform: scale(0.98);
+        }
+
+        .mine-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:active {
+            transform: scale(0.95);
+        }
+
+        .action-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .action-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Task Card */
+        .task-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .task-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .task-reward {
+            font-size: 14px;
+            color: #ffd700;
+        }
+
+        .task-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+
+        /* Invitation Section */
+        .invite-link-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .invite-link {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Watch & Earn */
+        .ad-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .ad-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .watch-button {
+            width: 100%;
+            max-width: 300px;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Withdraw */
+        .withdraw-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 0 5px;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            padding: 15px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="user-info">
+            <div class="avatar">👤</div>
+            <div>
+                <div class="username" id="username">Chargement...</div>
+            </div>
+        </div>
+        <div class="balance-container">
+            <div class="balance" id="balance">0.000000 TON</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Page Home -->
+        <div class="page active" id="page-home">
+            <div class="mining-card">
+                <div class="mining-icon">⛏️</div>
+                <div class="mining-title">MINING TON</div>
+                <div class="mining-reward" id="miningReward">+0.005 TON</div>
+                <div class="timer" id="miningTimer">Prêt à miner!</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <button class="mine-button" id="mineButton" onclick="startMining()">
+                    🚀 COMMENCER LE MINING
+                </button>
+            </div>
+
+            <div class="quick-actions">
+                <div class="action-card" onclick="showPage('tasks')">
+                    <div class="action-icon">📋</div>
+                    <div class="action-title">Tâches</div>
+                </div>
+                <div class="action-card" onclick="showPage('invite')">
+                    <div class="action-icon">👥</div>
+                    <div class="action-title">Invitations</div>
+                </div>
+                <div class="action-card" onclick="showPage('watch')">
+                    <div class="action-icon">📺</div>
+                    <div class="action-title">Watch & Earn</div>
+                </div>
+                <div class="action-card" onclick="showPage('withdraw')">
+                    <div class="action-icon">💰</div>
+                    <div class="action-title">Retrait</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Tasks -->
+        <div class="page" id="page-tasks">
+            <h2 style="margin-bottom: 20px; font-size: 24px;">📋 Tâches</h2>
+            <div class="task-card">
+                <div class="task-icon">📢</div>
+                <div class="task-info">
+                    <div class="task-title">Rejoindre notre canal</div>
+                    <div class="task-reward">+0.001 TON</div>
+                </div>
+                <button class="task-button" id="taskButton" onclick="handleTask()">
+                    Rejoindre
+                </button>
+            </div>
+        </div>
+
+        <!-- Page Invite -->
+        <div class="page" id="page-invite">
+            <h2 style="margin-bottom: 20px; font-size: 24px;">👥 Invitations</h2>
+            <div class="invite-link-box">
+                <div class="invite-link" id="inviteLink">Chargement...</div>
+                <button class="copy-button" onclick="copyInviteLink()">📋 Copier</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="inviteCount">0</div>
+                    <div class="stat-label">Amis invités</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="inviteEarnings">0.000</div>
+                    <div class="stat-label">Gagné (TON)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Watch & Earn -->
+        <div class="page" id="page-watch">
+            <h2 style="margin-bottom: 20px; font-size: 24px;">📺 Watch & Earn</h2>
+            <div class="ad-container">
+                <div class="ad-icon">🎬</div>
+                <h3>Regardez des publicités</h3>
+                <p style="margin: 15px 0; color: rgba(255,255,255,0.7);">
+                    Gagnez 0.0001 TON par pub (20s)
+                </p>
+                <button class="watch-button" onclick="watchAd()">
+                    ▶️ REGARDER UNE PUB
+                </button>
+                <div class="stats-grid" style="margin-top: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="adsWatched">0</div>
+                        <div class="stat-label">Pubs vues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="adsEarnings">0.0000</div>
+                        <div class="stat-label">Gagné (TON)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Withdraw -->
+        <div class="page" id="page-withdraw">
+            <h2 style="margin-bottom: 20px; font-size: 24px;">💰 Retrait</h2>
+            <div class="withdraw-form">
+                <div class="form-group">
+                    <label class="form-label">Email FaucetPay</label>
+                    <input type="email" class="form-input" id="faucetpayEmail" placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Montant (min 0.01 TON)</label>
+                    <input type="number" class="form-input" id="withdrawAmount" placeholder="0.01" min="0.01" step="0.001">
+                </div>
+                <button class="submit-button" onclick="handleWithdraw()">
+                    💸 RETIRER
+                </button>
+            </div>
+            <div class="stats-grid" style="margin-top: 20px;">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalWithdrawn">0.000</div>
+                    <div class="stat-label">Total retiré</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="withdrawCount">0</div>
+                    <div class="stat-label">Retraits</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showPage('home')">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Accueil</div>
+        </div>
+        <div class="nav-item" onclick="showPage('tasks')">
+            <div class="nav-icon">📋</div>
+            <div class="nav-label">Tâches</div>
+        </div>
+        <div class="nav-item" onclick="showPage('invite')">
+            <div class="nav-icon">👥</div>
+            <div class="nav-label">Inviter</div>
+        </div>
+        <div class="nav-item" onclick="showPage('watch')">
+            <div class="nav-icon">📺</div>
+            <div class="nav-label">Regarder</div>
+        </div>
+        <div class="nav-item" onclick="showPage('withdraw')">
+            <div class="nav-icon">💰</div>
+            <div class="nav-label">Retrait</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_URL = 'https://ton-reward-djdn-backend.onrender.com'; // REMPLACER PAR VOTRE URL
+        const BOT_USERNAME = 'TONRewardCrewBot'; // REMPLACER PAR VOTRE BOT
+        const CHANNEL_USERNAME = 'ton_reward_djdn';
+        const ADSGRAM_BLOCK_ID = '14697'; // Votre Block ID Adsgram
+        
+        // Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        // Variables globales
+        let userData = null;
+        let telegramId = null;
+        let username = null;
+        let miningInterval = null;
+        let adsgramController = null;
+
+        // Initialiser Adsgram
+        function initAdsgram() {
+            try {
+                if (window.Adsgram) {
+                    adsgramController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+                    console.log('✅ Adsgram initialisé avec Block ID:', ADSGRAM_BLOCK_ID);
+                } else {
+                    console.warn('⚠️ Adsgram SDK non chargé');
+                }
+            } catch (error) {
+                console.error('❌ Erreur init Adsgram:', error);
+            }
+        }
+
+        // Récupérer infos Telegram
+        function getTelegramUser() {
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                telegramId = tg.initDataUnsafe.user.id;
+                username = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name || 'User';
+                const startParam = tg.initDataUnsafe.start_param;
+                return { telegramId, username, referrerId: startParam };
+            }
+            // Mode test
+            telegramId = 'test_' + Date.now();
+            username = 'Test User';
+            return { telegramId, username, referrerId: null };
+        }
+
+        // Charger données utilisateur
+        async function loadUserData() {
+            try {
+                showLoading(true);
+                const { telegramId, username, referrerId } = getTelegramUser();
+                
+                const response = await fetch(`${API_URL}/user/${telegramId}?referrer=${referrerId || ''}`);
+                
+                if (response.status === 404) {
+                    await createUser(telegramId, username, referrerId);
+                    return;
+                }
+                
+                userData = await response.json();
+                updateUI();
+                startMiningCheck();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Erreur de connexion', 'error');
+                showLoading(false);
+            }
+        }
+
+        // Créer utilisateur
+        async function createUser(tid, uname, refId) {
+            try {
+                const response = await fetch(`${API_URL}/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        telegram_id: tid,
+                        username: uname,
+                        referrer_id: refId
+                    })
+                });
+                userData = await response.json();
+                updateUI();
+                startMiningCheck();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Erreur création compte', 'error');
+                showLoading(false);
+            }
+        }
+
+        // Mettre à jour l'interface
+        function updateUI() {
+            document.getElementById('username').textContent = userData.username;
+            document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
+            document.getElementById('inviteLink').textContent = `https://t.me/${BOT_USERNAME}?start=${userData.telegram_id}`;
+            document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
+            document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.0025).toFixed(4);
+            document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
+            document.getElementById('adsEarnings').textContent = ((userData.ads_watched_total || 0) * 0.0001).toFixed(4);
+            document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(3);
+            document.getElementById('withdrawCount').textContent = userData.withdraw_history?.length || 0;
+            
+            // Task button state
+            if (userData.tasks_done && userData.tasks_done.includes('join_channel')) {
+                document.getElementById('taskButton').textContent = '✅ Complété';
+                document.getElementById('taskButton').disabled = true;
+            }
+        }
+
+        // Mining
+        async function startMining() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_URL}/mining/${userData.telegram_id}/start`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data;
+                    updateUI();
+                    startMiningCheck();
+                    showNotification('⛏️ Mining démarré!');
+                } else {
+                    showNotification(data.error, 'error');
+                }
+                showLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Erreur mining', 'error');
+                showLoading(false);
+            }
+        }
+
+        function startMiningCheck() {
+            if (miningInterval) clearInterval(miningInterval);
+            
+            miningInterval = setInterval(() => {
+                if (!userData || !userData.mining_start_time) {
+                    document.getElementById('mineButton').disabled = false;
+                    document.getElementById('mineButton').textContent = '🚀 COMMENCER LE MINING';
+                    document.getElementById('miningTimer').textContent = 'Prêt à miner!';
+                    document.getElementById('progressFill').style.width = '0%';
+                    return;
+                }
+
+                const now = Date.now();
+                const start = new Date(userData.mining_start_time).getTime();
+                const duration = 3 * 60 * 60 * 1000; // 3 heures
+                const elapsed = now - start;
+                const remaining = duration - elapsed;
+
+                if (remaining <= 0) {
+                    claimMining();
+                } else {
+                    const hours = Math.floor(remaining / 3600000);
+                    const minutes = Math.floor((remaining % 3600000) / 60000);
+                    const seconds = Math.floor((remaining % 60000) / 1000);
+                    
+                    document.getElementById('miningTimer').textContent = 
+                        `⏰ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    const progress = (elapsed / duration) * 100;
+                    document.getElementById('progressFill').style.width = progress + '%';
+                    document.getElementById('mineButton').disabled = true;
+                    document.getElementById('mineButton').textContent = '⏳ MINING EN COURS...';
+                }
+            }, 1000);
+        }
+
+        async function claimMining() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_URL}/mining/${userData.telegram_id}/claim`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data;
+                    updateUI();
+                    showNotification('🎉 +0.005 TON réclamé!');
+                    clearInterval(miningInterval);
+                    startMiningCheck();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+                showLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Erreur claim', 'error');
+                showLoading(false);
+            }
+        }
+
+        // Tasks
+        async function handleTask() {
+            const btn = document.getElementById('taskButton');
+            const btnText = btn.textContent;
+            
+            if (btnText === 'Rejoindre') {
+                window.open(`https://t.me/${CHANNEL_USERNAME}`, '_blank');
+                btn.textContent = 'Vérifier';
+            } else if (btnText === 'Vérifier') {
+                try {
+                    showLoading(true);
+                    const response = await fetch(`${API_URL}/task/${userData.telegram_id}/verify`, {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+                    
+                    if (response.ok && data.verified) {
+                        btn.textContent = 'Réclamer';
+                        showNotification('✅ Vérification réussie!');
+                    } else {
+                        showNotification('❌ Veuillez rejoindre le canal', 'error');
+                    }
+                    showLoading(false);
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Erreur vérification', 'error');
+                    showLoading(false);
+                }
+            } else if (btnText === 'Réclamer') {
+                try {
+                    showLoading(true);
+                    const response = await fetch(`${API_URL}/task/${userData.telegram_id}/claim`, {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        userData = data;
+                        updateUI();
+                        btn.textContent = '✅ Complété';
+                        btn.disabled = true;
+                        showNotification('🎉 +0.001 TON gagné!');
+                    } else {
+                        showNotification(data.error, 'error');
+                    }
+                    showLoading(false);
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Erreur claim', 'error');
+                    showLoading(false);
+                }
+            }
+        }
+
+        // Copy invite link
+        function copyInviteLink() {
+            const link = document.getElementById('inviteLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                showNotification('📋 Lien copié!');
+            });
+        }
+
+        // Watch Ad (Adsgram integration)
+        async function watchAd() {
+            if (!adsgramController) {
+                showNotification('⚠️ Adsgram non disponible', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                
+                // Afficher la publicité Adsgram
+                adsgramController.show().then(async (result) => {
+                    // Pub visionnée avec succès
+                    if (result.done) {
+                        console.log('✅ Publicité visionnée avec succès');
+                        
+                        // Enregistrer la pub vue dans le backend
+                        try {
+                            const response = await fetch(`${API_URL}/ad/${userData.telegram_id}/watch`, {
+                                method: 'POST'
+                            });
+                            const data = await response.json();
+                            
+                            if (response.ok) {
+                                userData = data;
+                                updateUI();
+                                showNotification('🎉 +0.0001 TON gagné!');
+                            } else {
+                                showNotification(data.error, 'error');
+                            }
+                        } catch (error) {
+                            console.error('❌ Erreur enregistrement pub:', error);
+                            showNotification('Erreur lors de l\'enregistrement', 'error');
+                        }
+                    } else {
+                        // Pub non complétée ou fermée
+                        console.log('⚠️ Publicité non complétée');
+                        showNotification('Publicité non complétée', 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    // Erreur lors de l'affichage de la pub
+                    console.error('❌ Erreur Adsgram:', error);
+                    showNotification('Erreur lors de l\'affichage de la pub', 'error');
+                    showLoading(false);
+                });
+
+            } catch (error) {
+                console.error('❌ Erreur watch ad:', error);
+                showNotification('Erreur publicité', 'error');
+                showLoading(false);
+            }
+        }
+
+        // Withdraw
+        async function handleWithdraw() {
+            const email = document.getElementById('faucetpayEmail').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            
+            if (!email || !amount) {
+                showNotification('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            if (amount < 0.01) {
+                showNotification('Minimum 0.01 TON', 'error');
+                return;
+            }
+            
+            if (amount > userData.balance) {
+                showNotification('Solde insuffisant', 'error');
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_URL}/withdraw/${userData.telegram_id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        faucetpay_email: email,
+                        amount: amount
+                    })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data;
+                    updateUI();
+                    document.getElementById('faucetpayEmail').value = '';
+                    document.getElementById('withdrawAmount').value = '';
+                    showNotification('🎉 Retrait effectué avec succès!');
+                } else {
+                    showNotification(data.error, 'error');
+                }
+                showLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Erreur retrait', 'error');
+                showLoading(false);
+            }
+        }
+
+        // Navigation
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('page-' + pageName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Notifications
+        function showNotification(message, type = 'success') {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.className = 'notification show ' + type;
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        // Loading
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.toggle('show', show);
+        }
+
+        // Init
+        window.addEventListener('load', () => {
+            initAdsgram(); // Initialiser Adsgram
+            loadUserData();
+        });
+    </script>
+</body>
+</html>
