@@ -22,7 +22,6 @@
             padding-bottom: 80px;
         }
 
-        /* Header */
         .header {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -67,7 +66,6 @@
             font-size: 18px;
         }
 
-        /* Page Header with Support Button */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -80,7 +78,6 @@
             margin: 0;
         }
 
-        /* Support Button on Pages */
         .support-btn {
             width: 45px;
             height: 45px;
@@ -101,7 +98,6 @@
             transform: scale(0.9);
         }
 
-        /* Main Content */
         .content {
             padding: 20px;
             max-width: 500px;
@@ -122,7 +118,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mining Section */
         .mining-card {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             backdrop-filter: blur(10px);
@@ -206,7 +201,6 @@
             box-shadow: none;
         }
 
-        /* Quick Actions */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -229,11 +223,6 @@
             transform: scale(0.95);
         }
 
-        .action-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
         .action-icon {
             font-size: 40px;
             margin-bottom: 10px;
@@ -244,7 +233,6 @@
             font-weight: bold;
         }
 
-        /* Task Card */
         .task-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -302,7 +290,6 @@
             cursor: not-allowed;
         }
 
-        /* Invitation Section */
         .invite-link-box {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -380,7 +367,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Watch & Earn */
         .ad-container {
             text-align: center;
             padding: 40px 20px;
@@ -438,7 +424,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Withdraw */
         .withdraw-form {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -504,7 +489,6 @@
             box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
         }
 
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -542,7 +526,6 @@
             font-size: 12px;
         }
 
-        /* Notifications */
         .notification {
             position: fixed;
             top: 80px;
@@ -599,7 +582,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="user-info">
             <div class="avatar">👤</div>
@@ -612,7 +594,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
         <!-- Page Home -->
         <div class="page active" id="page-home">
@@ -653,33 +634,25 @@
         <div class="page" id="page-tasks">
             <div class="page-header">
                 <h2>📋 Tasks</h2>
-                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
-                    💬
-                </a>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
             </div>
             
-            <!-- Task 1: Join Main Channel -->
             <div class="task-card">
                 <div class="task-icon">📢</div>
                 <div class="task-info">
                     <div class="task-title">Join our channel</div>
                     <div class="task-reward">+0.0001 TON</div>
                 </div>
-                <button class="task-button" id="taskButton1" onclick="handleTask('join_channel')">
-                    Join
-                </button>
+                <button class="task-button" id="taskButton1" onclick="handleTask('join_channel')">Join</button>
             </div>
 
-            <!-- Task 2: Join Withdraw Channel -->
             <div class="task-card">
                 <div class="task-icon">💸</div>
                 <div class="task-info">
                     <div class="task-title">Join withdraw proofs</div>
                     <div class="task-reward">+0.0001 TON</div>
                 </div>
-                <button class="task-button" id="taskButton2" onclick="handleTask('join_withdraw_channel')">
-                    Join
-                </button>
+                <button class="task-button" id="taskButton2" onclick="handleTask('join_withdraw_channel')">Join</button>
             </div>
         </div>
 
@@ -687,9 +660,7 @@
         <div class="page" id="page-invite">
             <div class="page-header">
                 <h2>👥 Invite Friends</h2>
-                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
-                    💬
-                </a>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
             </div>
             
             <div class="invite-info">
@@ -716,13 +687,11 @@
             </div>
         </div>
 
-        <!-- Page Watch & Earn -->
+        <!-- Page Watch -->
         <div class="page" id="page-watch">
             <div class="page-header">
                 <h2>📺 Watch & Earn</h2>
-                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
-                    💬
-                </a>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
             </div>
             
             <div class="ad-info">
@@ -734,9 +703,7 @@
 
             <div class="ad-container">
                 <div class="ad-icon">🎬</div>
-                <button class="watch-button" id="watchButton" onclick="watchAd()">
-                    ▶️ WATCH AD
-                </button>
+                <button class="watch-button" id="watchButton" onclick="watchAd()">▶️ WATCH AD</button>
                 <div class="cooldown-timer" id="cooldownTimer"></div>
                 
                 <div class="stats-grid" style="margin-top: 30px;">
@@ -756,9 +723,7 @@
         <div class="page" id="page-withdraw">
             <div class="page-header">
                 <h2>💰 Withdraw</h2>
-                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn" title="Contact Support">
-                    💬
-                </a>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
             </div>
             
             <div class="withdraw-info">
@@ -777,9 +742,7 @@
                     <label class="form-label">Amount (min 0.001 TON)</label>
                     <input type="number" class="form-input" id="withdrawAmount" placeholder="0.001" min="0.001" step="0.000001">
                 </div>
-                <button class="submit-button" onclick="handleWithdraw()">
-                    💸 WITHDRAW NOW
-                </button>
+                <button class="submit-button" onclick="handleWithdraw()">💸 WITHDRAW NOW</button>
             </div>
             
             <div class="stats-grid" style="margin-top: 20px;">
@@ -795,7 +758,6 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home')">
             <div class="nav-icon">🏠</div>
@@ -819,22 +781,29 @@
         </div>
     </div>
 
-    <!-- Notification -->
     <div class="notification" id="notification"></div>
-
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
 
     <script>
-        // Configuration
-        const API_URL = 'https://ton-reward-djdn-backend.onrender.com'; // REMPLACER PAR VOTRE URL
-        const BOT_USERNAME = 'TONRewardCrewBot'; // REMPLACER PAR VOTRE BOT
-        const CHANNEL_USERNAME = 'ton_reward_djdn';
-        const WITHDRAW_CHANNEL_USERNAME = 'djdn_withdraw_payments';
-        const SUPPORT_USERNAME = 'djdn_crew_support';
-        const ADSGRAM_BLOCK_ID = '14697';
+        // ===========================
+        // 🔧 CONFIGURATION (MODIFIABLE)
+        // ===========================
+        
+        const CONFIG = {
+            // ⚠️ CHANGEZ CETTE URL PAR VOTRE URL RENDER
+            API_URL: 'https://ton-reward-djdn-backend.onrender.com',
+            
+            // Telegram
+            BOT_USERNAME: 'TONRewardCrewBot',
+            CHANNEL_USERNAME: 'ton_reward_djdn',
+            WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
+            SUPPORT_USERNAME: 'djdn_crew_support',
+            
+            // Adsgram (MODIFIABLE)
+            ADSGRAM_BLOCK_ID: '14697'
+        };
         
         // Telegram WebApp
         let tg = window.Telegram.WebApp;
@@ -854,13 +823,13 @@
         function initAdsgram() {
             try {
                 if (window.Adsgram) {
-                    adsgramController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-                    console.log('✅ Adsgram initialized with Block ID:', ADSGRAM_BLOCK_ID);
+                    adsgramController = window.Adsgram.init({ blockId: CONFIG.ADSGRAM_BLOCK_ID });
+                    console.log('✅ Adsgram initialized:', CONFIG.ADSGRAM_BLOCK_ID);
                 } else {
                     console.warn('⚠️ Adsgram SDK not loaded');
                 }
             } catch (error) {
-                console.error('❌ Adsgram init error:', error);
+                console.error('❌ Adsgram error:', error);
             }
         }
 
@@ -886,7 +855,7 @@
                 showLoading(true);
                 const { telegramId, username, firstName, referrerId } = getTelegramUser();
                 
-                const response = await fetch(`${API_URL}/user/${telegramId}?referrer=${referrerId || ''}`);
+                const response = await fetch(`${CONFIG.API_URL}/user/${telegramId}?referrer=${referrerId || ''}`);
                 
                 if (response.status === 404) {
                     await createUser(telegramId, username, firstName, referrerId);
@@ -907,7 +876,7 @@
         // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
-                const response = await fetch(`${API_URL}/user`, {
+                const response = await fetch(`${CONFIG.API_URL}/user`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -932,7 +901,7 @@
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
-            document.getElementById('inviteLink').textContent = `https://t.me/${BOT_USERNAME}?start=${userData.telegram_id}`;
+            document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}?start=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
             document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
             document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
@@ -940,7 +909,6 @@
             document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(6);
             document.getElementById('withdrawCount').textContent = userData.withdraw_history?.length || 0;
             
-            // Task buttons state
             if (userData.tasks_done && userData.tasks_done.includes('join_channel')) {
                 document.getElementById('taskButton1').textContent = '✅ Completed';
                 document.getElementById('taskButton1').disabled = true;
@@ -956,7 +924,7 @@
         async function startMining() {
             try {
                 showLoading(true);
-                const response = await fetch(`${API_URL}/mining/${userData.telegram_id}/start`, {
+                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/start`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -991,7 +959,7 @@
 
                 const now = Date.now();
                 const start = new Date(userData.mining_start_time).getTime();
-                const duration = 3 * 60 * 60 * 1000; // 3 hours
+                const duration = 3 * 60 * 60 * 1000;
                 const elapsed = now - start;
                 const remaining = duration - elapsed;
 
@@ -1016,7 +984,7 @@
         async function claimMining() {
             try {
                 showLoading(true);
-                const response = await fetch(`${API_URL}/mining/${userData.telegram_id}/claim`, {
+                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -1045,17 +1013,16 @@
             const btnText = btn.textContent;
             
             const channelUrl = taskType === 'join_channel' 
-                ? `https://t.me/${CHANNEL_USERNAME}` 
-                : `https://t.me/${WITHDRAW_CHANNEL_USERNAME}`;
+                ? `https://t.me/${CONFIG.CHANNEL_USERNAME}` 
+                : `https://t.me/${CONFIG.WITHDRAW_CHANNEL_USERNAME}`;
             
             if (btnText === 'Join') {
-                // Ouvrir le canal dans Telegram
                 window.open(channelUrl, '_blank');
                 btn.textContent = 'Verify';
             } else if (btnText === 'Verify') {
                 try {
                     showLoading(true);
-                    const response = await fetch(`${API_URL}/task/${userData.telegram_id}/verify`, {
+                    const response = await fetch(`${CONFIG.API_URL}/task/${userData.telegram_id}/verify`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ task_type: taskType })
@@ -1077,7 +1044,7 @@
             } else if (btnText === 'Claim') {
                 try {
                     showLoading(true);
-                    const response = await fetch(`${API_URL}/task/${userData.telegram_id}/claim`, {
+                    const response = await fetch(`${CONFIG.API_URL}/task/${userData.telegram_id}/claim`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ task_type: taskType })
@@ -1110,17 +1077,16 @@
             });
         }
 
-        // Watch Ad with cooldown
+        // Watch Ad
         async function watchAd() {
             if (!adsgramController) {
                 showNotification('⚠️ Adsgram not available', 'error');
                 return;
             }
 
-            // Vérifier si on est en cooldown
             if (userData.last_ad_watch) {
                 const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
-                const cooldownMs = 15 * 1000; // 15 secondes
+                const cooldownMs = 15 * 1000;
                 
                 if (timeSinceLastAd < cooldownMs) {
                     const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastAd) / 1000);
@@ -1132,15 +1098,12 @@
             try {
                 showLoading(true);
                 
-                // Afficher la publicité Adsgram
                 adsgramController.show().then(async (result) => {
-                    // Pub visionnée avec succès
                     if (result.done) {
-                        console.log('✅ Ad watched successfully');
+                        console.log('✅ Ad watched');
                         
-                        // Enregistrer la pub vue dans le backend
                         try {
-                            const response = await fetch(`${API_URL}/ad/${userData.telegram_id}/watch`, {
+                            const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
                                 method: 'POST'
                             });
                             const data = await response.json();
@@ -1162,14 +1125,12 @@
                             showNotification('Error recording ad', 'error');
                         }
                     } else {
-                        // Pub non complétée ou fermée
                         console.log('⚠️ Ad not completed');
                         showNotification('Ad not completed', 'error');
                     }
                     
                     showLoading(false);
                 }).catch((error) => {
-                    // Erreur lors de l'affichage de la pub
                     console.error('❌ Adsgram error:', error);
                     showNotification('Error displaying ad', 'error');
                     showLoading(false);
@@ -1182,7 +1143,6 @@
             }
         }
 
-        // Gérer le cooldown des pubs
         function startAdCooldown() {
             if (adCooldownInterval) clearInterval(adCooldownInterval);
             
@@ -1190,7 +1150,6 @@
             const cooldownDisplay = document.getElementById('cooldownTimer');
             
             let remainingSeconds = 15;
-            
             watchBtn.disabled = true;
             
             adCooldownInterval = setInterval(() => {
@@ -1228,7 +1187,7 @@
             
             try {
                 showLoading(true);
-                const response = await fetch(`${API_URL}/withdraw/${userData.telegram_id}`, {
+                const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1262,7 +1221,6 @@
             
             document.getElementById('page-' + pageName).classList.add('active');
             
-            // Mettre à jour le nav-item actif
             const navItems = document.querySelectorAll('.nav-item');
             const pageIndex = ['home', 'tasks', 'invite', 'watch', 'withdraw'].indexOf(pageName);
             if (pageIndex !== -1 && navItems[pageIndex]) {
@@ -1288,6 +1246,9 @@
 
         // Init
         window.addEventListener('load', () => {
+            console.log('🚀 TON Reward DJDN v3.1');
+            console.log('🌐 API:', CONFIG.API_URL);
+            console.log('🎬 Adsgram:', CONFIG.ADSGRAM_BLOCK_ID);
             initAdsgram();
             loadUserData();
         });
