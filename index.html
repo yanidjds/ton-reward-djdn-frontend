@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -812,7 +811,7 @@
         // ===========================
         
         const CONFIG = {
-            // ⚠️ CHANGEZ CETTE URL PAR VOTRE URL RENDER
+            // ⚠️ REMPLACE PAR TON URL RENDER (sans slash à la fin)
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
             
             // Telegram
@@ -838,14 +837,23 @@
 
         // Récupérer infos Telegram
         function getTelegramUser() {
+            console.log('🔍 Checking Telegram WebApp...');
+            console.log('📱 Telegram object:', window.Telegram);
+            console.log('🌐 WebApp object:', tg);
+            console.log('📊 InitDataUnsafe:', tg.initDataUnsafe);
+            
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
                 username = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name || 'User';
                 firstName = tg.initDataUnsafe.user.first_name || username;
                 const startParam = tg.initDataUnsafe.start_param;
+                
+                console.log('✅ Telegram user found:', { telegramId, username, firstName });
                 return { telegramId, username, firstName, referrerId: startParam };
             }
+            
             // Mode test
+            console.log('⚠️ No Telegram user, using TEST mode');
             telegramId = 'test_' + Date.now();
             username = 'Test User';
             firstName = 'Test';
@@ -858,21 +866,25 @@
                 showLoading(true);
                 const { telegramId, username, firstName, referrerId } = getTelegramUser();
                 
+                console.log('🔍 Loading user data for:', telegramId);
+                console.log('📡 API URL:', CONFIG.API_URL);
+                
                 const response = await fetch(`${CONFIG.API_URL}/user/${telegramId}?referrer=${referrerId || ''}`);
                 
                 if (response.status === 404) {
+                    console.log('👤 User not found, creating...');
                     await createUser(telegramId, username, firstName, referrerId);
                     return;
                 }
                 
                 userData = await response.json();
+                console.log('✅ User data loaded:', userData);
                 updateUI();
                 startMiningCheck();
                 showLoading(false);
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Connection error', 'error');
-                ```javascript
+                console.error('❌ Error loading user:', error);
+                showNotification('Connection error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -880,6 +892,7 @@
         // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
+                console.log('📝 Creating user:', { tid, uname, fname, refId });
                 const response = await fetch(`${CONFIG.API_URL}/user`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -891,12 +904,13 @@
                     })
                 });
                 userData = await response.json();
+                console.log('✅ User created:', userData);
                 updateUI();
                 startMiningCheck();
                 showLoading(false);
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Account creation error', 'error');
+                console.error('❌ Error creating user:', error);
+                showNotification('Account creation error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -943,8 +957,8 @@
                 }
                 showLoading(false);
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Mining error', 'error');
+                console.error('❌ Mining error:', error);
+                showNotification('Mining error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1004,8 +1018,8 @@
                 }
                 showLoading(false);
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Claim error', 'error');
+                console.error('❌ Claim error:', error);
+                showNotification('Claim error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1041,8 +1055,8 @@
                     }
                     showLoading(false);
                 } catch (error) {
-                    console.error('Error:', error);
-                    showNotification('Verification error', 'error');
+                    console.error('❌ Verify error:', error);
+                    showNotification('Verification error: ' + error.message, 'error');
                     showLoading(false);
                 }
             } else if (btnText === 'Claim') {
@@ -1066,8 +1080,8 @@
                     }
                     showLoading(false);
                 } catch (error) {
-                    console.error('Error:', error);
-                    showNotification('Claim error', 'error');
+                    console.error('❌ Claim error:', error);
+                    showNotification('Claim error: ' + error.message, 'error');
                     showLoading(false);
                 }
             }
@@ -1081,16 +1095,10 @@
             });
         }
 
-        // ===========================
-        // 🆕 NOUVEAU SYSTÈME WATCH AD AVEC SESSIONS
-        // ===========================
-
-        // 🆕 Fonction complète pour regarder une pub (3 étapes)
+        // Watch Ad System
         async function watchAd() {
             const watchBtn = document.getElementById('watchButton');
-            const cooldownDisplay = document.getElementById('cooldownTimer');
             
-            // Vérifier le cooldown local
             if (userData.last_ad_watch) {
                 const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
                 const cooldownMs = 15 * 1000;
@@ -1108,11 +1116,8 @@
                 
                 console.log('🎬 Starting ad watching process...');
                 
-                // ============================================
-                // ÉTAPE 1: Créer une session publicitaire
-                // ============================================
+                // ÉTAPE 1: Créer session
                 console.log('📺 Step 1: Creating ad session...');
-                
                 const createResponse = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/create-session`, {
                     method: 'POST'
                 });
@@ -1126,28 +1131,16 @@
                         showLoading(false);
                         return;
                     }
-                    
                     throw new Error(createData.error || 'Session creation failed');
-                }
-                
-                if (!createData.success || !createData.session_id) {
-                    throw new Error('Invalid session response');
                 }
                 
                 const sessionId = createData.session_id;
                 const monetagUrl = createData.monetag_url;
                 
                 console.log(`✅ Session created: ${sessionId.substring(0, 8)}...`);
-                console.log(`🌐 Monetag URL: ${monetagUrl}`);
                 
-                // Sauvegarder la session en cours
-                currentAdSession = sessionId;
-                
-                // ============================================
-                // ÉTAPE 2: Marquer le début du visionnage
-                // ============================================
-                console.log('▶️  Step 2: Starting ad watching...');
-                
+                // ÉTAPE 2: Marquer le début
+                console.log('▶️ Step 2: Starting ad watching...');
                 const startResponse = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/start-watching`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1155,123 +1148,95 @@
                 });
                 
                 const startData = await startResponse.json();
-                
                 if (!startResponse.ok || !startData.success) {
                     throw new Error(startData.error || 'Failed to start watching');
                 }
                 
                 console.log('✅ Watching started!');
-                
-                // ============================================
-                // ÉTAPE 3: Ouvrir la publicité Monetag
-                // ============================================
-                console.log('🎬 Step 3: Opening Monetag popup...');
-                
                 showLoading(false);
-                
-                // Afficher un message à l'utilisateur
                 showNotification('📺 Opening ad... Please watch it!', 'info');
                 
-                // Ouvrir la popup Monetag
-                try {
-                    // Méthode 1 : Utiliser window.open (peut être bloqué par popup blocker)
-                    const adWindow = window.open(monetagUrl, '_blank', 'width=800,height=600');
+                // ÉTAPE 3: Ouvrir Monetag
+                const adWindow = window.open(monetagUrl, '_blank', 'width=800,height=600');
+                
+                if (!adWindow || adWindow.closed) {
+                    console.log('⚠️ Popup blocked, trying iframe...');
+                    const overlay = document.createElement('div');
+                    overlay.id = 'adOverlay';
+                    overlay.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.9);
+                        z-index: 9999;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                    `;
                     
-                    if (!adWindow || adWindow.closed) {
-                        // Si bloqué, essayer iframe
-                        console.log('⚠️  Popup blocked, trying iframe...');
-                        
-                        // Créer un overlay pour l'iframe
-                        const overlay = document.createElement('div');
-                        overlay.id = 'adOverlay';
-                        overlay.style.cssText = `
-                            position: fixed;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background: rgba(0, 0, 0, 0.9);
-                            z-index: 9999;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                        `;
-                        
-                        const closeBtn = document.createElement('button');
-                        closeBtn.textContent = '❌ Close Ad';
-                        closeBtn.style.cssText = `
-                            position: absolute;
-                            top: 20px;
-                            right: 20px;
-                            padding: 10px 20px;
-                            background: #ff4444;
-                            color: white;
-                            border: none;
-                            border-radius: 10px;
-                            font-size: 16px;
-                            cursor: pointer;
-                            z-index: 10000;
-                        `;
-                        
-                        const iframe = document.createElement('iframe');
-                        iframe.src = monetagUrl;
-                        iframe.style.cssText = `
-                            width: 90%;
-                            height: 80%;
-                            border: none;
-                            border-radius: 10px;
-                            background: white;
-                        `;
-                        
-                        overlay.appendChild(closeBtn);
-                        overlay.appendChild(iframe);
-                        document.body.appendChild(overlay);
-                        
-                        // Fermer après 7 secondes minimum
-                        let adClosed = false;
-                        
-                        closeBtn.onclick = () => {
-                            if (!adClosed) {
-                                adClosed = true;
-                                document.body.removeChild(overlay);
-                                completeAdSession(sessionId);
-                            }
-                        };
-                        
-                        // Auto-close après 15 secondes
-                        setTimeout(() => {
-                            if (!adClosed && document.getElementById('adOverlay')) {
-                                adClosed = true;
-                                document.body.removeChild(overlay);
-                                completeAdSession(sessionId);
-                            }
-                        }, 15000);
-                        
-                        return;
-                    }
+                    const closeBtn = document.createElement('button');
+                    closeBtn.textContent = '❌ Close Ad';
+                    closeBtn.style.cssText = `
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        padding: 10px 20px;
+                        background: #ff4444;
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        z-index: 10000;
+                    `;
                     
-                    // Si window.open a marché, attendre 7 secondes puis compléter
-                    showNotification('⏱️  Watching ad... (7 seconds)', 'info');
+                    const iframe = document.createElement('iframe');
+                    iframe.src = monetagUrl;
+                    iframe.style.cssText = `
+                        width: 90%;
+                        height: 80%;
+                        border: none;
+                        border-radius: 10px;
+                        background: white;
+                    `;
                     
-                    await new Promise(resolve => setTimeout(resolve, 7000));
+                    overlay.appendChild(closeBtn);
+                    overlay.appendChild(iframe);
+                    document.body.appendChild(overlay);
                     
-                    // Fermer la fenêtre
-                    try {
-                        adWindow.close();
-                    } catch (e) {
-                        console.log('Cannot close ad window:', e);
-                    }
+                    let adClosed = false;
+                    closeBtn.onclick = () => {
+                        if (!adClosed) {
+                            adClosed = true;
+                            document.body.removeChild(overlay);
+                            completeAdSession(sessionId);
+                        }
+                    };
                     
-                    // Compléter la session
-                    await completeAdSession(sessionId);
+                    setTimeout(() => {
+                        if (!adClosed && document.getElementById('adOverlay')) {
+                            adClosed = true;
+                            document.body.removeChild(overlay);
+                            completeAdSession(sessionId);
+                        }
+                    }, 15000);
                     
-                } catch (error) {
-                    console.error('❌ Error opening ad:', error);
-                    showNotification('Failed to open ad', 'error');
-                    showLoading(false);
-                    watchBtn.disabled = false;
+                    return;
                 }
+                
+                showNotification('⏱️ Watching ad... (7 seconds)', 'info');
+                await new Promise(resolve => setTimeout(resolve, 7000));
+                
+                try {
+                    adWindow.close();
+                } catch (e) {
+                    console.log('Cannot close ad window:', e);
+                }
+                
+                await completeAdSession(sessionId);
                 
             } catch (error) {
                 console.error('❌ Watch ad error:', error);
@@ -1281,13 +1246,9 @@
             }
         }
 
-        // ============================================
-        // 🆕 FONCTION POUR COMPLÉTER LA SESSION
-        // ============================================
         async function completeAdSession(sessionId) {
             try {
                 showLoading(true);
-                
                 console.log('✅ Step 4: Completing ad session...');
                 
                 const completeResponse = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/complete-session`, {
@@ -1300,13 +1261,12 @@
                 
                 if (!completeResponse.ok) {
                     if (completeData.fraud_warning) {
-                        showNotification('⚠️  Please watch ads completely!', 'error');
+                        showNotification('⚠️ Please watch ads completely!', 'error');
                     } else if (completeData.error) {
                         showNotification(completeData.error, 'error');
                     } else {
                         showNotification('Failed to claim reward', 'error');
                     }
-                    
                     showLoading(false);
                     return;
                 }
@@ -1317,41 +1277,29 @@
                     return;
                 }
                 
-                // Succès !
                 const reward = completeData.reward;
                 const newBalance = completeData.new_balance;
                 const totalAds = completeData.total_ads;
-                const duration = (completeData.duration / 1000).toFixed(1);
                 
                 console.log(`🎉 Reward claimed: +${reward} TON`);
                 console.log(`💰 New balance: ${newBalance} TON`);
-                console.log(`📊 Total ads: ${totalAds}`);
-                console.log(`⏱️  Duration: ${duration}s`);
                 
-                // Mettre à jour l'interface
                 userData.balance = newBalance;
                 userData.ads_watched_total = totalAds;
                 userData.last_ad_watch = new Date().toISOString();
                 
                 updateUI();
-                
                 showNotification(`🎉 +${reward} TON earned!`);
-                
-                // Démarrer le cooldown
                 startAdCooldown(15);
-                
                 showLoading(false);
                 
             } catch (error) {
                 console.error('❌ Complete session error:', error);
-                showNotification('Error claiming reward', 'error');
+                showNotification('Error claiming reward: ' + error.message, 'error');
                 showLoading(false);
             }
         }
 
-        // ============================================
-        // FONCTION COOLDOWN
-        // ============================================
         function startAdCooldown(seconds = 15) {
             const watchBtn = document.getElementById('watchButton');
             const cooldownDisplay = document.getElementById('cooldownTimer');
@@ -1417,8 +1365,8 @@
                 }
                 showLoading(false);
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Withdrawal error', 'error');
+                console.error('❌ Withdraw error:', error);
+                showNotification('Withdrawal error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1463,4 +1411,3 @@
     </script>
 </body>
 </html>
-    
