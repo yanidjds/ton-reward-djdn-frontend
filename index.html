@@ -787,13 +787,17 @@
     </div>
 
     <script>
+        // ===========================
+        // 🔧 CONFIGURATION
+        // ===========================
+        
         const CONFIG = {
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
             BOT_USERNAME: 'TONRewardCrewBot',
             CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
             SUPPORT_USERNAME: 'djdn_crew_support',
-            ADSGRAM_BLOCK_ID: '14802'
+            ADSGRAM_BLOCK_ID: '14805'
         };
         
         let tg = window.Telegram.WebApp;
@@ -884,7 +888,7 @@
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
-            document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}?start=${userData.telegram_id}`;
+            document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}/tonreward?startapp=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
             document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
             document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
@@ -1079,7 +1083,7 @@
                 
                 adsgramController.show().then(async (result) => {
                     if (result.done) {
-                        console.log('✅ Ad watched');
+                        console.log('✅ Ad watched successfully');
                         
                         try {
                             const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
