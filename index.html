@@ -787,30 +787,19 @@
     </div>
 
     <script>
-        // ===========================
-        // 🔧 CONFIGURATION (MODIFIABLE)
-        // ===========================
-        
         const CONFIG = {
-            // ⚠️ CHANGEZ CETTE URL PAR VOTRE URL RENDER
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
-            
-            // Telegram
             BOT_USERNAME: 'TONRewardCrewBot',
-            CHANNEL_USERNAME: 'ton_reward_djdn',
+            CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
             SUPPORT_USERNAME: 'djdn_crew_support',
-            
-            // Adsgram (MODIFIABLE)
-            ADSGRAM_BLOCK_ID: '16386'
+            ADSGRAM_BLOCK_ID: '14802'
         };
         
-        // Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
 
-        // Variables globales
         let userData = null;
         let telegramId = null;
         let username = null;
@@ -819,7 +808,6 @@
         let adsgramController = null;
         let adCooldownInterval = null;
 
-        // Initialiser Adsgram
         function initAdsgram() {
             try {
                 if (window.Adsgram) {
@@ -833,7 +821,6 @@
             }
         }
 
-        // Récupérer infos Telegram
         function getTelegramUser() {
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
@@ -842,14 +829,12 @@
                 const startParam = tg.initDataUnsafe.start_param;
                 return { telegramId, username, firstName, referrerId: startParam };
             }
-            // Mode test
             telegramId = 'test_' + Date.now();
             username = 'Test User';
             firstName = 'Test';
             return { telegramId, username, firstName, referrerId: null };
         }
 
-        // Charger données utilisateur
         async function loadUserData() {
             try {
                 showLoading(true);
@@ -873,7 +858,6 @@
             }
         }
 
-        // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
                 const response = await fetch(`${CONFIG.API_URL}/user`, {
@@ -897,7 +881,6 @@
             }
         }
 
-        // Mettre à jour l'interface
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
@@ -920,7 +903,6 @@
             }
         }
 
-        // Mining
         async function startMining() {
             try {
                 showLoading(true);
@@ -1006,7 +988,6 @@
             }
         }
 
-        // Tasks
         async function handleTask(taskType) {
             const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
             const btn = document.getElementById(btnId);
@@ -1069,7 +1050,6 @@
             }
         }
 
-        // Copy invite link
         function copyInviteLink() {
             const link = document.getElementById('inviteLink').textContent;
             navigator.clipboard.writeText(link).then(() => {
@@ -1077,7 +1057,6 @@
             });
         }
 
-        // Watch Ad
         async function watchAd() {
             if (!adsgramController) {
                 showNotification('⚠️ Adsgram not available', 'error');
@@ -1165,7 +1144,6 @@
             }, 1000);
         }
 
-        // Withdraw
         async function handleWithdraw() {
             const email = document.getElementById('faucetpayEmail').value;
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -1214,7 +1192,6 @@
             }
         }
 
-        // Navigation
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1228,7 +1205,6 @@
             }
         }
 
-        // Notifications
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -1238,17 +1214,15 @@
             }, 3000);
         }
 
-        // Loading
         function showLoading(show) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.toggle('show', show);
         }
 
-        // Init
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v3.1');
+            console.log('🚀 TON Reward DJDN v4.0');
             console.log('🌐 API:', CONFIG.API_URL);
-            console.log('🎬 Adsgram:', CONFIG.ADSGRAM_BLOCK_ID);
+            console.log('🎬 Adsgram Block ID:', CONFIG.ADSGRAM_BLOCK_ID);
             initAdsgram();
             loadUserData();
         });
