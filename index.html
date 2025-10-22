@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Reward DJDN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='10078826' data-sdk='show_10078826'></script>
     <style>
         * {
             margin: 0;
@@ -792,39 +793,49 @@
         // ===========================
         
         const CONFIG = {
+            // ⚠️ CHANGEZ CETTE URL PAR VOTRE URL RENDER
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
+            
+            // Telegram
             BOT_USERNAME: 'TONRewardCrewBot',
-            CHANNEL_USERNAME: 'TONRewardCrew',
+            CHANNEL_USERNAME: 'ton_reward_djdn',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
-            SUPPORT_USERNAME: 'djdn_crew_support',
-            ADSGRAM_BLOCK_ID: '16411'
+            SUPPORT_USERNAME: 'djdn_crew_support'
         };
         
+        // Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
 
+        // Variables globales
         let userData = null;
         let telegramId = null;
         let username = null;
         let firstName = null;
         let miningInterval = null;
-        let adsgramController = null;
         let adCooldownInterval = null;
+        let monetagLoaded = false;
 
-        function initAdsgram() {
-            try {
-                if (window.Adsgram) {
-                    adsgramController = window.Adsgram.init({ blockId: CONFIG.ADSGRAM_BLOCK_ID });
-                    console.log('✅ Adsgram initialized:', CONFIG.ADSGRAM_BLOCK_ID);
-                } else {
-                    console.warn('⚠️ Adsgram SDK not loaded');
-                }
-            } catch (error) {
-                console.error('❌ Adsgram error:', error);
+        // Vérifier si Monetag SDK est chargé
+        function checkMonetagSDK() {
+            if (typeof show_10078826 !== 'undefined') {
+                monetagLoaded = true;
+                console.log('✅ Monetag SDK loaded successfully');
+                return true;
             }
+            console.warn('⚠️ Monetag SDK not loaded yet');
+            return false;
         }
 
+        // Attendre le chargement du SDK
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkMonetagSDK();
+            }, 1000);
+        });
+
+        // Récupérer infos Telegram
         function getTelegramUser() {
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
@@ -833,12 +844,14 @@
                 const startParam = tg.initDataUnsafe.start_param;
                 return { telegramId, username, firstName, referrerId: startParam };
             }
+            // Mode test
             telegramId = 'test_' + Date.now();
             username = 'Test User';
             firstName = 'Test';
             return { telegramId, username, firstName, referrerId: null };
         }
 
+        // Charger données utilisateur
         async function loadUserData() {
             try {
                 showLoading(true);
@@ -862,6 +875,7 @@
             }
         }
 
+        // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
                 const response = await fetch(`${CONFIG.API_URL}/user`, {
@@ -885,10 +899,11 @@
             }
         }
 
+        // Mettre à jour l'interface
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
-            document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}/tonreward?startapp=${userData.telegram_id}`;
+            document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}?start=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
             document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
             document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
@@ -907,6 +922,7 @@
             }
         }
 
+        // Mining
         async function startMining() {
             try {
                 showLoading(true);
@@ -992,6 +1008,7 @@
             }
         }
 
+        // Tasks
         async function handleTask(taskType) {
             const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
             const btn = document.getElementById(btnId);
@@ -1054,6 +1071,7 @@
             }
         }
 
+        // Copy invite link
         function copyInviteLink() {
             const link = document.getElementById('inviteLink').textContent;
             navigator.clipboard.writeText(link).then(() => {
@@ -1061,12 +1079,9 @@
             });
         }
 
+        // Watch Ad avec Monetag
         async function watchAd() {
-            if (!adsgramController) {
-                showNotification('⚠️ Adsgram not available', 'error');
-                return;
-            }
-
+            // Vérifier si l'utilisateur peut regarder une pub
             if (userData.last_ad_watch) {
                 const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
                 const cooldownMs = 15 * 1000;
@@ -1078,44 +1093,48 @@
                 }
             }
 
+            // Vérifier si Monetag SDK est chargé
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
             try {
                 showLoading(true);
-                
-                adsgramController.show().then(async (result) => {
-                    if (result.done) {
-                        console.log('✅ Ad watched successfully');
+                console.log('🎬 Starting Monetag ad...');
+
+                // Appeler Monetag Rewarded Popup
+                show_10078826('pop').then(async () => {
+                    console.log('✅ Ad completed successfully');
+                    
+                    // Enregistrer la récompense sur le backend
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
                         
-                        try {
-                            const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
-                                method: 'POST'
-                            });
-                            const data = await response.json();
-                            
-                            if (response.ok) {
-                                userData = data;
-                                updateUI();
-                                showNotification('🎉 +0.000012 TON earned!');
-                                startAdCooldown();
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            showNotification('🎉 +0.000012 TON earned!');
+                            startAdCooldown();
+                        } else {
+                            if (data.cooldown) {
+                                showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
                             } else {
-                                if (data.cooldown) {
-                                    showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
-                                } else {
-                                    showNotification(data.error, 'error');
-                                }
+                                showNotification(data.error, 'error');
                             }
-                        } catch (error) {
-                            console.error('❌ Error recording ad:', error);
-                            showNotification('Error recording ad', 'error');
                         }
-                    } else {
-                        console.log('⚠️ Ad not completed');
-                        showNotification('Ad not completed', 'error');
+                    } catch (error) {
+                        console.error('❌ Error recording ad:', error);
+                        showNotification('Error recording ad', 'error');
                     }
                     
                     showLoading(false);
                 }).catch((error) => {
-                    console.error('❌ Adsgram error:', error);
-                    showNotification('Error displaying ad', 'error');
+                    console.error('❌ Monetag ad error:', error);
+                    showNotification('Ad closed or error occurred', 'error');
                     showLoading(false);
                 });
 
@@ -1148,6 +1167,7 @@
             }, 1000);
         }
 
+        // Withdraw
         async function handleWithdraw() {
             const email = document.getElementById('faucetpayEmail').value;
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -1196,6 +1216,7 @@
             }
         }
 
+        // Navigation
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1209,6 +1230,7 @@
             }
         }
 
+        // Notifications
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -1218,16 +1240,17 @@
             }, 3000);
         }
 
+        // Loading
         function showLoading(show) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.toggle('show', show);
         }
 
+        // Init
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v4.0');
+            console.log('🚀 TON Reward DJDN v4.0 - Monetag Edition');
             console.log('🌐 API:', CONFIG.API_URL);
-            console.log('🎬 Adsgram Block ID:', CONFIG.ADSGRAM_BLOCK_ID);
-            initAdsgram();
+            console.log('🎬 Ad Provider: Monetag');
             loadUserData();
         });
     </script>
