@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Reward DJDN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Monetag SDK - Chargé par défaut -->
-    <script src='//libtl.com/sdk.js' data-zone='10078826' data-sdk='show_10078826'></script>
     <style>
         * {
             margin: 0;
@@ -396,10 +394,6 @@
             color: #ffd700;
         }
 
-        .network-badge {
-            display: none; /* Caché - rotation invisible */
-        }
-
         .watch-button {
             width: 100%;
             max-width: 300px;
@@ -700,8 +694,8 @@
             </div>
             
             <div class="ad-info">
-                <p><strong>Earn TON watching ads!</strong></p>
-                <p>• Watch ads: <strong>+0.000012 TON</strong> per ad</p>
+                <p><strong>Earn TON watching popup ads!</strong></p>
+                <p>• Watch popups: <strong>+0.000012 TON</strong> per ad</p>
                 <p>• Wait <strong>15 seconds</strong> between ads</p>
                 <p>• No limits per day!</p>
             </div>
@@ -815,7 +809,7 @@
         let miningInterval = null;
         let adCooldownInterval = null;
 
-        // NOUVEAU : Variables pour rotation publicitaire
+        // Variables pour rotation publicitaire POPUP
         let currentAdNetwork = 'monetag';
         let adNetworkConfig = null;
         let adSDKsLoaded = {
@@ -824,18 +818,18 @@
         };
 
         // ===========================
-        // 📡 CHARGEMENT DYNAMIQUE DES SDKs
+        // 📡 CHARGEMENT DYNAMIQUE DES SDKs POPUP
         // ===========================
 
         function loadAdSDK(network, config) {
             return new Promise((resolve, reject) => {
                 if (adSDKsLoaded[network]) {
-                    console.log(`✅ ${config.name} SDK already loaded`);
+                    console.log(`✅ ${config.name} Popup SDK already loaded`);
                     resolve();
                     return;
                 }
                 
-                const scriptId = `${network}-sdk`;
+                const scriptId = `${network}-popup-sdk`;
                 
                 if (document.getElementById(scriptId)) {
                     adSDKsLoaded[network] = true;
@@ -843,46 +837,36 @@
                     return;
                 }
                 
-                console.log(`⏳ Loading ${config.name} SDK...`);
+                console.log(`⏳ Loading ${config.name} Popup SDK...`);
+                
+                const script = document.createElement('script');
+                script.id = scriptId;
+                script.type = 'text/javascript';
+                script.src = config.script_url;
+                script.async = true;
                 
                 if (network === 'monetag') {
-                    // Monetag déjà chargé dans le head
-                    setTimeout(() => {
-                        if (typeof show_10078826 !== 'undefined') {
-                            adSDKsLoaded.monetag = true;
-                            console.log('✅ Monetag SDK loaded');
-                            resolve();
-                        } else {
-                            reject(new Error('Monetag SDK not found'));
-                        }
-                    }, 1000);
-                    
-                } else if (network === 'adsterra') {
-                    // Adsterra - Charger dynamiquement
-                    const script = document.createElement('script');
-                    script.id = scriptId;
-                    script.type = 'text/javascript';
-                    script.src = config.script_url;
-                    script.async = true;
-                    
-                    script.onload = () => {
-                        console.log('✅ Adsterra SDK loaded');
-                        adSDKsLoaded.adsterra = true;
-                        resolve();
-                    };
-                    
-                    script.onerror = () => {
-                        console.error('❌ Failed to load Adsterra SDK');
-                        reject(new Error('Adsterra SDK load failed'));
-                    };
-                    
-                    document.body.appendChild(script);
+                    script.setAttribute('data-zone', config.zone_id);
+                    script.setAttribute('data-sdk', config.data_sdk);
                 }
+                
+                script.onload = () => {
+                    console.log(`✅ ${config.name} Popup SDK loaded`);
+                    adSDKsLoaded[network] = true;
+                    resolve();
+                };
+                
+                script.onerror = () => {
+                    console.error(`❌ Failed to load ${config.name} Popup SDK`);
+                    reject(new Error(`${config.name} SDK load failed`));
+                };
+                
+                document.body.appendChild(script);
             });
         }
 
         // ===========================
-        // 📡 RÉCUPÉRER LE PROCHAIN RÉSEAU
+        // 📡 RÉCUPÉRER LE PROCHAIN RÉSEAU (ALTERNANCE)
         // ===========================
 
         async function getNextAdNetwork() {
@@ -893,10 +877,7 @@
                 currentAdNetwork = data.network;
                 adNetworkConfig = data.config;
                 
-                console.log(`📡 Next ad network: ${adNetworkConfig.name} (${currentAdNetwork})`);
-                
-                // Mettre à jour le badge
-                updateAdNetworkDisplay();
+                console.log(`📡 Next ad network: ${adNetworkConfig.name} Popup (${currentAdNetwork})`);
                 
                 // Charger le SDK si pas encore chargé
                 await loadAdSDK(currentAdNetwork, adNetworkConfig);
@@ -910,22 +891,18 @@
                 adNetworkConfig = {
                     name: 'Monetag',
                     reward: 0.000012,
-                    zone_id: '10078826'
+                    zone_id: '10078826',
+                    script_url: '//libtl.com/sdk.js',
+                    data_sdk: 'show_10078826',
+                    type: 'popup'
                 };
-                updateAdNetworkDisplay();
+                await loadAdSDK('monetag', adNetworkConfig);
                 return null;
             }
         }
 
-        function updateAdNetworkDisplay() {
-            // Ne rien afficher à l'utilisateur - rotation invisible
-            if (adNetworkConfig) {
-                console.log(`🔄 Next network ready: ${adNetworkConfig.name}`);
-            }
-        }
-
         // ===========================
-        // 🎬 WATCH AD - ROTATION AUTOMATIQUE
+        // 🎬 WATCH AD - ROTATION POPUP MONETAG/ADSTERRA
         // ===========================
 
         async function watchAd() {
@@ -947,37 +924,37 @@
                 // Obtenir le prochain réseau publicitaire
                 await getNextAdNetwork();
                 
-                console.log(`🎬 Starting ${adNetworkConfig.name} ad...`);
-                // Pas de notification pour le nom du réseau
+                console.log(`🎬 Starting ${adNetworkConfig.name} Popup...`);
 
                 let adCompleted = false;
 
-                // Afficher la pub selon le réseau
+                // Afficher la pub POPUP selon le réseau
                 if (currentAdNetwork === 'monetag') {
                     // Monetag Rewarded Popup
-                    if (typeof show_10078826 === 'undefined') {
-                        throw new Error('Monetag SDK not loaded');
+                    if (typeof window[adNetworkConfig.data_sdk] === 'undefined') {
+                        throw new Error('Monetag Popup SDK not loaded');
                     }
                     
                     try {
-                        await show_10078826('pop');
+                        // Appel de la fonction Monetag popup
+                        await window[adNetworkConfig.data_sdk]();
                         adCompleted = true;
-                        console.log('✅ Monetag ad completed');
+                        console.log('✅ Monetag Popup completed');
                     } catch (err) {
-                        console.error('❌ Monetag ad error:', err);
-                        throw new Error('Ad was closed or failed');
+                        console.error('❌ Monetag Popup error:', err);
+                        throw new Error('Popup was closed or failed');
                     }
                     
                 } else if (currentAdNetwork === 'adsterra') {
-                    // Adsterra Social Bar - S'affiche automatiquement
-                    // Simuler un délai car Adsterra s'affiche automatiquement
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    // Adsterra Popup - Se déclenche automatiquement après chargement du script
+                    // Attendre un délai pour que le popup s'affiche
+                    await new Promise(resolve => setTimeout(resolve, 3000));
                     adCompleted = true;
-                    console.log('✅ Adsterra ad displayed');
+                    console.log('✅ Adsterra Popup displayed');
                 }
 
                 if (!adCompleted) {
-                    throw new Error('Ad not completed');
+                    throw new Error('Popup not completed');
                 }
                 
                 // Enregistrer la récompense sur le backend
@@ -1009,7 +986,7 @@
                 
             } catch (error) {
                 console.error(`❌ Watch ad error:`, error);
-                showNotification('Ad closed or error occurred', 'error');
+                showNotification('Popup closed or error occurred', 'error');
                 showLoading(false);
             }
         }
@@ -1385,18 +1362,10 @@
         // ===========================
 
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v5.0 - Dual Ad Network Edition');
+            console.log('🚀 TON Reward DJDN v6.0 - Dual Popup Edition');
             console.log('🌐 API:', CONFIG.API_URL);
-            console.log('🎬 Ad Networks: Monetag + Adsterra (Rotation)');
-            console.log('📡 Pattern: Monetag → Adsterra → Monetag → Adsterra');
-            
-            // Vérifier si Monetag est chargé
-            setTimeout(() => {
-                if (typeof show_10078826 !== 'undefined') {
-                    adSDKsLoaded.monetag = true;
-                    console.log('✅ Monetag SDK pre-loaded');
-                }
-            }, 1000);
+            console.log('🎬 Ad Networks: Monetag Popup + Adsterra Popup');
+            console.log('📡 Pattern: Monetag ↔ Adsterra (Alternating Popups)');
             
             loadUserData();
         });
