@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Reward DJDN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='10078826' data-sdk='show_10078826'></script>
     <style>
         * {
             margin: 0;
@@ -694,8 +696,8 @@
             </div>
             
             <div class="ad-info">
-                <p><strong>Earn TON watching popup ads!</strong></p>
-                <p>• Watch popups: <strong>+0.000012 TON</strong> per ad</p>
+                <p><strong>Earn TON watching ads!</strong></p>
+                <p>• Watch ads: <strong>+0.000012 TON</strong> per ad</p>
                 <p>• Wait <strong>15 seconds</strong> between ads</p>
                 <p>• No limits per day!</p>
             </div>
@@ -791,232 +793,49 @@
         // ===========================
         
         const CONFIG = {
+            // ⚠️ CHANGEZ CETTE URL PAR VOTRE URL RENDER
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
+            
+            // Telegram
             BOT_USERNAME: 'TONRewardCrewBot',
-            CHANNEL_USERNAME: 'ton_reward_djdn',
+            CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
             SUPPORT_USERNAME: 'djdn_crew_support'
         };
         
+        // Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
 
+        // Variables globales
         let userData = null;
         let telegramId = null;
         let username = null;
         let firstName = null;
         let miningInterval = null;
         let adCooldownInterval = null;
+        let monetagLoaded = false;
 
-        // Variables pour rotation publicitaire POPUP
-        let currentAdNetwork = 'monetag';
-        let adNetworkConfig = null;
-        let adSDKsLoaded = {
-            monetag: false,
-            adsterra: false
-        };
-
-        // ===========================
-        // 📡 CHARGEMENT DYNAMIQUE DES SDKs POPUP
-        // ===========================
-
-        function loadAdSDK(network, config) {
-            return new Promise((resolve, reject) => {
-                if (adSDKsLoaded[network]) {
-                    console.log(`✅ ${config.name} Popup SDK already loaded`);
-                    resolve();
-                    return;
-                }
-                
-                const scriptId = `${network}-popup-sdk`;
-                
-                if (document.getElementById(scriptId)) {
-                    adSDKsLoaded[network] = true;
-                    resolve();
-                    return;
-                }
-                
-                console.log(`⏳ Loading ${config.name} Popup SDK...`);
-                
-                const script = document.createElement('script');
-                script.id = scriptId;
-                script.type = 'text/javascript';
-                script.src = config.script_url;
-                script.async = true;
-                
-                if (network === 'monetag') {
-                    script.setAttribute('data-zone', config.zone_id);
-                    script.setAttribute('data-sdk', config.data_sdk);
-                }
-                
-                script.onload = () => {
-                    console.log(`✅ ${config.name} Popup SDK loaded`);
-                    adSDKsLoaded[network] = true;
-                    resolve();
-                };
-                
-                script.onerror = () => {
-                    console.error(`❌ Failed to load ${config.name} Popup SDK`);
-                    reject(new Error(`${config.name} SDK load failed`));
-                };
-                
-                document.body.appendChild(script);
-            });
+        // Vérifier si Monetag SDK est chargé
+        function checkMonetagSDK() {
+            if (typeof show_10078826 !== 'undefined') {
+                monetagLoaded = true;
+                console.log('✅ Monetag SDK loaded successfully');
+                return true;
+            }
+            console.warn('⚠️ Monetag SDK not loaded yet');
+            return false;
         }
 
-        // ===========================
-        // 📡 RÉCUPÉRER LE PROCHAIN RÉSEAU (ALTERNANCE)
-        // ===========================
-
-        async function getNextAdNetwork() {
-            try {
-                const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/next-network`);
-                const data = await response.json();
-                
-                currentAdNetwork = data.network;
-                adNetworkConfig = data.config;
-                
-                console.log(`📡 Next ad network: ${adNetworkConfig.name} Popup (${currentAdNetwork})`);
-                
-                // Charger le SDK si pas encore chargé
-                await loadAdSDK(currentAdNetwork, adNetworkConfig);
-                
-                return data;
-                
-            } catch (error) {
-                console.error('❌ Error getting next network:', error);
-                // Fallback sur Monetag
-                currentAdNetwork = 'monetag';
-                adNetworkConfig = {
-                    name: 'Monetag',
-                    reward: 0.000012,
-                    zone_id: '10078826',
-                    script_url: '//libtl.com/sdk.js',
-                    data_sdk: 'show_10078826',
-                    type: 'popup'
-                };
-                await loadAdSDK('monetag', adNetworkConfig);
-                return null;
-            }
-        }
-
-        // ===========================
-        // 🎬 WATCH AD - ROTATION POPUP MONETAG/ADSTERRA
-        // ===========================
-
-        async function watchAd() {
-            // Vérifier cooldown côté client
-            if (userData.last_ad_watch) {
-                const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
-                const cooldownMs = 15 * 1000;
-                
-                if (timeSinceLastAd < cooldownMs) {
-                    const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastAd) / 1000);
-                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
-                    return;
-                }
-            }
-
-            try {
-                showLoading(true);
-                
-                // Obtenir le prochain réseau publicitaire
-                await getNextAdNetwork();
-                
-                console.log(`🎬 Starting ${adNetworkConfig.name} Popup...`);
-
-                let adCompleted = false;
-
-                // Afficher la pub POPUP selon le réseau
-                if (currentAdNetwork === 'monetag') {
-                    // Monetag Rewarded Popup
-                    if (typeof window[adNetworkConfig.data_sdk] === 'undefined') {
-                        throw new Error('Monetag Popup SDK not loaded');
-                    }
-                    
-                    try {
-                        // Appel de la fonction Monetag popup
-                        await window[adNetworkConfig.data_sdk]();
-                        adCompleted = true;
-                        console.log('✅ Monetag Popup completed');
-                    } catch (err) {
-                        console.error('❌ Monetag Popup error:', err);
-                        throw new Error('Popup was closed or failed');
-                    }
-                    
-                } else if (currentAdNetwork === 'adsterra') {
-                    // Adsterra Popup - Se déclenche automatiquement après chargement du script
-                    // Attendre un délai pour que le popup s'affiche
-                    await new Promise(resolve => setTimeout(resolve, 3000));
-                    adCompleted = true;
-                    console.log('✅ Adsterra Popup displayed');
-                }
-
-                if (!adCompleted) {
-                    throw new Error('Popup not completed');
-                }
-                
-                // Enregistrer la récompense sur le backend
-                const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ network: currentAdNetwork })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    userData = data;
-                    updateUI();
-                    showNotification(`🎉 +${adNetworkConfig.reward} TON earned!`);
-                    startAdCooldown();
-                    
-                    // Préparer le prochain réseau
-                    setTimeout(() => getNextAdNetwork(), 500);
-                } else {
-                    if (data.cooldown) {
-                        showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
-                    } else {
-                        showNotification(data.error, 'error');
-                    }
-                }
-                
-                showLoading(false);
-                
-            } catch (error) {
-                console.error(`❌ Watch ad error:`, error);
-                showNotification('Popup closed or error occurred', 'error');
-                showLoading(false);
-            }
-        }
-
-        function startAdCooldown() {
-            if (adCooldownInterval) clearInterval(adCooldownInterval);
-            
-            const watchBtn = document.getElementById('watchButton');
-            const cooldownDisplay = document.getElementById('cooldownTimer');
-            
-            let remainingSeconds = 15;
-            watchBtn.disabled = true;
-            
-            adCooldownInterval = setInterval(() => {
-                if (remainingSeconds <= 0) {
-                    clearInterval(adCooldownInterval);
-                    watchBtn.disabled = false;
-                    cooldownDisplay.textContent = '';
-                    return;
-                }
-                
-                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
-                remainingSeconds--;
+        // Attendre le chargement du SDK
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkMonetagSDK();
             }, 1000);
-        }
+        });
 
-        // ===========================
-        // 👤 GESTION UTILISATEUR
-        // ===========================
-
+        // Récupérer infos Telegram
         function getTelegramUser() {
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
@@ -1025,12 +844,14 @@
                 const startParam = tg.initDataUnsafe.start_param;
                 return { telegramId, username, firstName, referrerId: startParam };
             }
+            // Mode test
             telegramId = 'test_' + Date.now();
             username = 'Test User';
             firstName = 'Test';
             return { telegramId, username, firstName, referrerId: null };
         }
 
+        // Charger données utilisateur
         async function loadUserData() {
             try {
                 showLoading(true);
@@ -1046,10 +867,6 @@
                 userData = await response.json();
                 updateUI();
                 startMiningCheck();
-                
-                // Charger le prochain réseau publicitaire
-                await getNextAdNetwork();
-                
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
@@ -1058,6 +875,7 @@
             }
         }
 
+        // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
                 const response = await fetch(`${CONFIG.API_URL}/user`, {
@@ -1073,7 +891,6 @@
                 userData = await response.json();
                 updateUI();
                 startMiningCheck();
-                await getNextAdNetwork();
                 showLoading(false);
             } catch (error) {
                 console.error('Error:', error);
@@ -1082,6 +899,7 @@
             }
         }
 
+        // Mettre à jour l'interface
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
@@ -1104,10 +922,7 @@
             }
         }
 
-        // ===========================
-        // ⛏️ MINING
-        // ===========================
-
+        // Mining
         async function startMining() {
             try {
                 showLoading(true);
@@ -1193,10 +1008,7 @@
             }
         }
 
-        // ===========================
-        // 📋 TASKS
-        // ===========================
-
+        // Tasks
         async function handleTask(taskType) {
             const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
             const btn = document.getElementById(btnId);
@@ -1259,10 +1071,7 @@
             }
         }
 
-        // ===========================
-        // 👥 INVITE
-        // ===========================
-
+        // Copy invite link
         function copyInviteLink() {
             const link = document.getElementById('inviteLink').textContent;
             navigator.clipboard.writeText(link).then(() => {
@@ -1270,10 +1079,95 @@
             });
         }
 
-        // ===========================
-        // 💰 WITHDRAW
-        // ===========================
+        // Watch Ad avec Monetag
+        async function watchAd() {
+            // Vérifier si l'utilisateur peut regarder une pub
+            if (userData.last_ad_watch) {
+                const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
+                const cooldownMs = 15 * 1000;
+                
+                if (timeSinceLastAd < cooldownMs) {
+                    const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastAd) / 1000);
+                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
+                    return;
+                }
+            }
 
+            // Vérifier si Monetag SDK est chargé
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                console.log('🎬 Starting Monetag ad...');
+
+                // Appeler Monetag Rewarded Popup
+                show_10078826('pop').then(async () => {
+                    console.log('✅ Ad completed successfully');
+                    
+                    // Enregistrer la récompense sur le backend
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            showNotification('🎉 +0.000012 TON earned!');
+                            startAdCooldown();
+                        } else {
+                            if (data.cooldown) {
+                                showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
+                            } else {
+                                showNotification(data.error, 'error');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('❌ Error recording ad:', error);
+                        showNotification('Error recording ad', 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    console.error('❌ Monetag ad error:', error);
+                    showNotification('Ad closed or error occurred', 'error');
+                    showLoading(false);
+                });
+
+            } catch (error) {
+                console.error('❌ Watch ad error:', error);
+                showNotification('Ad error', 'error');
+                showLoading(false);
+            }
+        }
+
+        function startAdCooldown() {
+            if (adCooldownInterval) clearInterval(adCooldownInterval);
+            
+            const watchBtn = document.getElementById('watchButton');
+            const cooldownDisplay = document.getElementById('cooldownTimer');
+            
+            let remainingSeconds = 15;
+            watchBtn.disabled = true;
+            
+            adCooldownInterval = setInterval(() => {
+                if (remainingSeconds <= 0) {
+                    clearInterval(adCooldownInterval);
+                    watchBtn.disabled = false;
+                    cooldownDisplay.textContent = '';
+                    return;
+                }
+                
+                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
+                remainingSeconds--;
+            }, 1000);
+        }
+
+        // Withdraw
         async function handleWithdraw() {
             const email = document.getElementById('faucetpayEmail').value;
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -1310,7 +1204,7 @@
                     updateUI();
                     document.getElementById('faucetpayEmail').value = '';
                     document.getElementById('withdrawAmount').value = '';
-                    showNotification('🎉 Withdrawal successful! No fees! 💚');
+                    showNotification('🎉 Withdrawal successful! No gas fees! 💚');
                 } else {
                     showNotification(data.error, 'error');
                 }
@@ -1322,10 +1216,7 @@
             }
         }
 
-        // ===========================
-        // 🧭 NAVIGATION
-        // ===========================
-
+        // Navigation
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1339,10 +1230,7 @@
             }
         }
 
-        // ===========================
-        // 🔔 NOTIFICATIONS
-        // ===========================
-
+        // Notifications
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -1352,21 +1240,17 @@
             }, 3000);
         }
 
+        // Loading
         function showLoading(show) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.toggle('show', show);
         }
 
-        // ===========================
-        // 🚀 INITIALISATION
-        // ===========================
-
+        // Init
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v6.0 - Dual Popup Edition');
+            console.log('🚀 TON Reward DJDN v4.0 - Monetag Edition');
             console.log('🌐 API:', CONFIG.API_URL);
-            console.log('🎬 Ad Networks: Monetag Popup + Adsterra Popup');
-            console.log('📡 Pattern: Monetag ↔ Adsterra (Alternating Popups)');
-            
+            console.log('🎬 Ad Provider: Monetag');
             loadUserData();
         });
     </script>
