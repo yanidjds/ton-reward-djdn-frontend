@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Reward DJDN</title>
+    <title>TON Reward DJDN v5.0</title>
+    
+    <!-- HilltopAds Verification -->
+    <meta name="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" content="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" />
+    
+    <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <!-- Monetag SDK -->
     <script src='//libtl.com/sdk.js' data-zone='10078826' data-sdk='show_10078826'></script>
+    
     <style>
         * {
             margin: 0;
@@ -96,6 +103,24 @@
         }
 
         .support-btn:active {
+            transform: scale(0.9);
+        }
+
+        .back-button {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-button:active {
             transform: scale(0.9);
         }
 
@@ -234,6 +259,303 @@
             font-weight: bold;
         }
 
+        /* EARN PAGE STYLES */
+        .earn-main-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .earn-option {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .earn-option:hover {
+            border-color: #ffd700;
+            transform: translateY(-2px);
+        }
+
+        .earn-option:active {
+            transform: scale(0.98);
+        }
+
+        .earn-option-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .earn-option-icon {
+            font-size: 50px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+        }
+
+        .earn-option-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .earn-option-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .earn-option-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .earn-stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .earn-stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .earn-stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .earn-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .watch-simple-container {
+            text-align: center;
+        }
+
+        .reward-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .progress-text {
+            font-size: 18px;
+            margin: 15px 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .reset-timer {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 10px 0;
+        }
+
+        .watch-button {
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
+            margin: 20px auto;
+            display: block;
+        }
+
+        .watch-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .cooldown-display {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+        }
+
+        /* LUCKY WHEEL STYLES */
+        .keys-display {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 237, 78, 0.2) 100%);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
+        }
+
+        .keys-count {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .keys-label {
+            font-size: 18px;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border: 2px solid rgba(255, 152, 0, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .warning-box p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 5px 0;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 30px auto;
+        }
+
+        .wheel-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #ffd700;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+            z-index: 10;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            z-index: 5;
+        }
+
+        .spin-button {
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
+            margin: 20px auto;
+            display: block;
+        }
+
+        .spin-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .spin-history {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .spin-history h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .history-result {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         .task-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -364,63 +686,6 @@
         }
 
         .stat-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .ad-container {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .ad-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-
-        .ad-info {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-
-        .ad-info p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .ad-info strong {
-            color: #ffd700;
-        }
-
-        .watch-button {
-            width: 100%;
-            max-width: 300px;
-            padding: 18px;
-            border: none;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
-            margin: 20px auto;
-            display: block;
-        }
-
-        .watch-button:disabled {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.5);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .cooldown-timer {
-            margin-top: 10px;
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
         }
@@ -620,9 +885,9 @@
                     <div class="action-icon">👥</div>
                     <div class="action-title">Invite</div>
                 </div>
-                <div class="action-card" onclick="showPage('watch')">
+                <div class="action-card" onclick="showPage('earn')">
                     <div class="action-icon">📺</div>
-                    <div class="action-title">Watch & Earn</div>
+                    <div class="action-title">EARN</div>
                 </div>
                 <div class="action-card" onclick="showPage('withdraw')">
                     <div class="action-icon">💰</div>
@@ -688,36 +953,225 @@
             </div>
         </div>
 
-        <!-- Page Watch -->
-        <div class="page" id="page-watch">
+        <!-- Page EARN (Main) -->
+        <div class="page" id="page-earn">
             <div class="page-header">
-                <h2>📺 Watch & Earn</h2>
+                <h2>💰 EARN TON REWARDS</h2>
                 <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
             </div>
-            
-            <div class="ad-info">
-                <p><strong>Earn TON watching ads!</strong></p>
-                <p>• Watch ads: <strong>+0.000012 TON</strong> per ad</p>
-                <p>• Wait <strong>15 seconds</strong> between ads</p>
-                <p>• No limits per day!</p>
-            </div>
 
-            <div class="ad-container">
-                <div class="ad-icon">🎬</div>
-                <button class="watch-button" id="watchButton" onclick="watchAd()">▶️ WATCH AD</button>
-                <div class="cooldown-timer" id="cooldownTimer"></div>
-                
-                <div class="stats-grid" style="margin-top: 30px;">
-                    <div class="stat-card">
-                        <div class="stat-value" id="adsWatched">0</div>
-                        <div class="stat-label">Ads watched</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="adsEarnings">0.000000</div>
-                        <div class="stat-label">Earned (TON)</div>
+            <div class="earn-option" onclick="showEarnSubPage('watch-simple')">
+                <div class="earn-option-header">
+                    <div class="earn-option-icon">📺</div>
+                    <div>
+                        <div class="earn-option-title">WATCH ADS (SIMPLE)</div>
                     </div>
                 </div>
+                <div class="earn-option-desc">
+                    • Earn <strong>0.000012 TON</strong> per ad<br>
+                    • Limit: <strong>200 ads/day</strong><br>
+                    • Cooldown: <strong>15 seconds</strong><br>
+                    • Direct rewards to balance
+                </div>
+                <div class="earn-option-stats">
+                    <div class="earn-stat-item">
+                        <div class="earn-stat-value" id="watchSimpleToday">0/200</div>
+                        <div class="earn-stat-label">Today</div>
+                    </div>
+                    <div class="earn-stat-item">
+                        <div class="earn-stat-value" id="watchSimpleReset">--:--:--</div>
+                        <div class="earn-stat-label">Resets in</div>
+                    </div>
+                </div>
+                <button class="earn-button">📺 OPEN WATCH ADS</button>
             </div>
+
+            <div class="earn-option" onclick="showEarnSubPage('lucky-wheel-main')">
+                <div class="earn-option-header">
+                    <div class="earn-option-icon">🎰</div>
+                    <div>
+                        <div class="earn-option-title">LUCKY WHEEL (KEYS)</div>
+                    </div>
+                </div>
+                <div class="earn-option-desc">
+                    • Watch ads for <strong>Keys 🔑</strong><br>
+                    • 1 ad = 1 Key (max <strong>50/day</strong>)<br>
+                    • Spin wheel with Keys<br>
+                    • Win up to <strong>0.000017 TON!</strong><br>
+                    • ⚠️ <strong>Keys reset at midnight!</strong>
+                </div>
+                <div class="earn-option-stats">
+                    <div class="earn-stat-item">
+                        <div class="earn-stat-value" id="currentKeys">0 🔑</div>
+                        <div class="earn-stat-label">Current Keys</div>
+                    </div>
+                    <div class="earn-stat-item">
+                        <div class="earn-stat-value" id="keysAdsToday">0/50</div>
+                        <div class="earn-stat-label">Ads Today</div>
+                    </div>
+                </div>
+                <button class="earn-button">🎰 OPEN LUCKY WHEEL</button>
+            </div>
+        </div>
+
+        <!-- Sub-Page: Watch Ads Simple -->
+        <div class="page" id="page-watch-simple">
+            <div class="page-header">
+                <div class="back-button" onclick="showPage('earn')">◄</div>
+                <h2>📺 WATCH ADS</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="mining-card watch-simple-container">
+                <div class="mining-icon">📺</div>
+                <div class="mining-title">SIMPLE REWARDS</div>
+                <div class="reward-display">+0.000012 TON</div>
+                <div class="progress-text">
+                    <strong id="watchSimpleProgress">0/200</strong> ads watched today
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="watchSimpleProgressBar"></div>
+                </div>
+                <div class="reset-timer">
+                    ⏰ Daily Reset: <span id="watchSimpleResetTimer">--:--:--</span>
+                </div>
+                <button class="watch-button" id="watchSimpleButton" onclick="watchSimpleAd()">
+                    ▶️ WATCH AD NOW
+                </button>
+                <div class="cooldown-display" id="watchSimpleCooldown"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="watchSimpleTodayCount">0</div>
+                    <div class="stat-label">Ads today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="watchSimpleTotalCount">0</div>
+                    <div class="stat-label">Total ads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="watchSimpleEarnings">0.000000</div>
+                    <div class="stat-label">Total earned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="watchSimpleRemaining">200</div>
+                    <div class="stat-label">Remaining today</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-Page: Lucky Wheel Main (Earn Keys) -->
+        <div class="page" id="page-lucky-wheel-main">
+            <div class="page-header">
+                <div class="back-button" onclick="showPage('earn')">◄</div>
+                <h2>🔑 EARN KEYS</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="keys-display">
+                <div class="keys-count" id="keysDisplayCount">0 🔑</div>
+                <div class="keys-label">Your Keys</div>
+            </div>
+
+            <div class="mining-card">
+                <div class="progress-text">
+                    <strong id="keysAdsProgress">0/50</strong> ads watched for Keys
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="keysProgressBar"></div>
+                </div>
+                <div class="reset-timer">
+                    ⏰ Reset: <span id="keysResetTimer">--:--:--</span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <p><strong>⚠️ WARNING</strong></p>
+                <p>Keys reset at midnight UTC!</p>
+                <p>Use them or lose them!</p>
+            </div>
+
+            <button class="watch-button" id="watchKeysButton" onclick="watchForKey()">
+                ▶️ WATCH AD (+1 KEY)
+            </button>
+            <div class="cooldown-display" id="watchKeysCooldown"></div>
+
+            <div class="earn-main-card" style="margin-top: 30px;">
+                <div class="earn-option-header">
+                    <div class="earn-option-icon">🎰</div>
+                    <div>
+                        <div class="earn-option-title">Ready to spin?</div>
+                    </div>
+                </div>
+                <div class="earn-option-desc">
+                    You have <strong id="keysForWheelCount">0 Keys</strong> available
+                </div>
+                <button class="earn-button" onclick="showEarnSubPage('lucky-wheel-spin')">
+                    🎰 GO TO LUCKY WHEEL →
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="keysEarnedToday">0</div>
+                    <div class="stat-label">Keys today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="keysTotalAds">0</div>
+                    <div class="stat-label">Total ads</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-Page: Lucky Wheel Spin -->
+        <div class="page" id="page-lucky-wheel-spin">
+            <div class="page-header">
+                <div class="back-button" onclick="showEarnSubPage('lucky-wheel-main')">◄</div>
+                <h2>🎰 LUCKY WHEEL</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="keys-display">
+                <div class="keys-count" id="spinKeysCount">0 🔑</div>
+                <div class="keys-label">Your Keys</div>
+                <div class="reset-timer">
+                    ⏰ Reset: <span id="spinResetTimer">--:--:--</span>
+                </div>
+            </div>
+
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <canvas id="wheelCanvas" class="wheel-canvas" width="320" height="320"></canvas>
+                <div class="wheel-center">SPIN</div>
+            </div>
+
+            <button class="spin-button" id="spinButton" onclick="spinWheel()">
+                🎲 SPIN THE WHEEL
+            </button>
+            <div class="cooldown-display">Cost: 1 Key per spin</div>
+
+            <div class="spin-history">
+                <h3>🏆 Last 5 Spins</h3>
+                <div id="spinHistoryList">
+                    <p style="text-align: center; color: rgba(255,255,255,0.5);">No spins yet</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalSpins">0</div>
+                    <div class="stat-label">Total spins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="wheelEarnings">0.000000</div>
+                    <div class="stat-label">Total won</div>
+                </div>
+            </div>
+
+            <button class="earn-button" style="margin-top: 20px;" onclick="showEarnSubPage('lucky-wheel-main')">
+                ◄ Back to Earn Keys
+            </button>
         </div>
 
         <!-- Page Withdraw -->
@@ -772,9 +1226,9 @@
             <div class="nav-icon">👥</div>
             <div class="nav-label">Invite</div>
         </div>
-        <div class="nav-item" onclick="showPage('watch')">
+        <div class="nav-item" onclick="showPage('earn')">
             <div class="nav-icon">📺</div>
-            <div class="nav-label">Watch</div>
+            <div class="nav-label">EARN</div>
         </div>
         <div class="nav-item" onclick="showPage('withdraw')">
             <div class="nav-icon">💰</div>
@@ -793,14 +1247,15 @@
         // ===========================
         
         const CONFIG = {
-            // ⚠️ URL DE TON API RENDER - À CHANGER !
             API_URL: 'https://ton-reward-djdn-backend.onrender.com',
-            
-            // Informations publiques seulement
             BOT_USERNAME: 'TONRewardCrewBot',
             CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
-            SUPPORT_USERNAME: 'djdn_crew_support'
+            SUPPORT_USERNAME: 'djdn_crew_support',
+            
+            // HilltopAds Configuration
+            HILLTOPADS_ZONE_ID: 'PLACEHOLDER_ZONE_ID', // ⚠️ À remplacer après approbation
+            HILLTOPADS_URL: 'PLACEHOLDER_URL' // ⚠️ À remplacer après approbation
         };
         
         // Telegram WebApp
@@ -814,8 +1269,11 @@
         let username = null;
         let firstName = null;
         let miningInterval = null;
-        let adCooldownInterval = null;
+        let watchSimpleCooldownInterval = null;
+        let watchKeysCooldownInterval = null;
+        let resetTimersInterval = null;
         let monetagLoaded = false;
+        let wheelSpinning = false;
 
         // Vérifier si Monetag SDK est chargé
         function checkMonetagSDK() {
@@ -826,7 +1284,6 @@
             return false;
         }
 
-        // Attendre le chargement du SDK
         window.addEventListener('load', () => {
             setTimeout(() => {
                 checkMonetagSDK();
@@ -842,7 +1299,6 @@
                 const startParam = tg.initDataUnsafe.start_param;
                 return { telegramId, username, firstName, referrerId: startParam };
             }
-            // Mode test
             telegramId = 'test_' + Date.now();
             username = 'Test User';
             firstName = 'Test';
@@ -865,6 +1321,8 @@
                 userData = await response.json();
                 updateUI();
                 startMiningCheck();
+                startResetTimers();
+                initWheel();
                 showLoading(false);
             } catch (error) {
                 showNotification('Connection error', 'error');
@@ -872,7 +1330,6 @@
             }
         }
 
-        // Créer utilisateur
         async function createUser(tid, uname, fname, refId) {
             try {
                 const response = await fetch(`${CONFIG.API_URL}/user`, {
@@ -888,6 +1345,8 @@
                 userData = await response.json();
                 updateUI();
                 startMiningCheck();
+                startResetTimers();
+                initWheel();
                 showLoading(false);
             } catch (error) {
                 showNotification('Account creation error', 'error');
@@ -895,18 +1354,57 @@
             }
         }
 
-        // Mettre à jour l'interface
         function updateUI() {
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
             document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}?start=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
             document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
-            document.getElementById('adsWatched').textContent = userData.ads_watched_total || 0;
-            document.getElementById('adsEarnings').textContent = ((userData.ads_watched_total || 0) * 0.000012).toFixed(6);
+            
+            // Watch Simple Stats
+            const watchSimpleToday = userData.ads_watch_simple_today || 0;
+            const watchSimpleTotal = userData.ads_watch_simple_total || 0;
+            const watchSimpleEarnings = userData.ads_watch_simple_earnings || 0;
+            
+            document.getElementById('watchSimpleToday').textContent = `${watchSimpleToday}/200`;
+            document.getElementById('watchSimpleProgress').textContent = `${watchSimpleToday}/200`;
+            document.getElementById('watchSimpleTodayCount').textContent = watchSimpleToday;
+            document.getElementById('watchSimpleTotalCount').textContent = watchSimpleTotal;
+            document.getElementById('watchSimpleEarnings').textContent = watchSimpleEarnings.toFixed(6);
+            document.getElementById('watchSimpleRemaining').textContent = 200 - watchSimpleToday;
+            
+            const watchSimpleProgress = (watchSimpleToday / 200) * 100;
+            document.getElementById('watchSimpleProgressBar').style.width = watchSimpleProgress + '%';
+            
+            // Lucky Wheel Stats
+            const keysCurrent = userData.keys_current || 0;
+            const keysAdsToday = userData.ads_for_keys_today || 0;
+            const keysTotalAds = userData.ads_for_keys_total || 0;
+            const wheelTotalSpins = userData.lucky_wheel_spins_total || 0;
+            const wheelEarnings = userData.lucky_wheel_earnings_total || 0;
+            
+            document.getElementById('currentKeys').textContent = `${keysCurrent} 🔑`;
+            document.getElementById('keysAdsToday').textContent = `${keysAdsToday}/50`;
+            document.getElementById('keysDisplayCount').textContent = `${keysCurrent} 🔑`;
+            document.getElementById('spinKeysCount').textContent = `${keysCurrent} 🔑`;
+            document.getElementById('keysForWheelCount').textContent = `${keysCurrent} Keys`;
+            document.getElementById('keysAdsProgress').textContent = `${keysAdsToday}/50`;
+            document.getElementById('keysEarnedToday').textContent = keysAdsToday;
+            document.getElementById('keysTotalAds').textContent = keysTotalAds;
+            document.getElementById('totalSpins').textContent = wheelTotalSpins;
+            document.getElementById('wheelEarnings').textContent = wheelEarnings.toFixed(6);
+            
+            const keysProgress = (keysAdsToday / 50) * 100;
+            document.getElementById('keysProgressBar').style.width = keysProgress + '%';
+            
+            // Update spin history
+            updateSpinHistory();
+            
+            // Withdraw Stats
             document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(6);
             document.getElementById('withdrawCount').textContent = userData.withdraw_history?.length || 0;
             
+            // Tasks
             if (userData.tasks_done && userData.tasks_done.includes('join_channel')) {
                 document.getElementById('taskButton1').textContent = '✅ Completed';
                 document.getElementById('taskButton1').disabled = true;
@@ -918,7 +1416,39 @@
             }
         }
 
-        // Mining
+        function updateSpinHistory() {
+            const historyList = document.getElementById('spinHistoryList');
+            const history = userData.lucky_wheel_history || [];
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5);">No spins yet</p>';
+                return;
+            }
+            
+            historyList.innerHTML = history.slice(0, 5).map(item => {
+                const resultText = item.result === 'RETRY' ? 
+                    '🔄 RETRY (Free Spin)' : 
+                    `${item.result.toFixed(6)} TON ${item.result >= 0.000017 ? '🎉' : '✅'}`;
+                const timeAgo = formatTimeAgo(new Date(item.date));
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-result">${resultText}</div>
+                        <div class="history-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            return `${Math.floor(seconds / 86400)}d ago`;
+        }
+
+        // Mining Functions
         async function startMining() {
             try {
                 showLoading(true);
@@ -1002,6 +1532,333 @@
             }
         }
 
+        // Watch Simple Ads (Monetag)
+        async function watchSimpleAd() {
+            if (!userData) return;
+            
+            const watchedToday = userData.ads_watch_simple_today || 0;
+            if (watchedToday >= 200) {
+                showNotification('⚠️ Daily limit reached (200 ads)', 'error');
+                return;
+            }
+            
+            if (userData.ads_watch_simple_last_watch) {
+                const timeSince = Date.now() - new Date(userData.ads_watch_simple_last_watch).getTime();
+                if (timeSince < 15000) {
+                    const remainingSeconds = Math.ceil((15000 - timeSince) / 1000);
+                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
+                    return;
+                }
+            }
+
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+
+                show_10078826('pop').then(async () => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/earn/watch-simple/${userData.telegram_id}`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            showNotification('🎉 +0.000012 TON earned!');
+                            startWatchSimpleCooldown();
+                        } else {
+                            showNotification(data.error, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Error recording ad', 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    showNotification('Ad closed or error occurred', 'error');
+                    showLoading(false);
+                });
+
+            } catch (error) {
+                showNotification('Ad error', 'error');
+                showLoading(false);
+            }
+        }
+
+        function startWatchSimpleCooldown() {
+            if (watchSimpleCooldownInterval) clearInterval(watchSimpleCooldownInterval);
+            
+            const watchBtn = document.getElementById('watchSimpleButton');
+            const cooldownDisplay = document.getElementById('watchSimpleCooldown');
+            
+            let remainingSeconds = 15;
+            watchBtn.disabled = true;
+            
+            watchSimpleCooldownInterval = setInterval(() => {
+                if (remainingSeconds <= 0) {
+                    clearInterval(watchSimpleCooldownInterval);
+                    watchBtn.disabled = false;
+                    cooldownDisplay.textContent = '';
+                    return;
+                }
+                
+                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
+                remainingSeconds--;
+            }, 1000);
+        }
+
+        // Watch For Keys (HilltopAds)
+        async function watchForKey() {
+            if (!userData) return;
+            
+            const adsToday = userData.ads_for_keys_today || 0;
+            if (adsToday >= 50) {
+                showNotification('⚠️ Daily limit reached (50 ads for Keys)', 'error');
+                return;
+            }
+            
+            if (userData.ads_for_keys_last_watch) {
+                const timeSince = Date.now() - new Date(userData.ads_for_keys_last_watch).getTime();
+                if (timeSince < 15000) {
+                    const remainingSeconds = Math.ceil((15000 - timeSince) / 1000);
+                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
+                    return;
+                }
+            }
+
+            // ⚠️ PLACEHOLDER - Remplacer après approbation HilltopAds
+            if (CONFIG.HILLTOPADS_ZONE_ID === 'PLACEHOLDER_ZONE_ID') {
+                showNotification('⚠️ HilltopAds not configured yet', 'error');
+                console.log('HilltopAds Integration Required - Waiting for approval');
+                return;
+            }
+
+            try {
+                showLoading(true);
+
+                // TODO: Implémenter HilltopAds Direct Link ici
+                // Une fois approuvé, remplacer par le vrai code HilltopAds
+                
+                // SIMULATION pour test (à remplacer)
+                setTimeout(async () => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/earn/watch-for-key/${userData.telegram_id}`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            showNotification('🔑 +1 Key earned!');
+                            startWatchKeysCooldown();
+                        } else {
+                            showNotification(data.error, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Error recording ad', 'error');
+                    }
+                    
+                    showLoading(false);
+                }, 1000);
+
+            } catch (error) {
+                showNotification('Ad error', 'error');
+                showLoading(false);
+            }
+        }
+
+        function startWatchKeysCooldown() {
+            if (watchKeysCooldownInterval) clearInterval(watchKeysCooldownInterval);
+            
+            const watchBtn = document.getElementById('watchKeysButton');
+            const cooldownDisplay = document.getElementById('watchKeysCooldown');
+            
+            let remainingSeconds = 15;
+            watchBtn.disabled = true;
+            
+            watchKeysCooldownInterval = setInterval(() => {
+                if (remainingSeconds <= 0) {
+                    clearInterval(watchKeysCooldownInterval);
+                    watchBtn.disabled = false;
+                    cooldownDisplay.textContent = '';
+                    return;
+                }
+                
+                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
+                remainingSeconds--;
+            }, 1000);
+        }
+
+        // Lucky Wheel Initialization
+        function initWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 150;
+
+            const segments = [
+                { label: '0.000009', color: '#64B5F6', icon: '💧' },
+                { label: '0.000012', color: '#FFD54F', icon: '💛' },
+                { label: '0.000010', color: '#42A5F5', icon: '💙' },
+                { label: '0.000015', color: '#66BB6A', icon: '💚' },
+                { label: '0.000017', color: '#9C27B0', icon: '💎' },
+                { label: 'RETRY', color: '#FF9800', icon: '🔄' }
+            ];
+
+            function drawWheel(rotation = 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const anglePerSegment = (2 * Math.PI) / segments.length;
+                
+                segments.forEach((segment, i) => {
+                    const startAngle = rotation + i * anglePerSegment;
+                    const endAngle = startAngle + anglePerSegment;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                    ctx.closePath();
+                    ctx.fillStyle = segment.color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.rotate(startAngle + anglePerSegment / 2);
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 24px Arial';
+                    ctx.fillText(segment.icon, radius * 0.7, 10);
+                    ctx.font = 'bold 12px Arial';
+                    ctx.fillText(segment.label, radius * 0.7, 30);
+                    ctx.restore();
+                });
+            }
+
+            drawWheel();
+            
+            window.drawWheel = drawWheel;
+        }
+
+        // Spin Wheel
+        async function spinWheel() {
+            if (wheelSpinning) return;
+            
+            if (!userData || (userData.keys_current || 0) < 1) {
+                showNotification('⚠️ You need at least 1 Key to spin!', 'error');
+                return;
+            }
+
+            wheelSpinning = true;
+            document.getElementById('spinButton').disabled = true;
+            
+            try {
+                showLoading(true);
+                const response = await fetch(`${CONFIG.API_URL}/earn/spin-wheel/${userData.telegram_id}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    showNotification(data.error, 'error');
+                    showLoading(false);
+                    wheelSpinning = false;
+                    document.getElementById('spinButton').disabled = false;
+                    return;
+                }
+
+                showLoading(false);
+                
+                // Animation de la roulette
+                const canvas = document.getElementById('wheelCanvas');
+                const segments = 6;
+                const anglePerSegment = (2 * Math.PI) / segments;
+                
+                let currentRotation = 0;
+                const spins = 5;
+                const targetRotation = spins * 2 * Math.PI + (Math.random() * anglePerSegment);
+                const duration = 3000;
+                const startTime = Date.now();
+
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    currentRotation = targetRotation * easeOut;
+                    
+                    window.drawWheel(currentRotation);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        userData = data;
+                        updateUI();
+                        
+                        if (data.spin_result === 'RETRY') {
+                            showNotification('🔄 FREE SPIN! Try again!');
+                        } else if (data.spin_result >= 0.000017) {
+                            showNotification(`🎉 JACKPOT! +${data.spin_result.toFixed(6)} TON!`);
+                        } else {
+                            showNotification(`✅ You won +${data.spin_result.toFixed(6)} TON!`);
+                        }
+                        
+                        wheelSpinning = false;
+                        document.getElementById('spinButton').disabled = false;
+                    }
+                }
+
+                animate();
+
+            } catch (error) {
+                showNotification('Spin error', 'error');
+                showLoading(false);
+                wheelSpinning = false;
+                document.getElementById('spinButton').disabled = false;
+            }
+        }
+
+        // Reset Timers (UTC)
+        function startResetTimers() {
+            if (resetTimersInterval) clearInterval(resetTimersInterval);
+            
+            resetTimersInterval = setInterval(() => {
+                const now = new Date();
+                const tomorrow = new Date(Date.UTC(
+                    now.getUTCFullYear(),
+                    now.getUTCMonth(),
+                    now.getUTCDate() + 1,
+                    0, 0, 0, 0
+                ));
+                
+                const remaining = tomorrow.getTime() - now.getTime();
+                const hours = Math.floor(remaining / 3600000);
+                const minutes = Math.floor((remaining % 3600000) / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                const resetElements = document.querySelectorAll('[id$="ResetTimer"], [id$="Reset"]');
+                resetElements.forEach(el => {
+                    if (el.id.includes('Reset')) {
+                        el.textContent = timeString;
+                    }
+                });
+                
+            }, 1000);
+        }
+
         // Tasks
         async function handleTask(taskType) {
             const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
@@ -1071,84 +1928,6 @@
             });
         }
 
-        // Watch Ad avec Monetag
-        async function watchAd() {
-            if (userData.last_ad_watch) {
-                const timeSinceLastAd = Date.now() - new Date(userData.last_ad_watch).getTime();
-                const cooldownMs = 15 * 1000;
-                
-                if (timeSinceLastAd < cooldownMs) {
-                    const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastAd) / 1000);
-                    showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
-                    return;
-                }
-            }
-
-            if (!checkMonetagSDK()) {
-                showNotification('⚠️ Ad system loading, please wait...', 'error');
-                return;
-            }
-
-            try {
-                showLoading(true);
-
-                show_10078826('pop').then(async () => {
-                    try {
-                        const response = await fetch(`${CONFIG.API_URL}/ad/${userData.telegram_id}/watch`, {
-                            method: 'POST'
-                        });
-                        const data = await response.json();
-                        
-                        if (response.ok) {
-                            userData = data;
-                            updateUI();
-                            showNotification('🎉 +0.000012 TON earned!');
-                            startAdCooldown();
-                        } else {
-                            if (data.cooldown) {
-                                showNotification(`⏰ Wait ${data.cooldown} seconds`, 'error');
-                            } else {
-                                showNotification(data.error, 'error');
-                            }
-                        }
-                    } catch (error) {
-                        showNotification('Error recording ad', 'error');
-                    }
-                    
-                    showLoading(false);
-                }).catch((error) => {
-                    showNotification('Ad closed or error occurred', 'error');
-                    showLoading(false);
-                });
-
-            } catch (error) {
-                showNotification('Ad error', 'error');
-                showLoading(false);
-            }
-        }
-
-        function startAdCooldown() {
-            if (adCooldownInterval) clearInterval(adCooldownInterval);
-            
-            const watchBtn = document.getElementById('watchButton');
-            const cooldownDisplay = document.getElementById('cooldownTimer');
-            
-            let remainingSeconds = 15;
-            watchBtn.disabled = true;
-            
-            adCooldownInterval = setInterval(() => {
-                if (remainingSeconds <= 0) {
-                    clearInterval(adCooldownInterval);
-                    watchBtn.disabled = false;
-                    cooldownDisplay.textContent = '';
-                    return;
-                }
-                
-                cooldownDisplay.textContent = `⏰ Next ad in ${remainingSeconds} seconds`;
-                remainingSeconds--;
-            }, 1000);
-        }
-
         // Withdraw
         async function handleWithdraw() {
             const email = document.getElementById('faucetpayEmail').value;
@@ -1205,9 +1984,21 @@
             document.getElementById('page-' + pageName).classList.add('active');
             
             const navItems = document.querySelectorAll('.nav-item');
-            const pageIndex = ['home', 'tasks', 'invite', 'watch', 'withdraw'].indexOf(pageName);
+            const pageIndex = ['home', 'tasks', 'invite', 'earn', 'withdraw'].indexOf(pageName);
             if (pageIndex !== -1 && navItems[pageIndex]) {
                 navItems[pageIndex].classList.add('active');
+            }
+        }
+
+        function showEarnSubPage(subPage) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            if (subPage === 'watch-simple') {
+                document.getElementById('page-watch-simple').classList.add('active');
+            } else if (subPage === 'lucky-wheel-main') {
+                document.getElementById('page-lucky-wheel-main').classList.add('active');
+            } else if (subPage === 'lucky-wheel-spin') {
+                document.getElementById('page-lucky-wheel-spin').classList.add('active');
             }
         }
 
@@ -1229,7 +2020,7 @@
 
         // Init
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v4.1 - SECURED');
+            console.log('🚀 TON Reward DJDN v5.0 - SECURED WITH HILLTOPADS');
             loadUserData();
         });
     </script>
