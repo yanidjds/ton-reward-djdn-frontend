@@ -259,7 +259,6 @@
             font-weight: bold;
         }
 
-        /* EARN PAGE STYLES */
         .earn-main-card {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             backdrop-filter: blur(10px);
@@ -412,7 +411,6 @@
             margin-top: 10px;
         }
 
-        /* LUCKY WHEEL STYLES */
         .keys-display {
             text-align: center;
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 237, 78, 0.2) 100%);
@@ -753,6 +751,13 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+        }
+
+        .submit-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
         .bottom-nav {
@@ -1186,6 +1191,7 @@
                 <p>• Minimum: <strong>0.001 TON</strong></p>
                 <p>• <strong>No gas fees!</strong> 🎉</p>
                 <p>• Instant payment to your FaucetPay account</p>
+                <p>• Enter your FaucetPay registered email</p>
             </div>
 
             <div class="withdraw-form">
@@ -1197,12 +1203,12 @@
                     <label class="form-label">Amount (min 0.001 TON)</label>
                     <input type="number" class="form-input" id="withdrawAmount" placeholder="0.001" min="0.001" step="0.000001">
                 </div>
-                <button class="submit-button" onclick="handleWithdraw()">💸 WITHDRAW NOW</button>
+                <button class="submit-button" id="withdrawButton" onclick="handleWithdraw()">💸 WITHDRAW NOW</button>
             </div>
             
             <div class="stats-grid" style="margin-top: 20px;">
                 <div class="stat-card">
-                    <div class="stat-value" id="totalWithdrawn">0.000</div>
+                    <div class="stat-value" id="totalWithdrawn">0.000000</div>
                     <div class="stat-label">Total withdrawn</div>
                 </div>
                 <div class="stat-card">
@@ -1243,7 +1249,7 @@
 
     <script>
         // ===========================
-        // 🔧 CONFIGURATION SÉCURISÉE
+        // 🔧 CONFIGURATION
         // ===========================
         
         const CONFIG = {
@@ -1252,10 +1258,8 @@
             CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
             SUPPORT_USERNAME: 'djdn_crew_support',
-            
-            // HilltopAds Configuration
-            HILLTOPADS_ZONE_ID: 'PLACEHOLDER_ZONE_ID', // ⚠️ À remplacer après approbation
-            HILLTOPADS_URL: 'PLACEHOLDER_URL' // ⚠️ À remplacer après approbation
+            HILLTOPADS_ZONE_ID: 'PLACEHOLDER_ZONE_ID',
+            HILLTOPADS_URL: 'PLACEHOLDER_URL'
         };
         
         // Telegram WebApp
@@ -1325,7 +1329,7 @@
                 initWheel();
                 showLoading(false);
             } catch (error) {
-                showNotification('Connection error', 'error');
+                showNotification('Connection error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1401,7 +1405,7 @@
             updateSpinHistory();
             
             // Withdraw Stats
-            document.getElementById('totalWithdrawn').textContent = (userData.withdraw_history?.reduce((a,b) => a + b.amount, 0) || 0).toFixed(6);
+            document.getElementById('totalWithdrawn').textContent = (userData.total_withdrawn || 0).toFixed(6);
             document.getElementById('withdrawCount').textContent = userData.withdraw_history?.length || 0;
             
             // Tasks
@@ -1467,7 +1471,7 @@
                 }
                 showLoading(false);
             } catch (error) {
-                showNotification('Mining error', 'error');
+                showNotification('Mining error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1527,7 +1531,7 @@
                 }
                 showLoading(false);
             } catch (error) {
-                showNotification('Claim error', 'error');
+                showNotification('Claim error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1575,7 +1579,7 @@
                             showNotification(data.error, 'error');
                         }
                     } catch (error) {
-                        showNotification('Error recording ad', 'error');
+                        showNotification('Error recording ad: ' + error.message, 'error');
                     }
                     
                     showLoading(false);
@@ -1585,7 +1589,7 @@
                 });
 
             } catch (error) {
-                showNotification('Ad error', 'error');
+                showNotification('Ad error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1631,7 +1635,6 @@
                 }
             }
 
-            // ⚠️ PLACEHOLDER - Remplacer après approbation HilltopAds
             if (CONFIG.HILLTOPADS_ZONE_ID === 'PLACEHOLDER_ZONE_ID') {
                 showNotification('⚠️ HilltopAds not configured yet', 'error');
                 console.log('HilltopAds Integration Required - Waiting for approval');
@@ -1641,10 +1644,6 @@
             try {
                 showLoading(true);
 
-                // TODO: Implémenter HilltopAds Direct Link ici
-                // Une fois approuvé, remplacer par le vrai code HilltopAds
-                
-                // SIMULATION pour test (à remplacer)
                 setTimeout(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/earn/watch-for-key/${userData.telegram_id}`, {
@@ -1661,14 +1660,14 @@
                             showNotification(data.error, 'error');
                         }
                     } catch (error) {
-                        showNotification('Error recording ad', 'error');
+                        showNotification('Error recording ad: ' + error.message, 'error');
                     }
                     
                     showLoading(false);
                 }, 1000);
 
             } catch (error) {
-                showNotification('Ad error', 'error');
+                showNotification('Ad error: ' + error.message, 'error');
                 showLoading(false);
             }
         }
@@ -1780,7 +1779,6 @@
 
                 showLoading(false);
                 
-                // Animation de la roulette
                 const canvas = document.getElementById('wheelCanvas');
                 const segments = 6;
                 const anglePerSegment = (2 * Math.PI) / segments;
@@ -1822,7 +1820,7 @@
                 animate();
 
             } catch (error) {
-                showNotification('Spin error', 'error');
+                showNotification('Spin error: ' + error.message, 'error');
                 showLoading(false);
                 wheelSpinning = false;
                 document.getElementById('spinButton').disabled = false;
@@ -1890,7 +1888,7 @@
                     }
                     showLoading(false);
                 } catch (error) {
-                    showNotification('Verification error', 'error');
+                    showNotification('Verification error: ' + error.message, 'error');
                     showLoading(false);
                 }
             } else if (btnText === 'Claim') {
@@ -1914,7 +1912,7 @@
                     }
                     showLoading(false);
                 } catch (error) {
-                    showNotification('Claim error', 'error');
+                    showNotification('Claim error: ' + error.message, 'error');
                     showLoading(false);
                 }
             }
@@ -1928,28 +1926,37 @@
             });
         }
 
-        // Withdraw
+        // Withdraw - CORRIGÉ
         async function handleWithdraw() {
-            const email = document.getElementById('faucetpayEmail').value;
+            const email = document.getElementById('faucetpayEmail').value.trim();
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const withdrawBtn = document.getElementById('withdrawButton');
             
             if (!email || !amount) {
-                showNotification('Please fill all fields', 'error');
+                showNotification('❌ Please fill all fields', 'error');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('❌ Invalid email format', 'error');
                 return;
             }
             
             if (amount < 0.001) {
-                showNotification('Minimum 0.001 TON', 'error');
+                showNotification('❌ Minimum 0.001 TON', 'error');
                 return;
             }
             
             if (amount > userData.balance) {
-                showNotification('Insufficient balance', 'error');
+                showNotification('❌ Insufficient balance', 'error');
                 return;
             }
             
             try {
+                withdrawBtn.disabled = true;
                 showLoading(true);
+                
                 const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1958,21 +1965,25 @@
                         amount: amount
                     })
                 });
+                
                 const data = await response.json();
                 
                 if (response.ok) {
-                    userData = data;
+                    userData = data.user || data;
                     updateUI();
                     document.getElementById('faucetpayEmail').value = '';
                     document.getElementById('withdrawAmount').value = '';
-                    showNotification('🎉 Withdrawal successful! No gas fees! 💚');
+                    showNotification('🎉 Withdrawal successful! Check your FaucetPay account!');
                 } else {
-                    showNotification(data.error, 'error');
+                    showNotification('❌ ' + (data.error || 'Withdrawal failed'), 'error');
                 }
+                
                 showLoading(false);
+                withdrawBtn.disabled = false;
             } catch (error) {
-                showNotification('Withdrawal error', 'error');
+                showNotification('❌ Withdrawal error: ' + error.message, 'error');
                 showLoading(false);
+                withdrawBtn.disabled = false;
             }
         }
 
@@ -2020,7 +2031,7 @@
 
         // Init
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v5.0 - SECURED WITH HILLTOPADS');
+            console.log('🚀 TON Reward DJDN v5.0 - CORRECTED & SECURED');
             loadUserData();
         });
     </script>
