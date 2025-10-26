@@ -1,12 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Reward DJDN v5.1</title>
-    
-    <!-- HilltopAds Verification -->
-    <meta name="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" content="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" />
+    <title>TON Reward DJDN v6.0 - Professional Edition</title>
     
     <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -30,6 +28,10 @@
             padding-bottom: 80px;
         }
 
+        /* ===========================
+           🎨 HEADER STYLES
+        =========================== */
+
         .header {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -38,6 +40,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .user-info {
@@ -47,32 +50,50 @@
         }
 
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .username {
             font-weight: bold;
             font-size: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .balance-container {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 25px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 4px 20px rgba(245, 87, 108, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(245, 87, 108, 0.5); }
+            50% { box-shadow: 0 4px 30px rgba(245, 87, 108, 0.8); }
         }
 
         .balance {
             font-size: 18px;
         }
+
+        /* ===========================
+           📱 PAGE STRUCTURE
+        =========================== */
 
         .page-header {
             display: flex;
@@ -82,21 +103,25 @@
         }
 
         .page-header h2 {
-            font-size: 24px;
+            font-size: 26px;
             margin: 0;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
         .support-btn {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.6);
             transition: all 0.3s ease;
             text-decoration: none;
             flex-shrink: 0;
@@ -107,14 +132,14 @@
         }
 
         .back-button {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -122,6 +147,7 @@
 
         .back-button:active {
             transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .content {
@@ -136,84 +162,144 @@
 
         .page.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ===========================
+           ⛏️ MINING CARD STYLES
+        =========================== */
+
         .mining-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 35px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mining-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .mining-icon {
-            font-size: 80px;
+            font-size: 90px;
             text-align: center;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .mining-title {
             text-align: center;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 15px rgba(255, 215, 0, 0.5);
         }
 
         .mining-reward {
             text-align: center;
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: #ffd700;
             margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
         }
 
         .timer {
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
 
         .progress-bar {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            background-size: 200% 100%;
             width: 0%;
             transition: width 1s ease;
+            animation: shimmer 2s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .mine-button {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             border: none;
-            border-radius: 15px;
+            border-radius: 20px;
             background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
             color: #333;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mine-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .mine-button:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .mine-button:active {
@@ -227,6 +313,10 @@
             box-shadow: none;
         }
 
+        /* ===========================
+           🎯 QUICK ACTIONS
+        =========================== */
+
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -235,14 +325,21 @@
         }
 
         .action-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 25px;
+            padding: 30px 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
         }
 
         .action-card:active {
@@ -250,39 +347,47 @@
         }
 
         .action-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 45px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
         }
 
         .action-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
+            color: rgba(255, 255, 255, 0.95);
         }
 
+        /* ===========================
+           💰 EARN SECTION STYLES
+        =========================== */
+
         .earn-main-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 35px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
         .earn-option {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 25px;
+            padding: 28px;
             margin-bottom: 20px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .earn-option:hover {
             border-color: #ffd700;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
         }
 
         .earn-option:active {
@@ -292,110 +397,146 @@
         .earn-option-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 18px;
+            margin-bottom: 18px;
         }
 
         .earn-option-icon {
-            font-size: 50px;
-            width: 70px;
-            height: 70px;
+            font-size: 55px;
+            width: 75px;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
+            border-radius: 22px;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .earn-option-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             color: #ffd700;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
         }
 
         .earn-option-desc {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 15px;
-            line-height: 1.6;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        .earn-option-desc strong {
+            color: #ffd700;
+            font-weight: bold;
         }
 
         .earn-option-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 18px;
         }
 
         .earn-stat-item {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 15px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .earn-stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #ffd700;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
         }
 
         .earn-stat-label {
-            font-size: 12px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.7);
         }
 
         .earn-button {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 15px;
+            border-radius: 18px;
             background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
             color: #333;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 18px;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
         }
+
+        .earn-button:active {
+            transform: scale(0.98);
+        }
+
+        /* ===========================
+           📺 WATCH SIMPLE STYLES
+        =========================== */
 
         .watch-simple-container {
             text-align: center;
         }
 
         .reward-display {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: bold;
             color: #ffd700;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin: 25px 0;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+            50% { text-shadow: 0 0 50px rgba(255, 215, 0, 1); }
         }
 
         .progress-text {
-            font-size: 18px;
-            margin: 15px 0;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 20px;
+            margin: 18px 0;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+        }
+
+        .progress-text strong {
+            color: #ffd700;
         }
 
         .reset-timer {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin: 10px 0;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            margin: 12px 0;
         }
 
         .watch-button {
             width: 100%;
-            max-width: 350px;
-            padding: 20px;
+            max-width: 380px;
+            padding: 22px;
             border: none;
-            border-radius: 15px;
+            border-radius: 20px;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
-            margin: 20px auto;
+            box-shadow: 0 8px 30px rgba(245, 87, 108, 0.6);
+            margin: 25px auto;
             display: block;
+            transition: all 0.3s ease;
+        }
+
+        .watch-button:active {
+            transform: scale(0.98);
         }
 
         .watch-button:disabled {
@@ -406,74 +547,99 @@
         }
 
         .cooldown-display {
-            font-size: 16px;
+            font-size: 17px;
             color: rgba(255, 255, 255, 0.8);
-            margin-top: 10px;
+            margin-top: 12px;
+            font-weight: 500;
         }
+
+        /* ===========================
+           🔑 KEYS & WHEEL STYLES
+        =========================== */
 
         .keys-display {
             text-align: center;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 237, 78, 0.2) 100%);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 237, 78, 0.25) 100%);
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
         }
 
         .keys-count {
-            font-size: 60px;
+            font-size: 70px;
             font-weight: bold;
             color: #ffd700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .keys-label {
-            font-size: 18px;
-            margin-top: 10px;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 20px;
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
         }
 
         .warning-box {
-            background: rgba(255, 152, 0, 0.1);
-            border: 2px solid rgba(255, 152, 0, 0.5);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
+            background: rgba(255, 152, 0, 0.15);
+            border: 2px solid rgba(255, 152, 0, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 25px 0;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
 
         .warning-box p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 5px 0;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.95);
+            margin: 8px 0;
+            line-height: 1.6;
         }
+
+        .warning-box strong {
+            color: #ffa726;
+            font-size: 18px;
+        }
+
+        /* ===========================
+           🎰 WHEEL STYLES
+        =========================== */
 
         .wheel-container {
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 30px auto;
+            width: 340px;
+            height: 340px;
+            margin: 35px auto;
         }
 
         .wheel-canvas {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
         }
 
         .wheel-pointer {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid #ffd700;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+            border-left: 22px solid transparent;
+            border-right: 22px solid transparent;
+            border-top: 45px solid #ffd700;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.9));
             z-index: 10;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-5px); }
         }
 
         .wheel-center {
@@ -481,35 +647,40 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
-            border: 4px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            border: 5px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
             z-index: 5;
         }
 
         .spin-button {
             width: 100%;
-            max-width: 350px;
-            padding: 20px;
+            max-width: 380px;
+            padding: 22px;
             border: none;
-            border-radius: 15px;
+            border-radius: 20px;
             background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
             color: #333;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
-            margin: 20px auto;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+            margin: 25px auto;
             display: block;
+            transition: all 0.3s ease;
+        }
+
+        .spin-button:active {
+            transform: scale(0.98);
         }
 
         .spin-button:disabled {
@@ -520,62 +691,78 @@
         }
 
         .spin-history {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .spin-history h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
+            font-size: 20px;
+            margin-bottom: 18px;
             color: #ffd700;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
         }
 
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .history-result {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
             color: #ffd700;
         }
 
         .history-time {
-            font-size: 12px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.6);
         }
 
+        /* ===========================
+           📋 TASKS STYLES
+        =========================== */
+
         .task-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 22px;
+            margin-bottom: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.3);
         }
 
         .task-icon {
-            font-size: 40px;
-            width: 60px;
-            height: 60px;
+            font-size: 45px;
+            width: 65px;
+            height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            border-radius: 18px;
             flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .task-info {
@@ -583,174 +770,296 @@
         }
 
         .task-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.95);
         }
 
         .task-reward {
-            font-size: 14px;
+            font-size: 15px;
             color: #ffd700;
+            font-weight: 600;
         }
 
         .task-button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
             color: #333;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .task-button:active {
+            transform: scale(0.95);
         }
 
         .task-button:disabled {
             background: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.5);
             cursor: not-allowed;
+            box-shadow: none;
         }
 
+        /* ===========================
+           👥 INVITE STYLES
+        =========================== */
+
         .invite-link-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
+            border-radius: 18px;
+            padding: 18px;
+            margin: 25px 0;
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .invite-link {
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 14px;
+            border-radius: 12px;
             font-size: 14px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .copy-button {
-            padding: 12px 20px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .copy-button:active {
+            transform: scale(0.95);
         }
 
         .invite-info {
-            background: rgba(76, 175, 80, 0.1);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: rgba(76, 175, 80, 0.15);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
         }
 
         .invite-info p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 8px;
         }
 
         .invite-info strong {
             color: #ffd700;
+            font-weight: bold;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 18px;
+            margin-top: 25px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 25px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.3);
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: #ffd700;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 15px rgba(255, 215, 0, 0.5);
         }
 
         .stat-label {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
         }
 
+        /* ===========================
+           💰 WITHDRAW STYLES
+        =========================== */
+
         .withdraw-form {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
         }
 
         .withdraw-info {
-            background: rgba(76, 175, 80, 0.1);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: rgba(76, 175, 80, 0.15);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
         }
 
         .withdraw-info p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 8px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 10px;
         }
 
         .withdraw-info strong {
             color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* ✅ NOUVEAU: WITHDRAW UNLOCK SECTION */
+        .withdraw-unlock-section {
+            background: rgba(255, 152, 0, 0.15);
+            border: 2px solid rgba(255, 152, 0, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .unlock-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .unlock-progress {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 20px 0;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .unlock-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .unlock-watch-button {
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(245, 87, 108, 0.6);
+            margin: 15px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .unlock-watch-button:active {
+            transform: scale(0.98);
+        }
+
+        .unlock-watch-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .unlock-status {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-weight: bold;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.95);
         }
 
         .form-input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.4);
             color: white;
             font-size: 16px;
+            transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
             border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
         .submit-button {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             border: none;
-            border-radius: 15px;
+            border-radius: 18px;
             background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:active {
+            transform: scale(0.98);
         }
 
         .submit-button:disabled {
@@ -760,154 +1069,97 @@
             box-shadow: none;
         }
 
-        /* ✅ NOUVEAU: MODAL ADSTERRA */
-        .ad-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 4000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ad-modal.show {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .ad-modal-content {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px 30px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .ad-modal-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
-        }
-
-        .ad-modal-title {
-            font-size: 26px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #ffd700;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .ad-modal-text {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.95);
-        }
-
-        .ad-modal-buttons {
-            display: flex;
-            gap: 15px;
-            flex-direction: column;
-        }
-
-        .ad-modal-btn {
-            padding: 18px;
-            border: none;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ad-modal-btn-primary {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #333;
-            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
-        }
-
-        .ad-modal-btn-primary:active {
-            transform: scale(0.97);
-        }
-
-        .ad-modal-btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .ad-modal-btn-secondary:active {
-            transform: scale(0.97);
-        }
+        /* ===========================
+           🧭 BOTTOM NAVIGATION
+        =========================== */
 
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
             z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .nav-item {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 0 5px;
         }
 
         .nav-item.active {
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.25);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
         }
 
         .nav-icon {
-            font-size: 24px;
-            margin-bottom: 5px;
+            font-size: 26px;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .nav-label {
             font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
+
+        /* ===========================
+           🔔 NOTIFICATIONS
+        =========================== */
 
         .notification {
             position: fixed;
-            top: 80px;
+            top: 90px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
-            padding: 15px 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+            padding: 18px 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6);
             z-index: 2000;
             opacity: 0;
             transition: opacity 0.3s ease;
             max-width: 90%;
             text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .notification.show {
             opacity: 1;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
         .notification.error {
             background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+            box-shadow: 0 8px 30px rgba(244, 67, 54, 0.6);
         }
+
+        /* ===========================
+           ⏳ LOADING OVERLAY
+        =========================== */
 
         .loading-overlay {
             position: fixed;
@@ -915,11 +1167,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 3000;
+            backdrop-filter: blur(5px);
         }
 
         .loading-overlay.show {
@@ -927,20 +1180,35 @@
         }
 
         .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.15);
             border-top-color: #ffd700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* ===========================
+           📱 RESPONSIVE DESIGN
+        =========================== */
+
+        @media (max-width: 400px) {
+            .mining-icon { font-size: 70px; }
+            .mining-title { font-size: 22px; }
+            .mining-reward { font-size: 30px; }
+            .action-icon { font-size: 38px; }
+            .earn-option-icon { font-size: 48px; width: 65px; height: 65px; }
+            .wheel-container { width: 300px; height: 300px; }
+        }
     </style>
 </head>
 <body>
+    <!-- HEADER -->
     <div class="header">
         <div class="user-info">
             <div class="avatar">👤</div>
@@ -954,7 +1222,9 @@
     </div>
 
     <div class="content">
-        <!-- Page Home -->
+        <!-- ===========================
+             🏠 PAGE HOME
+        =========================== -->
         <div class="page active" id="page-home">
             <div class="mining-card">
                 <div class="mining-icon">⛏️</div>
@@ -989,7 +1259,9 @@
             </div>
         </div>
 
-        <!-- Page Tasks -->
+        <!-- ===========================
+             📋 PAGE TASKS
+        =========================== -->
         <div class="page" id="page-tasks">
             <div class="page-header">
                 <h2>📋 Tasks</h2>
@@ -1015,7 +1287,9 @@
             </div>
         </div>
 
-        <!-- Page Invite -->
+        <!-- ===========================
+             👥 PAGE INVITE
+        =========================== -->
         <div class="page" id="page-invite">
             <div class="page-header">
                 <h2>👥 Invite Friends</h2>
@@ -1046,7 +1320,9 @@
             </div>
         </div>
 
-        <!-- Page EARN (Main) -->
+        <!-- ===========================
+             💰 PAGE EARN (MAIN)
+        =========================== -->
         <div class="page" id="page-earn">
             <div class="page-header">
                 <h2>💰 EARN TON REWARDS</h2>
@@ -1063,7 +1339,7 @@
                 <div class="earn-option-desc">
                     • Earn <strong>0.000012 TON</strong> per ad<br>
                     • Limit: <strong>200 ads/day</strong><br>
-                    • Cooldown: <strong>15 seconds</strong><br>
+                    • Cooldown: <strong>5 seconds</strong> ⚡<br>
                     • Direct rewards to balance
                 </div>
                 <div class="earn-option-stats">
@@ -1088,7 +1364,8 @@
                 </div>
                 <div class="earn-option-desc">
                     • Watch rewarded ads for <strong>Keys 🔑</strong><br>
-                    • 1 ad = 1 Key (max <strong>50/day</strong>)<br>
+                    • 1 ad = 1 Key (max <strong>100/day</strong>) 🎁<br>
+                    • Cooldown: <strong>5 seconds</strong> ⚡<br>
                     • Spin wheel with Keys<br>
                     • Win up to <strong>0.000017 TON!</strong><br>
                     • ⚠️ <strong>Keys reset at midnight!</strong>
@@ -1099,7 +1376,7 @@
                         <div class="earn-stat-label">Current Keys</div>
                     </div>
                     <div class="earn-stat-item">
-                        <div class="earn-stat-value" id="keysAdsToday">0/50</div>
+                        <div class="earn-stat-value" id="keysAdsToday">0/100</div>
                         <div class="earn-stat-label">Ads Today</div>
                     </div>
                 </div>
@@ -1107,7 +1384,9 @@
             </div>
         </div>
 
-        <!-- Sub-Page: Watch Ads Simple -->
+        <!-- ===========================
+             📺 SUB-PAGE: WATCH ADS SIMPLE
+        =========================== -->
         <div class="page" id="page-watch-simple">
             <div class="page-header">
                 <div class="back-button" onclick="showPage('earn')">◄</div>
@@ -1154,7 +1433,9 @@
             </div>
         </div>
 
-        <!-- Sub-Page: Lucky Wheel Main (Earn Keys) -->
+        <!-- ===========================
+             🔑 SUB-PAGE: LUCKY WHEEL MAIN (EARN KEYS)
+        =========================== -->
         <div class="page" id="page-lucky-wheel-main">
             <div class="page-header">
                 <div class="back-button" onclick="showPage('earn')">◄</div>
@@ -1169,7 +1450,7 @@
 
             <div class="mining-card">
                 <div class="progress-text">
-                    <strong id="keysAdsProgress">0/50</strong> ads watched for Keys
+                    <strong id="keysAdsProgress">0/100</strong> ads watched for Keys
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="keysProgressBar"></div>
@@ -1217,7 +1498,9 @@
             </div>
         </div>
 
-        <!-- Sub-Page: Lucky Wheel Spin -->
+        <!-- ===========================
+             🎰 SUB-PAGE: LUCKY WHEEL SPIN
+        =========================== -->
         <div class="page" id="page-lucky-wheel-spin">
             <div class="page-header">
                 <div class="back-button" onclick="showEarnSubPage('lucky-wheel-main')">◄</div>
@@ -1235,7 +1518,7 @@
 
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <canvas id="wheelCanvas" class="wheel-canvas" width="320" height="320"></canvas>
+                <canvas id="wheelCanvas" class="wheel-canvas" width="340" height="340"></canvas>
                 <div class="wheel-center">SPIN</div>
             </div>
 
@@ -1267,7 +1550,9 @@
             </button>
         </div>
 
-        <!-- Page Withdraw -->
+        <!-- ===========================
+             💰 PAGE WITHDRAW
+        =========================== -->
         <div class="page" id="page-withdraw">
             <div class="page-header">
                 <h2>💰 Withdraw</h2>
@@ -1282,6 +1567,19 @@
                 <p>• Enter your FaucetPay registered email</p>
             </div>
 
+            <!-- ✅ NOUVEAU: WITHDRAW UNLOCK SECTION -->
+            <div class="withdraw-unlock-section" id="withdrawUnlockSection">
+                <div class="unlock-title">🔓 Unlock Withdrawal</div>
+                <div class="unlock-progress" id="unlockProgress">0/5</div>
+                <div class="unlock-text">
+                    Watch <strong>5 ads</strong> to unlock your withdrawal.<br>
+                    Each withdrawal requires watching 5 new ads.
+                </div>
+                <button class="unlock-watch-button" id="unlockWatchButton" onclick="watchWithdrawAd()">
+                    📺 WATCH AD TO UNLOCK
+                </button>
+            </div>
+
             <div class="withdraw-form">
                 <div class="form-group">
                     <label class="form-label">FaucetPay Email</label>
@@ -1291,7 +1589,9 @@
                     <label class="form-label">Amount (min 0.001 TON)</label>
                     <input type="number" class="form-input" id="withdrawAmount" placeholder="0.001" min="0.001" step="0.000001">
                 </div>
-                <button class="submit-button" id="withdrawButton" onclick="handleWithdraw()">💸 WITHDRAW NOW</button>
+                <button class="submit-button" id="withdrawButton" onclick="handleWithdraw()" disabled>
+                    🔒 WATCH 5 ADS TO UNLOCK
+                </button>
             </div>
             
             <div class="stats-grid" style="margin-top: 20px;">
@@ -1307,25 +1607,7 @@
         </div>
     </div>
 
-    <!-- ✅ NOUVEAU: MODAL ADSTERRA -->
-    <div class="ad-modal" id="adModal">
-        <div class="ad-modal-content">
-            <div class="ad-modal-icon" id="adModalIcon">🎁</div>
-            <div class="ad-modal-title" id="adModalTitle">Watch Ad</div>
-            <div class="ad-modal-text" id="adModalText">
-                Please watch a short advertisement to continue.
-            </div>
-            <div class="ad-modal-buttons">
-                <button class="ad-modal-btn ad-modal-btn-primary" id="adModalBtnWatch">
-                    📺 WATCH AD & CONTINUE
-                </button>
-                <button class="ad-modal-btn ad-modal-btn-secondary" onclick="closeAdModal()">
-                    ❌ Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home')">
             <div class="nav-icon">🏠</div>
@@ -1349,11 +1631,17 @@
         </div>
     </div>
 
+    <!-- NOTIFICATION -->
     <div class="notification" id="notification"></div>
+
+    <!-- LOADING OVERLAY -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
 
+    <!-- ===========================
+         🚀 JAVASCRIPT CODE
+    =========================== -->
     <script>
         // ===========================
         // 🔧 CONFIGURATION
@@ -1383,10 +1671,6 @@
         let resetTimersInterval = null;
         let monetagLoaded = false;
         let wheelSpinning = false;
-        let adsterraScriptLoaded = false;
-
-        // ✅ NOUVEAU: Variable pour le modal
-        let currentMiningAction = null; // 'start' ou 'claim'
 
         // Vérifier si Monetag SDK est chargé
         function checkMonetagSDK() {
@@ -1402,97 +1686,6 @@
                 checkMonetagSDK();
             }, 1000);
         });
-
-        // ===========================
-        // ✅ NOUVEAU: FONCTIONS ADSTERRA MODAL
-        // ===========================
-
-        function showAdModal(type) {
-            const modal = document.getElementById('adModal');
-            const icon = document.getElementById('adModalIcon');
-            const title = document.getElementById('adModalTitle');
-            const text = document.getElementById('adModalText');
-            const btnWatch = document.getElementById('adModalBtnWatch');
-
-            currentMiningAction = type;
-
-            if (type === 'start') {
-                icon.textContent = '⛏️';
-                title.textContent = 'Watch Ad to Start Mining';
-                text.textContent = 'Please watch a short advertisement to start your mining session.';
-                btnWatch.textContent = '📺 WATCH AD & START MINING';
-            } else if (type === 'claim') {
-                icon.textContent = '💰';
-                title.textContent = 'Watch Ad to Claim Reward';
-                text.textContent = 'Watch an ad to claim your 0.0002 TON reward!';
-                btnWatch.textContent = '📺 WATCH AD & CLAIM REWARD';
-            }
-
-            modal.classList.add('show');
-        }
-
-        function closeAdModal() {
-            const modal = document.getElementById('adModal');
-            modal.classList.remove('show');
-            currentMiningAction = null;
-        }
-
-        // ✅ NOUVEAU: Charger script Adsterra Popunder
-        function loadAdsterraPopunder() {
-            if (adsterraScriptLoaded) {
-                console.log('Adsterra script already loaded');
-                return Promise.resolve();
-            }
-
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = '//pl27909859.effectivegatecpm.com/e1/58/3e/e1583ed8fe411a73a73c99b0f6c0fb2c.js';
-                script.async = true;
-                
-                script.onload = () => {
-                    adsterraScriptLoaded = true;
-                    console.log('✅ Adsterra Popunder loaded');
-                    resolve();
-                };
-                
-                script.onerror = () => {
-                    console.error('❌ Failed to load Adsterra');
-                    reject(new Error('Adsterra load failed'));
-                };
-                
-                document.head.appendChild(script);
-            });
-        }
-
-        // ✅ NOUVEAU: Handler du bouton "WATCH AD"
-        document.getElementById('adModalBtnWatch').onclick = async function() {
-            try {
-                showLoading(true);
-                
-                // Charger et ouvrir le popunder Adsterra
-                await loadAdsterraPopunder();
-                
-                // Attendre 2 secondes pour laisser la pub s'ouvrir
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Fermer le modal
-                closeAdModal();
-                
-                // Exécuter l'action appropriée
-                if (currentMiningAction === 'start') {
-                    await startMining();
-                } else if (currentMiningAction === 'claim') {
-                    await claimMining();
-                }
-                
-                showLoading(false);
-            } catch (error) {
-                showNotification('Ad error: ' + error.message, 'error');
-                showLoading(false);
-                closeAdModal();
-            }
-        };
 
         // ===========================
         // 👤 USER MANAGEMENT
@@ -1582,7 +1775,7 @@
             const watchSimpleProgress = (watchSimpleToday / 200) * 100;
             document.getElementById('watchSimpleProgressBar').style.width = watchSimpleProgress + '%';
             
-            // Lucky Wheel Stats
+            // Lucky Wheel Stats - ✅ MODIFIÉ: 50 → 100
             const keysCurrent = userData.keys_current || 0;
             const keysAdsToday = userData.ads_for_keys_today || 0;
             const keysTotalAds = userData.ads_for_keys_total || 0;
@@ -1590,18 +1783,22 @@
             const wheelEarnings = userData.lucky_wheel_earnings_total || 0;
             
             document.getElementById('currentKeys').textContent = `${keysCurrent} 🔑`;
-            document.getElementById('keysAdsToday').textContent = `${keysAdsToday}/50`;
+            document.getElementById('keysAdsToday').textContent = `${keysAdsToday}/100`;
             document.getElementById('keysDisplayCount').textContent = `${keysCurrent} 🔑`;
             document.getElementById('spinKeysCount').textContent = `${keysCurrent} 🔑`;
             document.getElementById('keysForWheelCount').textContent = `${keysCurrent} Keys`;
-            document.getElementById('keysAdsProgress').textContent = `${keysAdsToday}/50`;
+            document.getElementById('keysAdsProgress').textContent = `${keysAdsToday}/100`;
             document.getElementById('keysEarnedToday').textContent = keysAdsToday;
             document.getElementById('keysTotalAds').textContent = keysTotalAds;
             document.getElementById('totalSpins').textContent = wheelTotalSpins;
             document.getElementById('wheelEarnings').textContent = wheelEarnings.toFixed(6);
             
-            const keysProgress = (keysAdsToday / 50) * 100;
+            const keysProgress = (keysAdsToday / 100) * 100;
             document.getElementById('keysProgressBar').style.width = keysProgress + '%';
+            
+            // ✅ NOUVEAU: Withdraw Unlock Stats
+            const withdrawAdsWatched = userData.withdraw_ads_watched_current || 0;
+            updateWithdrawUnlockUI(withdrawAdsWatched);
             
             // Update spin history
             updateSpinHistory();
@@ -1619,6 +1816,36 @@
             if (userData.tasks_done && userData.tasks_done.includes('join_withdraw_channel')) {
                 document.getElementById('taskButton2').textContent = '✅ Completed';
                 document.getElementById('taskButton2').disabled = true;
+            }
+        }
+
+        // ✅ NOUVEAU: Update Withdraw Unlock UI
+        function updateWithdrawUnlockUI(adsWatched) {
+            const unlockProgress = document.getElementById('unlockProgress');
+            const unlockWatchButton = document.getElementById('unlockWatchButton');
+            const withdrawButton = document.getElementById('withdrawButton');
+            const unlockSection = document.getElementById('withdrawUnlockSection');
+            
+            unlockProgress.textContent = `${adsWatched}/5`;
+            
+            if (adsWatched >= 5) {
+                // Débloquer le withdraw
+                unlockSection.style.background = 'rgba(76, 175, 80, 0.2)';
+                unlockSection.style.borderColor = 'rgba(76, 175, 80, 0.6)';
+                unlockWatchButton.textContent = '✅ UNLOCKED!';
+                unlockWatchButton.disabled = true;
+                withdrawButton.disabled = false;
+                withdrawButton.textContent = '💸 WITHDRAW NOW';
+                withdrawButton.style.background = 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)';
+            } else {
+                // Bloqué
+                unlockSection.style.background = 'rgba(255, 152, 0, 0.15)';
+                unlockSection.style.borderColor = 'rgba(255, 152, 0, 0.6)';
+                unlockWatchButton.textContent = `📺 WATCH AD (${adsWatched}/5)`;
+                unlockWatchButton.disabled = false;
+                withdrawButton.disabled = true;
+                withdrawButton.textContent = `🔒 WATCH ${5 - adsWatched} MORE ADS`;
+                withdrawButton.style.background = 'rgba(255, 255, 255, 0.1)';
             }
         }
 
@@ -1655,7 +1882,7 @@
         }
 
         // ===========================
-        // ⛏️ MINING FUNCTIONS - MODIFIÉ
+        // ⛏️ MINING FUNCTIONS - MONETAG REWARDED
         // ===========================
 
         function handleMiningButton() {
@@ -1669,56 +1896,98 @@
                 const elapsed = now - start;
                 const duration = 3 * 60 * 60 * 1000; // 3 heures
                 
-                // Si mining terminé, montrer modal CLAIM
+                // Si mining terminé, lancer ad puis claim
                 if (elapsed >= duration) {
-                    showAdModal('claim');
+                    watchMiningAdThenClaim();
                 } else {
                     showNotification('⏰ Mining in progress...', 'error');
                 }
             } else {
-                // Pas de mining en cours, montrer modal START
-                showAdModal('start');
+                // Pas de mining en cours, lancer ad puis start
+                watchMiningAdThenStart();
             }
         }
 
-        async function startMining() {
+        async function watchMiningAdThenStart() {
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
             try {
-                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/start`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
+                showLoading(true);
                 
-                if (response.ok) {
-                    userData = data;
-                    updateUI();
-                    startMiningCheck();
-                    showNotification('⛏️ Mining started!');
-                } else {
-                    showNotification(data.error, 'error');
-                }
+                // ✅ Lancer Monetag Rewarded Interstitial
+                show_10078826().then(async () => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/start`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            startMiningCheck();
+                            showNotification('⛏️ Mining started!');
+                        } else {
+                            showNotification(data.error, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Mining error: ' + error.message, 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    showNotification('Please watch the ad completely', 'error');
+                    showLoading(false);
+                });
+
             } catch (error) {
-                showNotification('Mining error: ' + error.message, 'error');
+                showNotification('Ad error: ' + error.message, 'error');
+                showLoading(false);
             }
         }
 
-        async function claimMining() {
+        async function watchMiningAdThenClaim() {
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
             try {
-                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
+                showLoading(true);
                 
-                if (response.ok) {
-                    userData = data;
-                    updateUI();
-                    showNotification('🎉 +0.0002 TON claimed!');
-                    clearInterval(miningInterval);
-                    startMiningCheck();
-                } else {
-                    showNotification(data.error, 'error');
-                }
+                // ✅ Lancer Monetag Rewarded Interstitial
+                show_10078826().then(async () => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            showNotification('🎉 +0.0002 TON claimed!');
+                            clearInterval(miningInterval);
+                            startMiningCheck();
+                        } else {
+                            showNotification(data.error, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Claim error: ' + error.message, 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    showNotification('Please watch the ad completely', 'error');
+                    showLoading(false);
+                });
+
             } catch (error) {
-                showNotification('Claim error: ' + error.message, 'error');
+                showNotification('Ad error: ' + error.message, 'error');
+                showLoading(false);
             }
         }
 
@@ -1762,7 +2031,7 @@
         }
 
         // ===========================
-        // 📺 WATCH SIMPLE ADS (Monetag Popup)
+        // 📺 WATCH SIMPLE ADS (Monetag Popup) - COOLDOWN 5s
         // ===========================
 
         async function watchSimpleAd() {
@@ -1776,8 +2045,8 @@
             
             if (userData.ads_watch_simple_last_watch) {
                 const timeSince = Date.now() - new Date(userData.ads_watch_simple_last_watch).getTime();
-                if (timeSince < 15000) {
-                    const remainingSeconds = Math.ceil((15000 - timeSince) / 1000);
+                if (timeSince < 5000) { // ✅ MODIFIÉ: 15000 → 5000 (5 secondes)
+                    const remainingSeconds = Math.ceil((5000 - timeSince) / 1000);
                     showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
                     return;
                 }
@@ -1828,7 +2097,7 @@
             const watchBtn = document.getElementById('watchSimpleButton');
             const cooldownDisplay = document.getElementById('watchSimpleCooldown');
             
-            let remainingSeconds = 15;
+            let remainingSeconds = 5; // ✅ MODIFIÉ: 15 → 5
             watchBtn.disabled = true;
             
             watchSimpleCooldownInterval = setInterval(() => {
@@ -1845,22 +2114,22 @@
         }
 
         // ===========================
-        // 🔑 WATCH FOR KEYS (Monetag Rewarded) - MODIFIÉ
+        // 🔑 WATCH FOR KEYS (Monetag Rewarded) - COOLDOWN 5s, MAX 100/day
         // ===========================
 
         async function watchForKey() {
             if (!userData) return;
             
             const adsToday = userData.ads_for_keys_today || 0;
-            if (adsToday >= 50) {
-                showNotification('⚠️ Daily limit reached (50 ads for Keys)', 'error');
+            if (adsToday >= 100) { // ✅ MODIFIÉ: 50 → 100
+                showNotification('⚠️ Daily limit reached (100 ads for Keys)', 'error');
                 return;
             }
             
             if (userData.ads_for_keys_last_watch) {
                 const timeSince = Date.now() - new Date(userData.ads_for_keys_last_watch).getTime();
-                if (timeSince < 15000) {
-                    const remainingSeconds = Math.ceil((15000 - timeSince) / 1000);
+                if (timeSince < 5000) { // ✅ MODIFIÉ: 15000 → 5000 (5 secondes)
+                    const remainingSeconds = Math.ceil((5000 - timeSince) / 1000);
                     showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
                     return;
                 }
@@ -1874,7 +2143,7 @@
             try {
                 showLoading(true);
 
-                // ✅ MODIFIÉ: Utiliser Monetag Rewarded au lieu de HilltopAds
+                // ✅ Monetag Rewarded Interstitial
                 show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/earn/watch-for-key/${userData.telegram_id}`, {
@@ -1912,7 +2181,7 @@
             const watchBtn = document.getElementById('watchKeysButton');
             const cooldownDisplay = document.getElementById('watchKeysCooldown');
             
-            let remainingSeconds = 15;
+            let remainingSeconds = 5; // ✅ MODIFIÉ: 15 → 5
             watchBtn.disabled = true;
             
             watchKeysCooldownInterval = setInterval(() => {
@@ -1939,7 +2208,7 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 150;
+            const radius = 160;
 
             const segments = [
                 { label: '0.000009', color: '#64B5F6', icon: '💧' },
@@ -1966,7 +2235,7 @@
                     ctx.fillStyle = segment.color;
                     ctx.fill();
                     ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 3;
                     ctx.stroke();
                     
                     ctx.save();
@@ -1974,10 +2243,10 @@
                     ctx.rotate(startAngle + anglePerSegment / 2);
                     ctx.textAlign = 'center';
                     ctx.fillStyle = '#fff';
-                    ctx.font = 'bold 24px Arial';
+                    ctx.font = 'bold 28px Arial';
                     ctx.fillText(segment.icon, radius * 0.7, 10);
-                    ctx.font = 'bold 12px Arial';
-                    ctx.fillText(segment.label, radius * 0.7, 30);
+                    ctx.font = 'bold 13px Arial';
+                    ctx.fillText(segment.label, radius * 0.7, 32);
                     ctx.restore();
                 });
             }
@@ -2060,6 +2329,129 @@
                 showLoading(false);
                 wheelSpinning = false;
                 document.getElementById('spinButton').disabled = false;
+            }
+        }
+
+        // ===========================
+        // 💰 WITHDRAW ADS SYSTEM - 5 ADS REQUIRED
+        // ===========================
+
+        async function watchWithdrawAd() {
+            if (!userData) return;
+
+            const adsWatched = userData.withdraw_ads_watched_current || 0;
+            if (adsWatched >= 5) {
+                showNotification('✅ Already unlocked!', 'error');
+                return;
+            }
+
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+
+                // ✅ Monetag Rewarded Interstitial
+                show_10078826().then(async () => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}/watch-ad`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            userData = data;
+                            updateUI();
+                            
+                            const newAdsWatched = data.ads_watched || 0;
+                            if (newAdsWatched >= 5) {
+                                showNotification('🔓 Withdrawal UNLOCKED! You can withdraw now!');
+                            } else {
+                                showNotification(`✅ Ad ${newAdsWatched}/5 watched! ${5 - newAdsWatched} more to unlock!`);
+                            }
+                        } else {
+                            showNotification(data.error, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Error recording ad: ' + error.message, 'error');
+                    }
+                    
+                    showLoading(false);
+                }).catch((error) => {
+                    showNotification('Please watch the ad completely', 'error');
+                    
+                    showLoading(false);
+                });
+
+            } catch (error) {
+                showNotification('Ad error: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // ===========================
+        // 💰 WITHDRAW HANDLER
+        // ===========================
+
+        async function handleWithdraw() {
+            const email = document.getElementById('faucetpayEmail').value.trim();
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const withdrawBtn = document.getElementById('withdrawButton');
+            
+            if (!email || !amount) {
+                showNotification('❌ Please fill all fields', 'error');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('❌ Invalid email format', 'error');
+                return;
+            }
+            
+            if (amount < 0.001) {
+                showNotification('❌ Minimum 0.001 TON', 'error');
+                return;
+            }
+            
+            if (amount > userData.balance) {
+                showNotification('❌ Insufficient balance', 'error');
+                return;
+            }
+            
+            try {
+                withdrawBtn.disabled = true;
+                showLoading(true);
+                
+                const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        faucetpay_email: email,
+                        amount: amount
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data.user || data;
+                    updateUI();
+                    document.getElementById('faucetpayEmail').value = '';
+                    document.getElementById('withdrawAmount').value = '';
+                    showNotification('🎉 Withdrawal successful! Check your FaucetPay account!');
+                } else {
+                    showNotification('❌ ' + (data.error || 'Withdrawal failed'), 'error');
+                }
+                
+                showLoading(false);
+                withdrawBtn.disabled = false;
+            } catch (error) {
+                showNotification('❌ Withdrawal error: ' + error.message, 'error');
+                showLoading(false);
+                withdrawBtn.disabled = false;
             }
         }
 
@@ -2172,70 +2564,6 @@
         }
 
         // ===========================
-        // 💰 WITHDRAW
-        // ===========================
-
-        async function handleWithdraw() {
-            const email = document.getElementById('faucetpayEmail').value.trim();
-            const amount = parseFloat(document.getElementById('withdrawAmount').value);
-            const withdrawBtn = document.getElementById('withdrawButton');
-            
-            if (!email || !amount) {
-                showNotification('❌ Please fill all fields', 'error');
-                return;
-            }
-            
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showNotification('❌ Invalid email format', 'error');
-                return;
-            }
-            
-            if (amount < 0.001) {
-                showNotification('❌ Minimum 0.001 TON', 'error');
-                return;
-            }
-            
-            if (amount > userData.balance) {
-                showNotification('❌ Insufficient balance', 'error');
-                return;
-            }
-            
-            try {
-                withdrawBtn.disabled = true;
-                showLoading(true);
-                
-                const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        faucetpay_email: email,
-                        amount: amount
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    userData = data.user || data;
-                    updateUI();
-                    document.getElementById('faucetpayEmail').value = '';
-                    document.getElementById('withdrawAmount').value = '';
-                    showNotification('🎉 Withdrawal successful! Check your FaucetPay account!');
-                } else {
-                    showNotification('❌ ' + (data.error || 'Withdrawal failed'), 'error');
-                }
-                
-                showLoading(false);
-                withdrawBtn.disabled = false;
-            } catch (error) {
-                showNotification('❌ Withdrawal error: ' + error.message, 'error');
-                showLoading(false);
-                withdrawBtn.disabled = false;
-            }
-        }
-
-        // ===========================
         // 🧭 NAVIGATION
         // ===========================
 
@@ -2287,10 +2615,13 @@
         // ===========================
 
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v5.1 - ENHANCED EDITION');
-            console.log('✅ Mining: 0.0002 TON with Adsterra Popunder');
-            console.log('✅ Lucky Wheel: Monetag Rewarded');
-            console.log('✅ Watch Simple: Monetag Popup');
+            console.log('🚀 TON REWARD DJDN v6.0 - PROFESSIONAL EDITION');
+            console.log('✅ Mining: Monetag Rewarded Interstitial');
+            console.log('✅ Watch Simple: Monetag Popup (5s cooldown)');
+            console.log('✅ Lucky Wheel: Monetag Rewarded (5s cooldown, 100/day)');
+            console.log('✅ Withdraw: 5 Monetag Rewarded ads required');
+            console.log('✝️ Christian-friendly - No Adsterra');
+            console.log('🎨 Professional UI/UX');
             loadUserData();
         });
     </script>
