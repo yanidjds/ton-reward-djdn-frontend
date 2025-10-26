@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Reward DJDN v5.0</title>
+    <title>TON Reward DJDN v5.1</title>
     
-   - PopAds Verification -->
-    <meta name="popads-verification-3613137" value="fd5f0cfedc71c1eadc0235cd6b1b67ed" />
-    
-    <!-- HilltopAds Verification (old) -->
+    <!-- HilltopAds Verification -->
     <meta name="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" content="13ff14fe6c874659c05a4d2d8a47172f5ccdfad4" />
     
     <!-- Telegram WebApp -->
@@ -763,6 +760,94 @@
             box-shadow: none;
         }
 
+        /* ✅ NOUVEAU: MODAL ADSTERRA */
+        .ad-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 4000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ad-modal-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .ad-modal-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
+        }
+
+        .ad-modal-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .ad-modal-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .ad-modal-buttons {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+        }
+
+        .ad-modal-btn {
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ad-modal-btn-primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
+        }
+
+        .ad-modal-btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .ad-modal-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ad-modal-btn-secondary:active {
+            transform: scale(0.97);
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -874,12 +959,12 @@
             <div class="mining-card">
                 <div class="mining-icon">⛏️</div>
                 <div class="mining-title">MINING TON</div>
-                <div class="mining-reward" id="miningReward">+0.005 TON</div>
+                <div class="mining-reward" id="miningReward">+0.0002 TON</div>
                 <div class="timer" id="miningTimer">Ready to mine!</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <button class="mine-button" id="mineButton" onclick="startMining()">
+                <button class="mine-button" id="mineButton" onclick="handleMiningButton()">
                     🚀 START MINING
                 </button>
             </div>
@@ -1002,7 +1087,7 @@
                     </div>
                 </div>
                 <div class="earn-option-desc">
-                    • Watch ads for <strong>Keys 🔑</strong><br>
+                    • Watch rewarded ads for <strong>Keys 🔑</strong><br>
                     • 1 ad = 1 Key (max <strong>50/day</strong>)<br>
                     • Spin wheel with Keys<br>
                     • Win up to <strong>0.000017 TON!</strong><br>
@@ -1222,6 +1307,25 @@
         </div>
     </div>
 
+    <!-- ✅ NOUVEAU: MODAL ADSTERRA -->
+    <div class="ad-modal" id="adModal">
+        <div class="ad-modal-content">
+            <div class="ad-modal-icon" id="adModalIcon">🎁</div>
+            <div class="ad-modal-title" id="adModalTitle">Watch Ad</div>
+            <div class="ad-modal-text" id="adModalText">
+                Please watch a short advertisement to continue.
+            </div>
+            <div class="ad-modal-buttons">
+                <button class="ad-modal-btn ad-modal-btn-primary" id="adModalBtnWatch">
+                    📺 WATCH AD & CONTINUE
+                </button>
+                <button class="ad-modal-btn ad-modal-btn-secondary" onclick="closeAdModal()">
+                    ❌ Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home')">
             <div class="nav-icon">🏠</div>
@@ -1260,9 +1364,7 @@
             BOT_USERNAME: 'TONRewardCrewBot',
             CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
-            SUPPORT_USERNAME: 'djdn_crew_support',
-            HILLTOPADS_ZONE_ID: 'PLACEHOLDER_ZONE_ID',
-            HILLTOPADS_URL: 'PLACEHOLDER_URL'
+            SUPPORT_USERNAME: 'djdn_crew_support'
         };
         
         // Telegram WebApp
@@ -1281,6 +1383,10 @@
         let resetTimersInterval = null;
         let monetagLoaded = false;
         let wheelSpinning = false;
+        let adsterraScriptLoaded = false;
+
+        // ✅ NOUVEAU: Variable pour le modal
+        let currentMiningAction = null; // 'start' ou 'claim'
 
         // Vérifier si Monetag SDK est chargé
         function checkMonetagSDK() {
@@ -1297,7 +1403,101 @@
             }, 1000);
         });
 
-        // Récupérer infos Telegram
+        // ===========================
+        // ✅ NOUVEAU: FONCTIONS ADSTERRA MODAL
+        // ===========================
+
+        function showAdModal(type) {
+            const modal = document.getElementById('adModal');
+            const icon = document.getElementById('adModalIcon');
+            const title = document.getElementById('adModalTitle');
+            const text = document.getElementById('adModalText');
+            const btnWatch = document.getElementById('adModalBtnWatch');
+
+            currentMiningAction = type;
+
+            if (type === 'start') {
+                icon.textContent = '⛏️';
+                title.textContent = 'Watch Ad to Start Mining';
+                text.textContent = 'Please watch a short advertisement to start your mining session.';
+                btnWatch.textContent = '📺 WATCH AD & START MINING';
+            } else if (type === 'claim') {
+                icon.textContent = '💰';
+                title.textContent = 'Watch Ad to Claim Reward';
+                text.textContent = 'Watch an ad to claim your 0.0002 TON reward!';
+                btnWatch.textContent = '📺 WATCH AD & CLAIM REWARD';
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeAdModal() {
+            const modal = document.getElementById('adModal');
+            modal.classList.remove('show');
+            currentMiningAction = null;
+        }
+
+        // ✅ NOUVEAU: Charger script Adsterra Popunder
+        function loadAdsterraPopunder() {
+            if (adsterraScriptLoaded) {
+                console.log('Adsterra script already loaded');
+                return Promise.resolve();
+            }
+
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = '//pl27909859.effectivegatecpm.com/e1/58/3e/e1583ed8fe411a73a73c99b0f6c0fb2c.js';
+                script.async = true;
+                
+                script.onload = () => {
+                    adsterraScriptLoaded = true;
+                    console.log('✅ Adsterra Popunder loaded');
+                    resolve();
+                };
+                
+                script.onerror = () => {
+                    console.error('❌ Failed to load Adsterra');
+                    reject(new Error('Adsterra load failed'));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+
+        // ✅ NOUVEAU: Handler du bouton "WATCH AD"
+        document.getElementById('adModalBtnWatch').onclick = async function() {
+            try {
+                showLoading(true);
+                
+                // Charger et ouvrir le popunder Adsterra
+                await loadAdsterraPopunder();
+                
+                // Attendre 2 secondes pour laisser la pub s'ouvrir
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Fermer le modal
+                closeAdModal();
+                
+                // Exécuter l'action appropriée
+                if (currentMiningAction === 'start') {
+                    await startMining();
+                } else if (currentMiningAction === 'claim') {
+                    await claimMining();
+                }
+                
+                showLoading(false);
+            } catch (error) {
+                showNotification('Ad error: ' + error.message, 'error');
+                showLoading(false);
+                closeAdModal();
+            }
+        };
+
+        // ===========================
+        // 👤 USER MANAGEMENT
+        // ===========================
+
         function getTelegramUser() {
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 telegramId = tg.initDataUnsafe.user.id;
@@ -1312,7 +1512,6 @@
             return { telegramId, username, firstName, referrerId: null };
         }
 
-        // Charger données utilisateur
         async function loadUserData() {
             try {
                 showLoading(true);
@@ -1455,10 +1654,35 @@
             return `${Math.floor(seconds / 86400)}d ago`;
         }
 
-        // Mining Functions
+        // ===========================
+        // ⛏️ MINING FUNCTIONS - MODIFIÉ
+        // ===========================
+
+        function handleMiningButton() {
+            if (!userData) return;
+
+            const now = Date.now();
+            
+            // Vérifier si mining en cours
+            if (userData.mining_start_time) {
+                const start = new Date(userData.mining_start_time).getTime();
+                const elapsed = now - start;
+                const duration = 3 * 60 * 60 * 1000; // 3 heures
+                
+                // Si mining terminé, montrer modal CLAIM
+                if (elapsed >= duration) {
+                    showAdModal('claim');
+                } else {
+                    showNotification('⏰ Mining in progress...', 'error');
+                }
+            } else {
+                // Pas de mining en cours, montrer modal START
+                showAdModal('start');
+            }
+        }
+
         async function startMining() {
             try {
-                showLoading(true);
                 const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/start`, {
                     method: 'POST'
                 });
@@ -1472,10 +1696,29 @@
                 } else {
                     showNotification(data.error, 'error');
                 }
-                showLoading(false);
             } catch (error) {
                 showNotification('Mining error: ' + error.message, 'error');
-                showLoading(false);
+            }
+        }
+
+        async function claimMining() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data;
+                    updateUI();
+                    showNotification('🎉 +0.0002 TON claimed!');
+                    clearInterval(miningInterval);
+                    startMiningCheck();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                showNotification('Claim error: ' + error.message, 'error');
             }
         }
 
@@ -1498,7 +1741,10 @@
                 const remaining = duration - elapsed;
 
                 if (remaining <= 0) {
-                    claimMining();
+                    document.getElementById('mineButton').disabled = false;
+                    document.getElementById('mineButton').textContent = '💰 CLAIM REWARD';
+                    document.getElementById('miningTimer').textContent = '✅ Ready to claim!';
+                    document.getElementById('progressFill').style.width = '100%';
                 } else {
                     const hours = Math.floor(remaining / 3600000);
                     const minutes = Math.floor((remaining % 3600000) / 60000);
@@ -1515,31 +1761,10 @@
             }, 1000);
         }
 
-        async function claimMining() {
-            try {
-                showLoading(true);
-                const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                
-                if (response.ok) {
-                    userData = data;
-                    updateUI();
-                    showNotification('🎉 +0.005 TON claimed!');
-                    clearInterval(miningInterval);
-                    startMiningCheck();
-                } else {
-                    showNotification(data.error, 'error');
-                }
-                showLoading(false);
-            } catch (error) {
-                showNotification('Claim error: ' + error.message, 'error');
-                showLoading(false);
-            }
-        }
+        // ===========================
+        // 📺 WATCH SIMPLE ADS (Monetag Popup)
+        // ===========================
 
-        // Watch Simple Ads (Monetag)
         async function watchSimpleAd() {
             if (!userData) return;
             
@@ -1619,7 +1844,10 @@
             }, 1000);
         }
 
-        // Watch For Keys (HilltopAds)
+        // ===========================
+        // 🔑 WATCH FOR KEYS (Monetag Rewarded) - MODIFIÉ
+        // ===========================
+
         async function watchForKey() {
             if (!userData) return;
             
@@ -1638,16 +1866,16 @@
                 }
             }
 
-            if (CONFIG.HILLTOPADS_ZONE_ID === 'PLACEHOLDER_ZONE_ID') {
-                showNotification('⚠️ HilltopAds not configured yet', 'error');
-                console.log('HilltopAds Integration Required - Waiting for approval');
+            if (!checkMonetagSDK()) {
+                showNotification('⚠️ Ad system loading, please wait...', 'error');
                 return;
             }
 
             try {
                 showLoading(true);
 
-                setTimeout(async () => {
+                // ✅ MODIFIÉ: Utiliser Monetag Rewarded au lieu de HilltopAds
+                show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/earn/watch-for-key/${userData.telegram_id}`, {
                             method: 'POST'
@@ -1667,7 +1895,10 @@
                     }
                     
                     showLoading(false);
-                }, 1000);
+                }).catch((error) => {
+                    showNotification('Please watch the ad completely', 'error');
+                    showLoading(false);
+                });
 
             } catch (error) {
                 showNotification('Ad error: ' + error.message, 'error');
@@ -1697,7 +1928,10 @@
             }, 1000);
         }
 
-        // Lucky Wheel Initialization
+        // ===========================
+        // 🎰 LUCKY WHEEL
+        // ===========================
+
         function initWheel() {
             const canvas = document.getElementById('wheelCanvas');
             if (!canvas) return;
@@ -1753,7 +1987,6 @@
             window.drawWheel = drawWheel;
         }
 
-        // Spin Wheel
         async function spinWheel() {
             if (wheelSpinning) return;
             
@@ -1830,7 +2063,10 @@
             }
         }
 
-        // Reset Timers (UTC)
+        // ===========================
+        // 🕐 RESET TIMERS
+        // ===========================
+
         function startResetTimers() {
             if (resetTimersInterval) clearInterval(resetTimersInterval);
             
@@ -1860,7 +2096,10 @@
             }, 1000);
         }
 
-        // Tasks
+        // ===========================
+        // 📋 TASKS
+        // ===========================
+
         async function handleTask(taskType) {
             const btnId = taskType === 'join_channel' ? 'taskButton1' : 'taskButton2';
             const btn = document.getElementById(btnId);
@@ -1921,7 +2160,10 @@
             }
         }
 
-        // Copy invite link
+        // ===========================
+        // 👥 INVITE
+        // ===========================
+
         function copyInviteLink() {
             const link = document.getElementById('inviteLink').textContent;
             navigator.clipboard.writeText(link).then(() => {
@@ -1929,7 +2171,10 @@
             });
         }
 
-        // Withdraw - CORRIGÉ
+        // ===========================
+        // 💰 WITHDRAW
+        // ===========================
+
         async function handleWithdraw() {
             const email = document.getElementById('faucetpayEmail').value.trim();
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -1990,7 +2235,10 @@
             }
         }
 
-        // Navigation
+        // ===========================
+        // 🧭 NAVIGATION
+        // ===========================
+
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -2016,7 +2264,10 @@
             }
         }
 
-        // Notifications
+        // ===========================
+        // 🔔 NOTIFICATIONS
+        // ===========================
+
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -2026,15 +2277,20 @@
             }, 3000);
         }
 
-        // Loading
         function showLoading(show) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.toggle('show', show);
         }
 
-        // Init
+        // ===========================
+        // 🚀 INITIALIZATION
+        // ===========================
+
         window.addEventListener('load', () => {
-            console.log('🚀 TON Reward DJDN v5.0 - CORRECTED & SECURED');
+            console.log('🚀 TON Reward DJDN v5.1 - ENHANCED EDITION');
+            console.log('✅ Mining: 0.0002 TON with Adsterra Popunder');
+            console.log('✅ Lucky Wheel: Monetag Rewarded');
+            console.log('✅ Watch Simple: Monetag Popup');
             loadUserData();
         });
     </script>
