@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Reward DJDN v6.0 - Professional Edition</title>
+    <title>TON Reward DJDN v7.0 - Gamification Edition</title>
     
     <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -71,6 +71,14 @@
             font-weight: bold;
             font-size: 16px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-level {
+            font-size: 12px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .balance-container {
@@ -171,6 +179,213 @@
         }
 
         /* ===========================
+           🎮 LEVEL CARD
+        =========================== */
+
+        .level-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-icon {
+            font-size: 50px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+
+        .level-info h3 {
+            font-size: 24px;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .level-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .xp-progress {
+            margin: 15px 0;
+        }
+
+        .xp-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .xp-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            background-size: 200% 100%;
+            transition: width 0.5s ease;
+            animation: shimmer 2s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .level-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .benefit-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .benefit-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 4px;
+        }
+
+        .benefit-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===========================
+           🔥 STREAK CARD
+        =========================== */
+
+        .streak-card {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.25) 0%, rgba(255, 87, 34, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .streak-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .streak-count {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .streak-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+        }
+
+        .streak-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .day-box {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .day-box.completed {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
+
+        .day-box.today {
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        .streak-reward {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .streak-reward-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .streak-reward-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .claim-streak-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.6);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .claim-streak-btn:active {
+            transform: scale(0.98);
+        }
+
+        .claim-streak-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* ===========================
            ⛏️ MINING CARD STYLES
         =========================== */
 
@@ -263,11 +478,6 @@
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
         }
 
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
         .mine-button {
             width: 100%;
             padding: 20px;
@@ -356,6 +566,511 @@
             font-size: 15px;
             font-weight: bold;
             color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* ===========================
+           🏆 ACHIEVEMENTS STYLES
+        =========================== */
+
+        .achievements-summary {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 237, 78, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+
+        .achievements-count {
+            font-size: 50px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+        }
+
+        .achievements-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card.unlocked {
+            border-color: #ffd700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .achievement-icon {
+            font-size: 40px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        .achievement-info h3 {
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .achievement-info p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .achievement-progress {
+            margin-top: 12px;
+        }
+
+        .achievement-progress-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 6px;
+        }
+
+        .achievement-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .achievement-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.5s ease;
+        }
+
+        .achievement-reward {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .achievement-reward span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #ffd700;
+        }
+
+        /* ===========================
+           🎲 MINI-GAMES STYLES
+        =========================== */
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .game-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .game-icon {
+            font-size: 50px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+
+        .game-info h3 {
+            font-size: 22px;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .game-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .game-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .game-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Coin Flip Specific */
+        .coin-container {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .coin {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
+            animation: coin-idle 2s ease-in-out infinite;
+        }
+
+        @keyframes coin-idle {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+        }
+
+        @keyframes coin-flip {
+            0% { transform: rotateY(0deg) translateY(0); }
+            50% { transform: rotateY(900deg) translateY(-50px); }
+            100% { transform: rotateY(1800deg) translateY(0); }
+        }
+
+        .coin.flipping {
+            animation: coin-flip 2s ease-in-out;
+        }
+
+        .bet-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .bet-button {
+            padding: 15px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bet-button.active {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            border-color: #ffd700;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .choice-button {
+            flex: 1;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .choice-button.selected {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            border-color: #4CAF50;
+        }
+
+        /* Scratch Card */
+        .scratch-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin: 30px auto;
+        }
+
+        .scratch-card {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scratch-card:hover {
+            transform: scale(1.05);
+        }
+
+        .scratch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, silver, #ccc);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Treasure Hunt */
+        .treasure-map {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .treasure-spot {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius:20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .treasure-spot:hover {
+            transform: scale(1.05);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .treasure-spot.found {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            animation: treasure-found 0.5s ease;
+        }
+
+        @keyframes treasure-found {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .treasure-spot.empty {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ===========================
+           🏅 LEADERBOARD STYLES
+        =========================== */
+
+        .leaderboard-header {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 237, 78, 0.25) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+
+        .leaderboard-title {
+            font-size: 28px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .leaderboard-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #ffd700;
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .leaderboard-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item.top-3 {
+            border-color: #ffd700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .leaderboard-rank {
+            font-size: 24px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .leaderboard-rank.gold {
+            color: #FFD700;
+        }
+
+        .leaderboard-rank.silver {
+            color: #C0C0C0;
+        }
+
+        .leaderboard-rank.bronze {
+            color: #CD7F32;
+        }
+
+        .leaderboard-user {
+            flex: 1;
+        }
+
+        .leaderboard-username {
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 4px;
+        }
+
+        .leaderboard-level {
+            font-size: 13px;
+            color: #ffd700;
+        }
+
+        .leaderboard-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .leaderboard-prizes {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .leaderboard-prizes h3 {
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .prize-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prize-item:last-child {
+            border-bottom: none;
         }
 
         /* ===========================
@@ -942,7 +1657,6 @@
             font-weight: bold;
         }
 
-        /* ✅ NOUVEAU: WITHDRAW UNLOCK SECTION */
         .withdraw-unlock-section {
             background: rgba(255, 152, 0, 0.15);
             border: 2px solid rgba(255, 152, 0, 0.6);
@@ -1002,17 +1716,6 @@
             color: rgba(255, 255, 255, 0.5);
             cursor: not-allowed;
             box-shadow: none;
-        }
-
-        .unlock-status {
-            background: rgba(76, 175, 80, 0.2);
-            border: 2px solid rgba(76, 175, 80, 0.5);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #4CAF50;
         }
 
         .form-group {
@@ -1194,6 +1897,203 @@
         }
 
         /* ===========================
+           🎊 LEVEL UP MODAL
+        =========================== */
+
+        .level-up-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .level-up-modal.show {
+            display: flex;
+        }
+
+        .level-up-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 90%;
+            border: 3px solid #ffd700;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: levelUpBounce 0.6s ease;
+        }
+
+        @keyframes levelUpBounce {
+            0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .level-up-icon {
+            font-size: 120px;
+            margin-bottom: 20px;
+            animation: levelUpIconSpin 1s ease;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes levelUpIconSpin {
+            0% { transform: rotateY(0deg) scale(0.5); }
+            100% { transform: rotateY(720deg) scale(1); }
+        }
+
+        .level-up-title {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .level-up-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 30px;
+        }
+
+        .level-up-benefits {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .level-up-benefits h3 {
+            font-size: 20px;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .level-up-benefits p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin: 8px 0;
+        }
+
+        .level-up-close {
+            padding: 18px 50px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .level-up-close:active {
+            transform: scale(0.95);
+        }
+
+        /* ===========================
+           🎉 ACHIEVEMENT UNLOCK MODAL
+        =========================== */
+
+        .achievement-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .achievement-modal.show {
+            display: flex;
+        }
+
+        .achievement-modal-content {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.9) 0%, rgba(255, 237, 78, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 90%;
+            border: 3px solid #fff;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: achievementBounce 0.6s ease;
+        }
+
+        @keyframes achievementBounce {
+            0% { transform: scale(0.3) translateY(-100px); opacity: 0; }
+            50% { transform: scale(1.1) translateY(10px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .achievement-modal-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: achievementIconFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes achievementIconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .achievement-modal-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .achievement-modal-desc {
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 25px;
+        }
+
+        .achievement-modal-reward {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            color: white;
+        }
+
+        .achievement-modal-reward p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .achievement-modal-close {
+            padding: 18px 50px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-modal-close:active {
+            transform: scale(0.95);
+        }
+
+        /* ===========================
            📱 RESPONSIVE DESIGN
         =========================== */
 
@@ -1204,6 +2104,8 @@
             .action-icon { font-size: 38px; }
             .earn-option-icon { font-size: 48px; width: 65px; height: 65px; }
             .wheel-container { width: 300px; height: 300px; }
+            .level-up-icon { font-size: 90px; }
+            .level-up-title { font-size: 32px; }
         }
     </style>
 </head>
@@ -1214,6 +2116,10 @@
             <div class="avatar">👤</div>
             <div>
                 <div class="username" id="username">Loading...</div>
+                <div class="user-level">
+                    <span id="userLevelIcon">🥉</span>
+                    <span id="userLevelName">Bronze</span>
+                </div>
             </div>
         </div>
         <div class="balance-container">
@@ -1226,6 +2132,59 @@
              🏠 PAGE HOME
         =========================== -->
         <div class="page active" id="page-home">
+            <!-- Level Card -->
+            <div class="level-card">
+                <div class="level-header">
+                    <div class="level-icon" id="levelIcon">🥉</div>
+                    <div class="level-info">
+                        <h3 id="levelName">Bronze Member</h3>
+                        <p>Level <span id="levelNumber">1</span></p>
+                    </div>
+                </div>
+                <div class="xp-progress">
+                    <div class="xp-text">
+                        <span><span id="currentXP">0</span> XP</span>
+                        <span>Next: <span id="nextLevelXP">1,000</span> XP</span>
+                    </div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="level-benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-value" id="miningBonus">+0%</div>
+                        <div class="benefit-label">Mining</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-value" id="cooldownTime">5s</div>
+                        <div class="benefit-label">Cooldown</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-value" id="rewardsBonus">+0%</div>
+                        <div class="benefit-label">Rewards</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Card -->
+            <div class="streak-card">
+                <div class="streak-header">
+                    <div class="streak-count">🔥 <span id="streakCount">0</span></div>
+                    <div class="streak-label">Day Streak</div>
+                </div>
+                <div class="streak-calendar" id="streakCalendar">
+                    <!-- Will be populated by JS -->
+                </div>
+                <div class="streak-reward">
+                    <div class="streak-reward-text">Tomorrow's Reward:</div>
+                    <div class="streak-reward-value" id="nextStreakReward">+0.00001 TON + 10 XP</div>
+                </div>
+                <button class="claim-streak-btn" id="claimStreakBtn" onclick="claimDailyStreak()">
+                    🔥 CLAIM DAILY REWARD
+                </button>
+            </div>
+
+            <!-- Mining Card -->
             <div class="mining-card">
                 <div class="mining-icon">⛏️</div>
                 <div class="mining-title">MINING TON</div>
@@ -1239,22 +2198,296 @@
                 </button>
             </div>
 
+            <!-- Quick Actions -->
             <div class="quick-actions">
-                <div class="action-card" onclick="showPage('tasks')">
-                    <div class="action-icon">📋</div>
-                    <div class="action-title">Tasks</div>
+                <div class="action-card" onclick="showPage('achievements')">
+                    <div class="action-icon">🏆</div>
+                    <div class="action-title">Achievements</div>
                 </div>
-                <div class="action-card" onclick="showPage('invite')">
-                    <div class="action-icon">👥</div>
-                    <div class="action-title">Invite</div>
+                <div class="action-card" onclick="showPage('minigames')">
+                    <div class="action-icon">🎲</div>
+                    <div class="action-title">Mini-Games</div>
+                </div>
+                <div class="action-card" onclick="showPage('leaderboard')">
+                    <div class="action-icon">🏅</div>
+                    <div class="action-title">Leaderboard</div>
                 </div>
                 <div class="action-card" onclick="showPage('earn')">
                     <div class="action-icon">📺</div>
                     <div class="action-title">EARN</div>
                 </div>
-                <div class="action-card" onclick="showPage('withdraw')">
-                    <div class="action-icon">💰</div>
-                    <div class="action-title">Withdraw</div>
+            </div>
+        </div>
+
+        <!-- ===========================
+             🏆 PAGE ACHIEVEMENTS
+        =========================== -->
+        <div class="page" id="page-achievements">
+            <div class="page-header">
+                <h2>🏆 Achievements</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="achievements-summary">
+                <div class="achievements-count"><span id="achievementsUnlocked">0</span>/<span id="achievementsTotal">30</span></div>
+                <div class="achievements-label">Achievements Unlocked</div>
+            </div>
+
+            <div class="category-tabs" id="categoryTabs">
+                <div class="category-tab active" onclick="filterAchievements('all')">All</div>
+                <div class="category-tab" onclick="filterAchievements('beginner')">🌟 Beginner</div>
+                <div class="category-tab" onclick="filterAchievements('intermediate')">⭐ Intermediate</div>
+                <div class="category-tab" onclick="filterAchievements('expert')">💎 Expert</div>
+                <div class="category-tab" onclick="filterAchievements('legendary')">🔥 Legendary</div>
+            </div>
+
+            <div id="achievementsList">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+
+        <!-- ===========================
+             🎲 PAGE MINI-GAMES
+        =========================== -->
+        <div class="page" id="page-minigames">
+            <div class="page-header">
+                <h2>🎲 Mini-Games</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="game-card" onclick="showPage('coinflip')">
+                <div class="game-header">
+                    <div class="game-icon">🪙</div>
+                    <div class="game-info">
+                        <h3>Coin Flip</h3>
+                        <p>Bet Keys and double your winnings!</p>
+                    </div>
+                </div>
+                <div class="game-button">🎮 PLAY COIN FLIP</div>
+            </div>
+
+            <div class="game-card" onclick="showPage('scratchcard')">
+                <div class="game-header">
+                    <div class="game-icon">🎫</div>
+                    <div class="game-info">
+                        <h3>Scratch Cards</h3>
+                        <p>Win up to 0.001 TON! Cost: 5 Keys</p>
+                    </div>
+                </div>
+                <div class="game-button">🎮 PLAY SCRATCH CARDS</div>
+            </div>
+
+            <div class="game-card" onclick="showPage('treasure')">
+                <div class="game-header">
+                    <div class="game-icon">🗺️</div>
+                    <div class="game-info">
+                        <h3>Treasure Hunt</h3>
+                        <p>Find 5 daily treasures! Reset every 24h</p>
+                    </div>
+                </div>
+                <div class="game-button">🎮 START TREASURE HUNT</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="coinFlipWins">0</div>
+                    <div class="stat-label">Coin Flip Wins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="scratchCardsPlayed">0</div>
+                    <div class="stat-label">Scratch Cards</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="treasuresFound">0</div>
+                    <div class="stat-label">Treasures Found</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="userKeys">0</div>
+                    <div class="stat-label">Keys Available</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===========================
+             🪙 PAGE COIN FLIP
+        =========================== -->
+        <div class="page" id="page-coinflip">
+            <div class="page-header">
+                <div class="back-button" onclick="showPage('minigames')">◄</div>
+                <h2>🪙 Coin Flip</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="mining-card coin-container">
+                <div class="coin" id="flipCoin">🪙</div>
+                
+                <div class="bet-controls">
+                    <button class="bet-button active" onclick="selectBet(1)">1 Key</button>
+                    <button class="bet-button" onclick="selectBet(5)">5 Keys</button>
+                    <button class="bet-button" onclick="selectBet(10)">10 Keys</button>
+                    <button class="bet-button" onclick="selectBet(50)">50 Keys</button>
+                </div>
+
+                <div class="choice-buttons">
+                    <button class="choice-button selected" id="headsBtn" onclick="selectChoice('heads')">
+                        🌟 HEADS
+                    </button>
+                    <button class="choice-button" id="tailsBtn" onclick="selectChoice('tails')">
+                        ⭐ TAILS
+                    </button>
+                </div>
+
+                <button class="mine-button" onclick="playCoinFlip()">
+                    🎲 FLIP COIN
+                </button>
+
+                <p style="margin-top: 15px; text-align: center; color: rgba(255,255,255,0.8);">
+                    Win: Double your Keys! | Lose: Lose your bet
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="coinFlipWinsDisplay">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="coinFlipLosses">0</div>
+                    <div class="stat-label">Losses</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===========================
+             🎫 PAGE SCRATCH CARD
+        =========================== -->
+        <div class="page" id="page-scratchcard">
+            <div class="page-header">
+                <div class="back-button" onclick="showPage('minigames')">◄</div>
+                <h2>🎫 Scratch Cards</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="mining-card">
+                <div class="scratch-card-container">
+                    <div class="scratch-card" id="scratchCard">
+                        <span id="scratchResult">❓</span>
+                    </div>
+                </div>
+
+                <p style="text-align: center; font-size: 16px; margin: 20px 0;">
+                    <strong>Cost: 5 Keys per card</strong>
+                </p>
+
+                <p style="text-align: center; font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 20px;">
+                    Prizes:<br>
+                    🍒🍒🍒 = 0.00001 TON | 🍋🍋🍋 = 0.00003 TON<br>
+                    💎💎💎 = 0.0001 TON | 💰💰💰 = 0.001 TON (RARE!)
+                </p>
+
+                <button class="mine-button" onclick="playScratchCard()">
+                    🎫 BUY & SCRATCH (5 Keys)
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="scratchCardsPlayedDisplay">0</div>
+                    <div class="stat-label">Cards Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="scratchTotalWon">0.000000</div>
+                    <div class="stat-label">Total Won</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===========================
+             🗺️ PAGE TREASURE HUNT
+        =========================== -->
+        <div class="page" id="page-treasure">
+            <div class="page-header">
+                <div class="back-button" onclick="showPage('minigames')">◄</div>
+                <h2>🗺️ Treasure Hunt</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="mining-card">
+                <p style="text-align: center; font-size: 18px; margin-bottom: 20px;">
+                    Find hidden treasures!<br>
+                    <strong style="color: #ffd700;"><span id="treasuresFoundToday">0</span>/5 found today</strong>
+                </p>
+
+                <div class="treasure-map" id="treasureMap">
+                    <!-- 9 treasure spots -->
+                    <div class="treasure-spot" onclick="findTreasure(0)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(1)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(2)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(3)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(4)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(5)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(6)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(7)">❓</div>
+                    <div class="treasure-spot" onclick="findTreasure(8)">❓</div>
+                </div>
+
+                <p style="text-align: center; font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 20px;">
+                    Treasures:<br>
+                    🪙 Bronze: +10 XP | 🥈 Silver: +0.00001 TON + 1 Key<br>
+                    🥇 Gold: +0.00005 TON + 5 Keys | 💎 Diamond: +0.0001 TON + 10 Keys<br>
+                    🏆 Legendary: +0.001 TON + 50 Keys (RARE!)
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="treasuresFindTodayDisplay">0</div>
+                    <div class="stat-label">Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="treasuresTotalFound">0</div>
+                    <div class="stat-label">Total Found</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===========================
+             🏅 PAGE LEADERBOARD
+        =========================== -->
+        <div class="page" id="page-leaderboard">
+            <div class="page-header">
+                <h2>🏅 Leaderboard</h2>
+                <a href="https://t.me/djdn_crew_support" target="_blank" class="support-btn">💬</a>
+            </div>
+
+            <div class="leaderboard-header">
+                <div class="leaderboard-title">Monthly Rankings</div>
+                <div class="leaderboard-subtitle">October 2025</div>
+            </div>
+
+            <div class="leaderboard-filters">
+                <button class="filter-button active" onclick="filterLeaderboard('xp')">⭐ By XP</button>
+                <button class="filter-button" onclick="filterLeaderboard('earnings')">💰 By Earnings</button>
+                <button class="filter-button" onclick="filterLeaderboard('ads')">📺 By Ads</button>
+            </div>
+
+            <div class="leaderboard-list" id="leaderboardList">
+                <!-- Will be populated by JS -->
+            </div>
+
+            <div class="leaderboard-prizes">
+                <h3>🎁 Monthly Prizes</h3>
+                <div class="prize-item">
+                    <span>🥇 1st Place</span>
+                    <span>+0.005 TON + Badge</span>
+                </div>
+                <div class="prize-item">
+                    <span>🥈 2nd-5th Place</span>
+                    <span>+0.002 TON</span>
+                </div>
+                <div class="prize-item">
+                    <span>🥉 6th-10th Place</span>
+                    <span>+0.001 TON</span>
                 </div>
             </div>
         </div>
@@ -1272,7 +2505,7 @@
                 <div class="task-icon">📢</div>
                 <div class="task-info">
                     <div class="task-title">Join our channel</div>
-                    <div class="task-reward">+0.0001 TON</div>
+                    <div class="task-reward">+0.0001 TON + 100 XP</div>
                 </div>
                 <button class="task-button" id="taskButton1" onclick="handleTask('join_channel')">Join</button>
             </div>
@@ -1281,7 +2514,7 @@
                 <div class="task-icon">💸</div>
                 <div class="task-info">
                     <div class="task-title">Join withdraw proofs</div>
-                    <div class="task-reward">+0.0001 TON</div>
+                    <div class="task-reward">+0.0001 TON + 100 XP</div>
                 </div>
                 <button class="task-button" id="taskButton2" onclick="handleTask('join_withdraw_channel')">Join</button>
             </div>
@@ -1300,7 +2533,7 @@
                 <p><strong>How it works:</strong></p>
                 <p>• Invite new users to the app</p>
                 <p>• They must open the app to validate</p>
-                <p>• You earn <strong>0.00035 TON</strong> per validated friend!</p>
+                <p>• You earn <strong>0.00035 TON + 200 XP</strong> per validated friend!</p>
             </div>
 
             <div class="invite-link-box">
@@ -1316,6 +2549,14 @@
                 <div class="stat-card">
                     <div class="stat-value" id="inviteEarnings">0.00000</div>
                     <div class="stat-label">Earned (TON)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="inviteXP">0</div>
+                    <div class="stat-label">XP Earned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="inviteRank">-</div>
+                    <div class="stat-label">Referral Rank</div>
                 </div>
             </div>
         </div>
@@ -1337,9 +2578,9 @@
                     </div>
                 </div>
                 <div class="earn-option-desc">
-                    • Earn <strong>0.000012 TON</strong> per ad<br>
+                    • Earn <strong>0.000012 TON + 10 XP</strong> per ad<br>
                     • Limit: <strong>200 ads/day</strong><br>
-                    • Cooldown: <strong>5 seconds</strong> ⚡<br>
+                    • Cooldown: <strong><span id="watchSimpleCooldownDisplay">5s</span></strong> ⚡<br>
                     • Direct rewards to balance
                 </div>
                 <div class="earn-option-stats">
@@ -1364,10 +2605,10 @@
                 </div>
                 <div class="earn-option-desc">
                     • Watch rewarded ads for <strong>Keys 🔑</strong><br>
-                    • 1 ad = 1 Key (max <strong>100/day</strong>) 🎁<br>
-                    • Cooldown: <strong>5 seconds</strong> ⚡<br>
+                    • 1 ad = 1 Key + 10 XP (max <strong>100/day</strong>) 🎁<br>
+                    • Cooldown: <strong><span id="keysAdsCooldownDisplay">5s</span></strong> ⚡<br>
                     • Spin wheel with Keys<br>
-                    • Win up to <strong>0.000017 TON!</strong><br>
+                    • Win up to <strong>0.000017 TON + 5 XP!</strong><br>
                     • ⚠️ <strong>Keys reset at midnight!</strong>
                 </div>
                 <div class="earn-option-stats">
@@ -1398,6 +2639,9 @@
                 <div class="mining-icon">📺</div>
                 <div class="mining-title">SIMPLE REWARDS</div>
                 <div class="reward-display">+0.000012 TON</div>
+                <div style="text-align: center; color: #4CAF50; font-size: 16px; font-weight: bold; margin: 10px 0;">
+                    +10 XP per ad
+                </div>
                 <div class="progress-text">
                     <strong id="watchSimpleProgress">0/200</strong> ads watched today
                 </div>
@@ -1449,6 +2693,9 @@
             </div>
 
             <div class="mining-card">
+                <div style="text-align: center; color: #4CAF50; font-size: 16px; font-weight: bold; margin-bottom: 15px;">
+                    +10 XP per ad
+                </div>
                 <div class="progress-text">
                     <strong id="keysAdsProgress">0/100</strong> ads watched for Keys
                 </div>
@@ -1525,7 +2772,7 @@
             <button class="spin-button" id="spinButton" onclick="spinWheel()">
                 🎲 SPIN THE WHEEL
             </button>
-            <div class="cooldown-display">Cost: 1 Key per spin</div>
+            <div class="cooldown-display">Cost: 1 Key per spin | +5 XP per spin</div>
 
             <div class="spin-history">
                 <h3>🏆 Last 5 Spins</h3>
@@ -1567,7 +2814,6 @@
                 <p>• Enter your FaucetPay registered email</p>
             </div>
 
-            <!-- ✅ NOUVEAU: WITHDRAW UNLOCK SECTION -->
             <div class="withdraw-unlock-section" id="withdrawUnlockSection">
                 <div class="unlock-title">🔓 Unlock Withdrawal</div>
                 <div class="unlock-progress" id="unlockProgress">0/5</div>
@@ -1639,6 +2885,42 @@
         <div class="loader"></div>
     </div>
 
+    <!-- LEVEL UP MODAL -->
+    <div class="level-up-modal" id="levelUpModal">
+        <div class="level-up-content">
+            <div class="level-up-icon" id="levelUpIcon">🥈</div>
+            <div class="level-up-title">LEVEL UP!</div>
+            <div class="level-up-subtitle">
+                You reached <span id="levelUpName">Silver</span>!
+            </div>
+            <div class="level-up-benefits">
+                <h3>🎁 New Benefits Unlocked:</h3>
+                <p id="levelUpBenefits">
+                    <!-- Will be populated by JS -->
+                </p>
+            </div>
+            <button class="level-up-close" onclick="closeLevelUpModal()">
+                🎉 AWESOME!
+            </button>
+        </div>
+    </div>
+
+    <!-- ACHIEVEMENT UNLOCK MODAL -->
+    <div class="achievement-modal" id="achievementModal">
+        <div class="achievement-modal-content">
+            <div class="achievement-modal-icon" id="achievementModalIcon">🏆</div>
+            <div class="achievement-modal-title" id="achievementModalTitle">Achievement Unlocked!</div>
+            <div class="achievement-modal-desc" id="achievementModalDesc">Description here</div>
+            <div class="achievement-modal-reward">
+                <p>🎁 Rewards:</p>
+                <p id="achievementModalReward">+0.0001 TON + 200 XP</p>
+            </div>
+            <button class="achievement-modal-close" onclick="closeAchievementModal()">
+                ✅ CLAIM REWARD
+            </button>
+        </div>
+    </div>
+
     <!-- ===========================
          🚀 JAVASCRIPT CODE
     =========================== -->
@@ -1671,6 +2953,12 @@
         let resetTimersInterval = null;
         let monetagLoaded = false;
         let wheelSpinning = false;
+
+        // Mini-games state
+        let coinFlipBet = 1;
+        let coinFlipChoice = 'heads';
+        let scratchTotalWon = 0;
+        let treasureSpots = [];
 
         // Vérifier si Monetag SDK est chargé
         function checkMonetagSDK() {
@@ -1722,6 +3010,7 @@
                 startMiningCheck();
                 startResetTimers();
                 initWheel();
+                initTreasureMap();
                 showLoading(false);
             } catch (error) {
                 showNotification('Connection error: ' + error.message, 'error');
@@ -1746,6 +3035,7 @@
                 startMiningCheck();
                 startResetTimers();
                 initWheel();
+                initTreasureMap();
                 showLoading(false);
             } catch (error) {
                 showNotification('Account creation error', 'error');
@@ -1754,11 +3044,54 @@
         }
 
         function updateUI() {
+            // Header
             document.getElementById('username').textContent = userData.first_name || userData.username;
             document.getElementById('balance').textContent = userData.balance.toFixed(6) + ' TON';
+            
+            // Level Info
+            const levelInfo = userData.level_info || calculateLevelInfo(userData.xp || 0);
+            document.getElementById('userLevelIcon').textContent = levelInfo.current_level_icon;
+            document.getElementById('userLevelName').textContent = levelInfo.current_level_name;
+            document.getElementById('levelIcon').textContent = levelInfo.current_level_icon;
+            document.getElementById('levelName').textContent = levelInfo.current_level_name + ' Member';
+            document.getElementById('levelNumber').textContent = levelInfo.current_level;
+            document.getElementById('currentXP').textContent = levelInfo.xp_current;
+            document.getElementById('nextLevelXP').textContent = levelInfo.xp_for_next_level === 'MAX' ? 'MAX' : levelInfo.xp_for_next_level;
+            document.getElementById('xpFill').style.width = levelInfo.xp_progress_percent + '%';
+            
+            // Level Benefits
+            const benefits = levelInfo.benefits;
+            document.getElementById('miningBonus').textContent = benefits.mining_bonus;
+            document.getElementById('cooldownTime').textContent = benefits.cooldown;
+            document.getElementById('rewardsBonus').textContent = benefits.rewards_bonus;
+            
+            // Update cooldown displays
+            document.getElementById('watchSimpleCooldownDisplay').textContent = benefits.cooldown;
+            document.getElementById('keysAdsCooldownDisplay').textContent = benefits.cooldown;
+            
+            // Streak
+            updateStreakUI();
+            
+            // Mining reward with level bonus
+            const baseMiningReward = 0.0002;
+            const miningMultiplier = parseFloat(benefits.mining_bonus.replace('+', '').replace('%', '')) / 100 + 1;
+            const finalMiningReward = baseMiningReward * miningMultiplier;
+            document.getElementById('miningReward').textContent = `+${finalMiningReward.toFixed(6)} TON`;
+            
+            // Invite
             document.getElementById('inviteLink').textContent = `https://t.me/${CONFIG.BOT_USERNAME}?start=${userData.telegram_id}`;
             document.getElementById('inviteCount').textContent = userData.invitations_count || 0;
             document.getElementById('inviteEarnings').textContent = ((userData.invitations_count || 0) * 0.00035).toFixed(5);
+            document.getElementById('inviteXP').textContent = ((userData.invitations_count || 0) * 200);
+            
+            // Referral rank
+            const invites = userData.invitations_count || 0;
+            let rank = '-';
+            if (invites >= 20) rank = '👑 King';
+            else if (invites >= 10) rank = '⭐ Pro';
+            else if (invites >= 5) rank = '🥇 Gold';
+            else if (invites >= 1) rank = '🥈 Silver';
+            document.getElementById('inviteRank').textContent = rank;
             
             // Watch Simple Stats
             const watchSimpleToday = userData.ads_watch_simple_today || 0;
@@ -1775,7 +3108,7 @@
             const watchSimpleProgress = (watchSimpleToday / 200) * 100;
             document.getElementById('watchSimpleProgressBar').style.width = watchSimpleProgress + '%';
             
-            // Lucky Wheel Stats - ✅ MODIFIÉ: 50 → 100
+            // Lucky Wheel Stats
             const keysCurrent = userData.keys_current || 0;
             const keysAdsToday = userData.ads_for_keys_today || 0;
             const keysTotalAds = userData.ads_for_keys_total || 0;
@@ -1792,13 +3125,25 @@
             document.getElementById('keysTotalAds').textContent = keysTotalAds;
             document.getElementById('totalSpins').textContent = wheelTotalSpins;
             document.getElementById('wheelEarnings').textContent = wheelEarnings.toFixed(6);
+            document.getElementById('userKeys').textContent = keysCurrent;
             
             const keysProgress = (keysAdsToday / 100) * 100;
             document.getElementById('keysProgressBar').style.width = keysProgress + '%';
             
-            // ✅ NOUVEAU: Withdraw Unlock Stats
+            // Withdraw Unlock Stats
             const withdrawAdsWatched = userData.withdraw_ads_watched_current || 0;
             updateWithdrawUnlockUI(withdrawAdsWatched);
+            
+            // Mini-games stats
+            document.getElementById('coinFlipWins').textContent = userData.coin_flip_wins || 0;
+            document.getElementById('coinFlipWinsDisplay').textContent = userData.coin_flip_wins || 0;
+            document.getElementById('coinFlipLosses').textContent = userData.coin_flip_losses || 0;
+            document.getElementById('scratchCardsPlayed').textContent = userData.scratch_cards_played || 0;
+            document.getElementById('scratchCardsPlayedDisplay').textContent = userData.scratch_cards_played || 0;
+            document.getElementById('treasuresFound').textContent = userData.treasures_found_total || 0;
+            document.getElementById('treasuresFoundToday').textContent = userData.treasures_found_today || 0;
+            document.getElementById('treasuresFindTodayDisplay').textContent = userData.treasures_found_today || 0;
+            document.getElementById('treasuresTotalFound').textContent = userData.treasures_found_total || 0;
             
             // Update spin history
             updateSpinHistory();
@@ -1817,9 +3162,117 @@
                 document.getElementById('taskButton2').textContent = '✅ Completed';
                 document.getElementById('taskButton2').disabled = true;
             }
+
+            // Achievements Summary
+            const achievementsUnlocked = userData.achievements_unlocked?.length || 0;
+            document.getElementById('achievementsUnlocked').textContent = achievementsUnlocked;
         }
 
-        // ✅ NOUVEAU: Update Withdraw Unlock UI
+        function calculateLevelInfo(xp) {
+            // Fallback si pas de level_info depuis l'API
+            const levels = [
+                { id: 1, name: 'Bronze', icon: '🥉', xp: 0, mining: '+0%', cooldown: '5s', rewards: '+0%' },
+                { id: 2, name: 'Silver', icon: '🥈', xp: 1000, mining: '+25%', cooldown: '4s', rewards: '+0%' },
+                { id: 3, name: 'Gold', icon: '🥇', xp: 5000, mining: '+50%', cooldown: '3s', rewards: '+10%' },
+                { id: 4, name: 'Platinum', icon: '💎', xp: 20000, mining: '+75%', cooldown: '2s', rewards: '+20%' },
+                { id: 5, name: 'Diamond', icon: '💠', xp: 100000, mining: '+100%', cooldown: '1s', rewards: '+50%' }
+            ];
+
+            let currentLevel = levels[0];
+            for (let i = levels.length - 1; i >= 0; i--) {
+                if (xp >= levels[i].xp) {
+                    currentLevel = levels[i];
+                    break;
+                }
+            }
+
+            const nextLevel = levels[currentLevel.id] || null;
+
+            return {
+                current_level: currentLevel.id,
+                current_level_name: currentLevel.name,
+                current_level_icon: currentLevel.icon,
+                xp_current: xp,
+                xp_for_next_level: nextLevel ? nextLevel.xp : 'MAX',
+                xp_progress_percent: nextLevel ? ((xp / nextLevel.xp) * 100).toFixed(1) : 100,
+                next_level_name: nextLevel ? nextLevel.name : 'MAX LEVEL',
+                benefits: {
+                    mining_bonus: currentLevel.mining,
+                    cooldown: currentLevel.cooldown,
+                    rewards_bonus: currentLevel.rewards
+                }
+            };
+        }
+
+        function updateStreakUI() {
+            const streakCurrent = userData.streak_current || 0;
+            const streakLongest = userData.streak_longest || 0;
+            
+            document.getElementById('streakCount').textContent = streakCurrent;
+            
+            // Streak calendar (7 days)
+            const calendar = document.getElementById('streakCalendar');
+            calendar.innerHTML = '';
+            
+            for (let i = 1; i <= 7; i++) {
+                const dayBox = document.createElement('div');
+                dayBox.className = 'day-box';
+                
+                if (i <= streakCurrent) {
+                    dayBox.classList.add('completed');
+                    dayBox.textContent = '✅';
+                } else if (i === streakCurrent + 1) {
+                    dayBox.classList.add('today');
+                    dayBox.textContent = i;
+                } else {
+                    dayBox.textContent = i;
+                }
+                
+                calendar.appendChild(dayBox);
+            }
+            
+            // Next reward
+            const nextDay = streakCurrent + 1;
+            const rewards = [
+                { day: 1, ton: 0.00001, xp: 10, keys: 0 },
+                { day: 2, ton: 0.00002, xp: 20, keys: 0 },
+                { day: 3, ton: 0.00003, xp: 30, keys: 1 },
+                { day: 4, ton: 0.00004, xp: 40, keys: 0 },
+                { day: 5, ton: 0.00005, xp: 50, keys: 2 },
+                { day: 6, ton: 0.00006, xp: 60, keys: 0 },
+                { day: 7, ton: 0.0001, xp: 100, keys: 5 }
+            ];
+            
+            let nextReward = rewards.find(r => r.day === nextDay);
+            if (!nextReward) {
+                const baseDay = ((nextDay - 1) % 7) + 1;
+                nextReward = rewards.find(r => r.day === baseDay) || rewards[0];
+            }
+            
+            let rewardText = `+${nextReward.ton.toFixed(5)} TON + ${nextReward.xp} XP`;
+            if (nextReward.keys > 0) {
+                rewardText += ` + ${nextReward.keys} Keys 🔑`;
+            }
+            
+            document.getElementById('nextStreakReward').textContent = rewardText;
+            
+            // Check if can claim
+            if (userData.streak_last_claim) {
+                const lastClaim = new Date(userData.streak_last_claim);
+                const now = new Date();
+                const hoursSince = (now - lastClaim) / (1000 * 60 * 60);
+                
+                const claimBtn = document.getElementById('claimStreakBtn');
+                if (hoursSince < 24) {
+                    claimBtn.disabled = true;
+                    claimBtn.textContent = '✅ CLAIMED TODAY';
+                } else {
+                    claimBtn.disabled = false;
+                    claimBtn.textContent = '🔥 CLAIM DAILY REWARD';
+                }
+            }
+        }
+
         function updateWithdrawUnlockUI(adsWatched) {
             const unlockProgress = document.getElementById('unlockProgress');
             const unlockWatchButton = document.getElementById('unlockWatchButton');
@@ -1829,7 +3282,6 @@
             unlockProgress.textContent = `${adsWatched}/5`;
             
             if (adsWatched >= 5) {
-                // Débloquer le withdraw
                 unlockSection.style.background = 'rgba(76, 175, 80, 0.2)';
                 unlockSection.style.borderColor = 'rgba(76, 175, 80, 0.6)';
                 unlockWatchButton.textContent = '✅ UNLOCKED!';
@@ -1838,7 +3290,6 @@
                 withdrawButton.textContent = '💸 WITHDRAW NOW';
                 withdrawButton.style.background = 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)';
             } else {
-                // Bloqué
                 unlockSection.style.background = 'rgba(255, 152, 0, 0.15)';
                 unlockSection.style.borderColor = 'rgba(255, 152, 0, 0.6)';
                 unlockWatchButton.textContent = `📺 WATCH AD (${adsWatched}/5)`;
@@ -1882,7 +3333,42 @@
         }
 
         // ===========================
-        // ⛏️ MINING FUNCTIONS - MONETAG REWARDED
+        // 🔥 DAILY STREAK
+        // ===========================
+
+        async function claimDailyStreak() {
+            if (!userData) return;
+
+            try {
+                showLoading(true);
+                const response = await fetch(`${CONFIG.API_URL}/gamification/${userData.telegram_id}/streak/claim`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    userData = data.user;
+                    updateUI();
+                    
+                    showNotification(`🔥 Day ${data.streak} claimed! ${data.message}`);
+                    
+                    // Check for achievements
+                    if (data.streak === 7) {
+                        checkAndShowAchievements();
+                    }
+                } else {
+                    showNotification(data.error || 'Already claimed today', 'error');
+                }
+                
+                showLoading(false);
+            } catch (error) {
+                showNotification('Error claiming streak: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // ===========================
+        // ⛏️ MINING FUNCTIONS
         // ===========================
 
         function handleMiningButton() {
@@ -1890,20 +3376,17 @@
 
             const now = Date.now();
             
-            // Vérifier si mining en cours
             if (userData.mining_start_time) {
                 const start = new Date(userData.mining_start_time).getTime();
                 const elapsed = now - start;
-                const duration = 3 * 60 * 60 * 1000; // 3 heures
+                const duration = 3 * 60 * 60 * 1000;
                 
-                // Si mining terminé, lancer ad puis claim
                 if (elapsed >= duration) {
                     watchMiningAdThenClaim();
                 } else {
                     showNotification('⏰ Mining in progress...', 'error');
                 }
             } else {
-                // Pas de mining en cours, lancer ad puis start
                 watchMiningAdThenStart();
             }
         }
@@ -1917,7 +3400,6 @@
             try {
                 showLoading(true);
                 
-                // ✅ Lancer Monetag Rewarded Interstitial
                 show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/start`, {
@@ -1930,6 +3412,7 @@
                             updateUI();
                             startMiningCheck();
                             showNotification('⛏️ Mining started!');
+                            checkForLevelUp(data);
                         } else {
                             showNotification(data.error, 'error');
                         }
@@ -1958,7 +3441,6 @@
             try {
                 showLoading(true);
                 
-                // ✅ Lancer Monetag Rewarded Interstitial
                 show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/mining/${userData.telegram_id}/claim`, {
@@ -1969,9 +3451,15 @@
                         if (response.ok) {
                             userData = data;
                             updateUI();
-                            showNotification('🎉 +0.0002 TON claimed!');
+                            
+                            const reward = data.mining_reward || 0.0002;
+                            showNotification(`🎉 +${reward.toFixed(6)} TON claimed!`);
+                            
                             clearInterval(miningInterval);
                             startMiningCheck();
+                            
+                            checkForLevelUp(data);
+                            checkAndShowAchievements();
                         } else {
                             showNotification(data.error, 'error');
                         }
@@ -2031,7 +3519,7 @@
         }
 
         // ===========================
-        // 📺 WATCH SIMPLE ADS (Monetag Popup) - COOLDOWN 5s
+        // 📺 WATCH SIMPLE ADS
         // ===========================
 
         async function watchSimpleAd() {
@@ -2044,9 +3532,12 @@
             }
             
             if (userData.ads_watch_simple_last_watch) {
+                const levelInfo = userData.level_info || calculateLevelInfo(userData.xp || 0);
+                const cooldownMs = parseInt(levelInfo.benefits.cooldown) * 1000;
+                
                 const timeSince = Date.now() - new Date(userData.ads_watch_simple_last_watch).getTime();
-                if (timeSince < 5000) { // ✅ MODIFIÉ: 15000 → 5000 (5 secondes)
-                    const remainingSeconds = Math.ceil((5000 - timeSince) / 1000);
+                if (timeSince < cooldownMs) {
+                    const remainingSeconds = Math.ceil((cooldownMs - timeSince) / 1000);
                     showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
                     return;
                 }
@@ -2070,8 +3561,13 @@
                         if (response.ok) {
                             userData = data;
                             updateUI();
-                            showNotification('🎉 +0.000012 TON earned!');
+                            
+                            const reward = data.ad_reward || 0.000012;
+                            showNotification(`🎉 +${reward.toFixed(6)} TON + 10 XP earned!`);
+                            
                             startWatchSimpleCooldown();
+                            checkForLevelUp(data);
+                            checkAndShowAchievements();
                         } else {
                             showNotification(data.error, 'error');
                         }
@@ -2097,7 +3593,9 @@
             const watchBtn = document.getElementById('watchSimpleButton');
             const cooldownDisplay = document.getElementById('watchSimpleCooldown');
             
-            let remainingSeconds = 5; // ✅ MODIFIÉ: 15 → 5
+            const levelInfo = userData.level_info || calculateLevelInfo(userData.xp || 0);
+            let remainingSeconds = parseInt(levelInfo.benefits.cooldown);
+            
             watchBtn.disabled = true;
             
             watchSimpleCooldownInterval = setInterval(() => {
@@ -2114,22 +3612,25 @@
         }
 
         // ===========================
-        // 🔑 WATCH FOR KEYS (Monetag Rewarded) - COOLDOWN 5s, MAX 100/day
+        // 🔑 WATCH FOR KEYS
         // ===========================
 
         async function watchForKey() {
             if (!userData) return;
             
             const adsToday = userData.ads_for_keys_today || 0;
-            if (adsToday >= 100) { // ✅ MODIFIÉ: 50 → 100
+            if (adsToday >= 100) {
                 showNotification('⚠️ Daily limit reached (100 ads for Keys)', 'error');
                 return;
             }
             
             if (userData.ads_for_keys_last_watch) {
+                const levelInfo = userData.level_info || calculateLevelInfo(userData.xp || 0);
+                const cooldownMs = parseInt(levelInfo.benefits.cooldown) * 1000;
+                
                 const timeSince = Date.now() - new Date(userData.ads_for_keys_last_watch).getTime();
-                if (timeSince < 5000) { // ✅ MODIFIÉ: 15000 → 5000 (5 secondes)
-                    const remainingSeconds = Math.ceil((5000 - timeSince) / 1000);
+                if (timeSince < cooldownMs) {
+                    const remainingSeconds = Math.ceil((cooldownMs - timeSince) / 1000);
                     showNotification(`⏰ Wait ${remainingSeconds} seconds`, 'error');
                     return;
                 }
@@ -2143,7 +3644,6 @@
             try {
                 showLoading(true);
 
-                // ✅ Monetag Rewarded Interstitial
                 show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/earn/watch-for-key/${userData.telegram_id}`, {
@@ -2154,8 +3654,9 @@
                         if (response.ok) {
                             userData = data;
                             updateUI();
-                            showNotification('🔑 +1 Key earned!');
+                            showNotification('🔑 +1 Key + 10 XP earned!');
                             startWatchKeysCooldown();
+                            checkForLevelUp(data);
                         } else {
                             showNotification(data.error, 'error');
                         }
@@ -2181,7 +3682,9 @@
             const watchBtn = document.getElementById('watchKeysButton');
             const cooldownDisplay = document.getElementById('watchKeysCooldown');
             
-            let remainingSeconds = 5; // ✅ MODIFIÉ: 15 → 5
+            const levelInfo = userData.level_info || calculateLevelInfo(userData.xp || 0);
+            let remainingSeconds = parseInt(levelInfo.benefits.cooldown);
+            
             watchBtn.disabled = true;
             
             watchKeysCooldownInterval = setInterval(() => {
@@ -2312,13 +3815,16 @@
                         if (data.spin_result === 'RETRY') {
                             showNotification('🔄 FREE SPIN! Try again!');
                         } else if (data.spin_result >= 0.000017) {
-                            showNotification(`🎉 JACKPOT! +${data.spin_result.toFixed(6)} TON!`);
+                            showNotification(`🎉 JACKPOT! +${data.spin_result.toFixed(6)} TON + 5 XP!`);
                         } else {
-                            showNotification(`✅ You won +${data.spin_result.toFixed(6)} TON!`);
+                            showNotification(`✅ You won +${data.spin_result.toFixed(6)} TON + 5 XP!`);
                         }
                         
                         wheelSpinning = false;
                         document.getElementById('spinButton').disabled = false;
+                        
+                        checkForLevelUp(data);
+                        checkAndShowAchievements();
                     }
                 }
 
@@ -2333,7 +3839,7 @@
         }
 
         // ===========================
-        // 💰 WITHDRAW ADS SYSTEM - 5 ADS REQUIRED
+        // 💰 WITHDRAW ADS SYSTEM
         // ===========================
 
         async function watchWithdrawAd() {
@@ -2353,7 +3859,6 @@
             try {
                 showLoading(true);
 
-                // ✅ Monetag Rewarded Interstitial
                 show_10078826().then(async () => {
                     try {
                         const response = await fetch(`${CONFIG.API_URL}/withdraw/${userData.telegram_id}/watch-ad`, {
@@ -2381,7 +3886,6 @@
                     showLoading(false);
                 }).catch((error) => {
                     showNotification('Please watch the ad completely', 'error');
-                    
                     showLoading(false);
                 });
 
@@ -2442,6 +3946,7 @@
                     document.getElementById('faucetpayEmail').value = '';
                     document.getElementById('withdrawAmount').value = '';
                     showNotification('🎉 Withdrawal successful! Check your FaucetPay account!');
+                    checkAndShowAchievements();
                 } else {
                     showNotification('❌ ' + (data.error || 'Withdrawal failed'), 'error');
                 }
@@ -2540,7 +4045,12 @@
                         updateUI();
                         btn.textContent = '✅ Completed';
                         btn.disabled = true;
-                        showNotification('🎉 +0.0001 TON earned!');
+                        
+                        const reward = data.task_reward || 0.0001;
+                        showNotification(`🎉 +${reward.toFixed(6)} TON + 100 XP earned!`);
+                        
+                        checkForLevelUp(data);
+                        checkAndShowAchievements();
                     } else {
                         showNotification(data.error, 'error');
                     }
@@ -2564,6 +4074,419 @@
         }
 
         // ===========================
+        // 🎲 MINI-GAMES
+        // ===========================
+
+        // Coin Flip
+        function selectBet(amount) {
+            coinFlipBet = amount;
+            document.querySelectorAll('.bet-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function selectChoice(choice) {
+            coinFlipChoice = choice;
+            document.getElementById('headsBtn').classList.remove('selected');
+            document.getElementById('tailsBtn').classList.remove('selected');
+            
+            if (choice === 'heads') {
+                document.getElementById('headsBtn').classList.add('selected');
+            } else {
+                document.getElementById('tailsBtn').classList.add('selected');
+            }
+        }
+
+        async function playCoinFlip() {
+            if (!userData) return;
+            
+            if ((userData.keys_current || 0) < coinFlipBet) {
+                showNotification(`❌ You need ${coinFlipBet} Keys to play!`, 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                
+                // Animate coin
+                const coin = document.getElementById('flipCoin');
+                coin.classList.add('flipping');
+                
+                const response = await fetch(`${CONFIG.API_URL}/minigame/${userData.telegram_id}/coinflip`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bet_keys: coinFlipBet,
+                        choice: coinFlipChoice
+                    })
+                });
+                const data = await response.json();
+                
+                setTimeout(() => {
+                    coin.classList.remove('flipping');
+                    
+                    if (response.ok && data.success) {
+                        userData = data;
+                        updateUI();
+                        
+                        if (data.won) {
+                            showNotification(`🎉 YOU WON! +${data.winnings} Keys!`);
+                        } else {
+                            showNotification(`😢 You lost ${data.lost} Keys. Try again!`, 'error');
+                        }
+                        
+                        checkForLevelUp(data);
+                    } else {
+                        showNotification(data.error || 'Error playing coin flip', 'error');
+                    }
+                    
+                    showLoading(false);
+                }, 2000);
+                
+            } catch (error) {
+                showNotification('Coin flip error: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // Scratch Card
+        async function playScratchCard() {
+            if (!userData) return;
+            
+            if ((userData.keys_current || 0) < 5) {
+                showNotification('❌ You need 5 Keys to play!', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${CONFIG.API_URL}/minigame/${userData.telegram_id}/scratchcard`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    userData = data;
+                    updateUI();
+                    
+                    // Show result
+                    const scratchCard = document.getElementById('scratchCard');
+                    const scratchResult = document.getElementById('scratchResult');
+                    scratchResult.textContent = data.result;
+                    
+                    if (data.prize_ton > 0) {
+                        scratchTotalWon += data.prize_ton;
+                        document.getElementById('scratchTotalWon').textContent = scratchTotalWon.toFixed(6);
+                        showNotification(`🎉 ${data.result} - You won ${data.prize_ton.toFixed(6)} TON!`);
+                    } else {
+                        showNotification('😢 Better luck next time!', 'error');
+                    }
+                    
+                    checkForLevelUp(data);
+                    checkAndShowAchievements();
+                } else {
+                    showNotification(data.error || 'Error playing scratch card', 'error');
+                }
+                
+                showLoading(false);
+                
+                // Reset card after 2 seconds
+                setTimeout(() => {
+                    document.getElementById('scratchResult').textContent = '❓';
+                }, 2000);
+                
+            } catch (error) {
+                showNotification('Scratch card error: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // Treasure Hunt
+        function initTreasureMap() {
+            treasureSpots = Array(9).fill(false);
+        }
+
+        async function findTreasure(index) {
+            if (!userData) return;
+            
+            if (treasureSpots[index]) {
+                showNotification('❌ Already searched this spot!', 'error');
+                return;
+            }
+            
+            if ((userData.treasures_found_today || 0) >= 5) {
+                showNotification('❌ Daily limit reached (5 treasures)', 'error');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${CONFIG.API_URL}/minigame/${userData.telegram_id}/treasure/find`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ treasure_id: index })
+                });
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    userData = data;
+                    updateUI();
+                    
+                    treasureSpots[index] = true;
+                    
+                    const spots = document.querySelectorAll('.treasure-spot');
+                    spots[index].classList.add('found');
+                    spots[index].textContent = data.treasure.icon;
+                    
+                    let rewardText = `${data.treasure.icon} ${data.treasure.name} Treasure!`;
+                    if (data.treasure.ton > 0) rewardText += ` +${data.treasure.ton.toFixed(6)} TON`;
+                    if (data.treasure.xp > 0) rewardText += ` +${data.treasure.xp} XP`;
+                    if (data.treasure.keys > 0) rewardText += ` +${data.treasure.keys} Keys`;
+                    
+                    showNotification(`🎉 ${rewardText}`);
+                    
+                    checkForLevelUp(data);
+                    checkAndShowAchievements();
+                } else {
+                    // Empty spot
+                    treasureSpots[index] = true;
+                    const spots = document.querySelectorAll('.treasure-spot');
+                    spots[index].classList.add('empty');
+                    spots[index].textContent = '❌';
+                    showNotification('💔 Nothing here! Try another spot.', 'error');
+                }
+                
+                showLoading(false);
+                
+            } catch (error) {
+                showNotification('Treasure hunt error: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // ===========================
+        // 🏆 ACHIEVEMENTS
+        // ===========================
+
+        async function loadAchievements() {
+            if (!userData) return;
+
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/gamification/${userData.telegram_id}/achievements`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayAchievements(data.achievements);
+                    document.getElementById('achievementsTotal').textContent = data.total_available;
+                }
+            } catch (error) {
+                console.error('Error loading achievements:', error);
+            }
+        }
+
+        function displayAchievements(achievements, filter = 'all') {
+            const listContainer = document.getElementById('achievementsList');
+            
+            let filtered = achievements;
+            if (filter !== 'all') {
+                filtered = achievements.filter(a => a.category === filter);
+            }
+            
+            listContainer.innerHTML = filtered.map(achievement => {
+                const isLocked = !achievement.unlocked;
+                const lockClass = isLocked ? 'locked' : 'unlocked';
+                
+                return `
+                    <div class="achievement-card ${lockClass}">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">${isLocked ? '🔒' : '✅'}</div>
+                            <div class="achievement-info">
+                                <h3>${achievement.name}</h3>
+                                <p>${achievement.description}</p>
+                            </div>
+                        </div>
+                        ${isLocked ? `
+                        <div class="achievement-progress">
+                            <div class="achievement-progress-text">
+                                Progress: ${achievement.progress}/${achievement.progress_max} (${achievement.progress_percent}%)
+                            </div>
+                            <div class="achievement-progress-bar">
+                                <div class="achievement-progress-fill" style="width: ${achievement.progress_percent}%"></div>
+                            </div>
+                        </div>
+                        ` : ''}
+                        <div class="achievement-reward">
+                            <span>🎁 Reward:</span>
+                            <span>${achievement.reward_ton.toFixed(6)} TON + ${achievement.reward_xp} XP</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterAchievements(category) {
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load and filter
+            loadAchievements().then(() => {
+                // The filtering happens in displayAchievements
+            });
+        }
+
+        async function checkAndShowAchievements() {
+            // This is called after actions that might unlock achievements
+            // Reload user data to check for new achievements
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/user/${userData.telegram_id}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Check if new achievements were unlocked
+                    const oldAchievements = userData.achievements_unlocked || [];
+                    const newAchievements = data.achievements_unlocked || [];
+                    
+                    const justUnlocked = newAchievements.filter(a => !oldAchievements.includes(a));
+                    
+                    if (justUnlocked.length > 0) {
+                        // Show achievement modal for first new achievement
+                        showAchievementModal(justUnlocked[0]);
+                    }
+                    
+                    userData = data;
+                    updateUI();
+                }
+            } catch (error) {
+                console.error('Error checking achievements:', error);
+            }
+        }
+
+        function showAchievementModal(achievementId) {
+            const achievements = {
+                'first_steps': { name: 'First Steps', desc: 'Connected for the first time', icon: '🎉', ton: 0.00001, xp: 50 },
+                'first_ad': { name: 'Ad Viewer', desc: 'Watched your first ad', icon: '📺', ton: 0, xp: 10 },
+                'first_mining': { name: 'Miner', desc: 'Completed your first mining', icon: '⛏️', ton: 0.00001, xp: 50 },
+                'first_invite': { name: 'Social Butterfly', desc: 'Invited your first friend', icon: '👥', ton: 0, xp: 100 },
+                'ad_master_100': { name: 'Ad Master', desc: 'Watched 100 ads', icon: '🎬', ton: 0.0001, xp: 200 },
+                'mining_pro_10': { name: 'Mining Pro', desc: 'Completed 10 minings', icon: '⛏️', ton: 0.0002, xp: 300 },
+                'wheel_spinner_50': { name: 'Wheel Spinner', desc: 'Spun 50 times', icon: '🎰', ton: 0.0001, xp: 200 },
+                'lucky_jackpot_5': { name: 'Lucky One', desc: 'Won 5 jackpots', icon: '🎉', ton: 0.0003, xp: 500 },
+                'friend_magnet_5': { name: 'Friend Magnet', desc: 'Invited 5 friends', icon: '👥', ton: 0.0005, xp: 500 },
+                'week_warrior': { name: 'Week Warrior', desc: '7 days streak', icon: '🔥', ton: 0.0001, xp: 100 },
+                'diamond_member': { name: 'The Chosen One', desc: 'Reached Diamond level', icon: '💠', ton: 0.005, xp: 5000 }
+            };
+            
+            const achievement = achievements[achievementId] || { name: 'Achievement', desc: 'Unlocked!', icon: '🏆', ton: 0, xp: 0 };
+            
+            document.getElementById('achievementModalIcon').textContent = achievement.icon;
+            document.getElementById('achievementModalTitle').textContent = achievement.name;
+            document.getElementById('achievementModalDesc').textContent = achievement.desc;
+            document.getElementById('achievementModalReward').textContent = `+${achievement.ton.toFixed(6)} TON + ${achievement.xp} XP`;
+            
+            document.getElementById('achievementModal').classList.add('show');
+        }
+
+        function closeAchievementModal() {
+            document.getElementById('achievementModal').classList.remove('show');
+        }
+
+        // ===========================
+        // 🏅 LEADERBOARD
+        // ===========================
+
+        async function loadLeaderboard(type = 'xp') {
+            try {
+                showLoading(true);
+                const response = await fetch(`${CONFIG.API_URL}/leaderboard?type=${type}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayLeaderboard(data.leaderboard);
+                }
+                
+                showLoading(false);
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+                showLoading(false);
+            }
+        }
+
+        function displayLeaderboard(leaderboard) {
+            const listContainer = document.getElementById('leaderboardList');
+            
+            listContainer.innerHTML = leaderboard.map((user, index) => {
+                const isTop3 = index < 3;
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                
+                return `
+                    <div class="leaderboard-item ${isTop3 ? 'top-3' : ''}">
+                        <div class="leaderboard-rank ${rankClass}">
+                            ${rankEmoji || user.rank}
+                        </div>
+                        <div class="leaderboard-user">
+                            <div class="leaderboard-username">${user.username}</div>
+                            <div class="leaderboard-level">${user.level_icon} ${user.level}</div>
+                        </div>
+                        <div class="leaderboard-value">${user.xp || user.earnings || user.ads_watched}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterLeaderboard(type) {
+            // Update active filter
+            document.querySelectorAll('.filter-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadLeaderboard(type);
+        }
+
+        // ===========================
+        // 🎊 LEVEL UP SYSTEM
+        // ===========================
+
+        function checkForLevelUp(data) {
+            if (data.xp_gained && data.xp_gained.levelUp) {
+                showLevelUpModal(data.xp_gained.levelUp);
+            }
+        }
+
+        function showLevelUpModal(levelUpData) {
+            const levelIcons = {
+                'Silver': '🥈',
+                'Gold': '🥇',
+                'Platinum': '💎',
+                'Diamond': '💠'
+            };
+            
+            const icon = levelIcons[levelUpData.new_level] || '🎉';
+            const benefits = levelUpData.new_benefits;
+            
+            document.getElementById('levelUpIcon').textContent = icon;
+            document.getElementById('levelUpName').textContent = levelUpData.new_level;
+            document.getElementById('levelUpBenefits').innerHTML = `
+                • Mining Bonus: ${benefits.mining_bonus}<br>
+                • Cooldown: ${benefits.cooldown}<br>
+                • Rewards Bonus: ${benefits.rewards_bonus}
+            `;
+            
+            document.getElementById('levelUpModal').classList.add('show');
+        }
+
+        function closeLevelUpModal() {
+            document.getElementById('levelUpModal').classList.remove('show');
+        }
+
+        // ===========================
         // 🧭 NAVIGATION
         // ===========================
 
@@ -2577,6 +4500,13 @@
             const pageIndex = ['home', 'tasks', 'invite', 'earn', 'withdraw'].indexOf(pageName);
             if (pageIndex !== -1 && navItems[pageIndex]) {
                 navItems[pageIndex].classList.add('active');
+            }
+            
+            // Load data for specific pages
+            if (pageName === 'achievements') {
+                loadAchievements();
+            } else if (pageName === 'leaderboard') {
+                loadLeaderboard('xp');
             }
         }
 
@@ -2615,13 +4545,35 @@
         // ===========================
 
         window.addEventListener('load', () => {
-            console.log('🚀 TON REWARD DJDN v6.0 - PROFESSIONAL EDITION');
-            console.log('✅ Mining: Monetag Rewarded Interstitial');
-            console.log('✅ Watch Simple: Monetag Popup (5s cooldown)');
-            console.log('✅ Lucky Wheel: Monetag Rewarded (5s cooldown, 100/day)');
-            console.log('✅ Withdraw: 5 Monetag Rewarded ads required');
-            console.log('✝️ Christian-friendly - No Adsterra');
-            console.log('🎨 Professional UI/UX');
+            console.log('');
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('🚀 TON REWARD DJDN v7.0 - GAMIFICATION EDITION');
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('');
+            console.log('🎮 FEATURES:');
+            console.log('   ✅ 5 Level System (Bronze → Diamond)');
+            console.log('   ✅ Daily Streak Rewards (up to 30 days)');
+            console.log('   ✅ 30+ Achievements');
+            console.log('   ✅ XP & Progression');
+            console.log('   ✅ Level-based bonuses');
+            console.log('   ✅ Mini-Games (Coin Flip, Scratch Cards, Treasure Hunt)');
+            console.log('   ✅ Monthly Leaderboard');
+            console.log('   ✅ Enhanced UI/UX');
+            console.log('');
+            console.log('📺 AD PROVIDERS:');
+            console.log('   • Mining: Monetag Rewarded');
+            console.log('   • Watch Simple: Monetag Popup (level-based cooldown)');
+            console.log('   • Lucky Wheel: Monetag Rewarded (level-based cooldown)');
+            console.log('   • Withdraw: 5 Monetag Rewarded ads required');
+            console.log('');
+            console.log('💰 REWARDS WITH LEVEL BONUSES:');
+            console.log('   • Mining: 0.0002 TON (x1.0 to x2.0)');
+            console.log('   • Watch Simple: 0.000012 TON (x1.0 to x1.5)');
+            console.log('   • Each action = XP gain!');
+            console.log('');
+            console.log('🎉 STARTING APP...');
+            console.log('');
+            
             loadUserData();
         });
     </script>
