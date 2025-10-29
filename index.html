@@ -9,33 +9,90 @@
     
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        
+    <!-- Monetag Integration - CORRIGÉ -->
+    <script async src="//thubanoa.com/1a/d3/40/1ad3409d1e552a8b490b84d409993cd3.js"></script>
     
-    <!-- Monetag Integration -->
     <script>
+        // Configuration globale pour Monetag
+        window.monetagConfig = {
+            zoneId: '10078826',
+            loaded: false,
+            queue: []
+        };
+        
+        // Fonction d'affichage des pubs
         function show_10078826(format) {
             return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = `//thubanoa.com/1a/d3/40/1ad3409d1e552a8b490b84d409993cd3.js`;
-                script.async = true;
-                
-                script.onload = () => {
-                    if (typeof window.show_10078826 === 'function') {
-                        window.show_10078826(format).then(resolve).catch(reject);
-                    } else {
-                        // Fallback si la fonction n'est pas disponible
-                        setTimeout(() => resolve(), 2000);
+                // Vérifier si le script Monetag est chargé
+                if (typeof window.ShowAdUnit === 'undefined') {
+                    console.warn('Monetag script not loaded yet');
+                    
+                    // Attendre que le script soit chargé
+                    let attempts = 0;
+                    const maxAttempts = 20;
+                    
+                    const checkInterval = setInterval(() => {
+                        attempts++;
+                        
+                        if (typeof window.ShowAdUnit !== 'undefined') {
+                            clearInterval(checkInterval);
+                            showAd(format).then(resolve).catch(reject);
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(checkInterval);
+                            console.error('Monetag script failed to load');
+                            reject(new Error('Ad script not loaded'));
+                        }
+                    }, 500);
+                } else {
+                    showAd(format).then(resolve).catch(reject);
+                }
+            });
+        }
+        
+        // Fonction interne pour afficher la pub
+        function showAd(format) {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Pour Rewarded Interstitial
+                    if (!format || format === '') {
+                        if (typeof window.ShowAdUnit === 'function') {
+                            window.ShowAdUnit().then(() => {
+                                console.log('✅ Interstitial ad completed');
+                                resolve();
+                            }).catch((error) => {
+                                console.error('❌ Interstitial ad error:', error);
+                                reject(error);
+                            });
+                        } else {
+                            reject(new Error('ShowAdUnit not available'));
+                        }
                     }
-                };
-                
-                script.onerror = () => {
-                    // Fallback en cas d'erreur
-                    setTimeout(() => resolve(), 2000);
-                };
-                
-                document.head.appendChild(script);
+                    // Pour Rewarded Popup
+                    else if (format === 'pop') {
+                        if (typeof window.ShowAdUnit === 'function') {
+                            window.ShowAdUnit('pop').then(() => {
+                                console.log('✅ Popup ad completed');
+                                resolve();
+                            }).catch((error) => {
+                                console.error('❌ Popup ad error:', error);
+                                reject(error);
+                            });
+                        } else {
+                            reject(new Error('ShowAdUnit not available'));
+                        }
+                    } else {
+                        reject(new Error('Invalid format'));
+                    }
+                } catch (error) {
+                    console.error('❌ Error showing ad:', error);
+                    reject(error);
+                }
             });
         }
     </script>
+
+
     
     <style>
         /* =====================================================
@@ -1179,14 +1236,24 @@
                 this.isAdPlaying = true;
                 
                 try {
-                    console.log(`Showing ${this.currentAdType} ad...`);
+                    console.log(`🎬 Attempting to show ${this.currentAdType} ad...`);
+                    
+                    // Vérifier que Monetag est chargé
+                    if (typeof window.ShowAdUnit === 'undefined') {
+                        console.error('❌ Monetag not loaded!');
+                        throw new Error('Ad system not ready. Please refresh the page.');
+                    }
                     
                     if (this.currentAdType === 'interstitial') {
                         // Rewarded Interstitial
+                        console.log('📺 Loading interstitial ad...');
                         await show_10078826();
+                        console.log('✅ Interstitial ad watched!');
                     } else {
                         // Rewarded Popup
+                        console.log('📺 Loading popup ad...');
                         await show_10078826('pop');
+                        console.log('✅ Popup ad watched!');
                     }
                     
                     // Toggle for next ad
@@ -1196,13 +1263,16 @@
                     return true;
                     
                 } catch (error) {
-                    console.error('Ad error:', error);
+                    console.error('❌ Ad error:', error);
                     this.isAdPlaying = false;
-                    // Still toggle type even on error
                     this.toggleAdType();
-                    // Return true to continue flow (fallback behavior)
-                    return true;
+                    
+                    // Ne PAS continuer si erreur réelle
+                    throw error;
                 }
+            }
+            
+            
             }
             
             // Check if ad is currently playing
@@ -2249,17 +2319,18 @@
                 btn.disabled = true;
                 btn.textContent = '⏳ Loading Ad...';
                 
-                // Show ad (alternates between interstitial and popup)
-                const adShown = await adManager.showAd();
-                
-                if (!adShown) {
-                    showToast('Ad failed to load, please try again', 'error');
+                // Show ad FIRST - will throw error if it fails
+                try {
+                    await adManager.showAd();
+                } catch (adError) {
+                    console.error('Ad failed:', adError);
+                    showToast(adError.message || 'Ad failed to load, please try again', 'error');
                     btn.disabled = false;
                     btn.textContent = '▶️ Watch Ad Now';
                     return;
                 }
                 
-                // Call backend after ad is watched
+                // Only call backend if ad was successfully watched
                 const data = await watchAd('simple');
                 
                 const earnedAmount = data.earned || 0.000010;
@@ -2273,6 +2344,8 @@
                 btn.disabled = false;
                 btn.textContent = '▶️ Watch Ad Now';
             }
+
+
         }
         
         async function handleWatchCoinAd() {
@@ -2309,21 +2382,24 @@
                 return;
             }
             
+
+            
             try {
                 btn.disabled = true;
                 btn.textContent = '⏳ Loading Ad...';
                 
-                // Show ad (alternates between interstitial and popup)
-                const adShown = await adManager.showAd();
-                
-                if (!adShown) {
-                    showToast('Ad failed to load, please try again', 'error');
+                // Show ad FIRST - will throw error if it fails
+                try {
+                    await adManager.showAd();
+                } catch (adError) {
+                    console.error('Ad failed:', adError);
+                    showToast(adError.message || 'Ad failed to load, please try again', 'error');
                     btn.disabled = false;
                     btn.textContent = '▶️ Watch Ad for Coin';
                     return;
                 }
                 
-                // Call backend after ad is watched
+                // Only call backend if ad was successfully watched
                 await watchAd('coin');
                 showToast(`🪙 +1 Coin earned! (+2 XP)`, 'success');
                 renderEarnTab(document.getElementById('appContent'));
@@ -2333,6 +2409,7 @@
                 btn.disabled = false;
                 btn.textContent = '▶️ Watch Ad for Coin';
             }
+
         }
         
         async function handleStartMining() {
@@ -2342,20 +2419,23 @@
             }
             
             try {
-                // Show ad before starting mining
-                const adShown = await adManager.showAd();
-                
-                if (!adShown) {
-                    showToast('Ad failed to load, please try again', 'error');
+                // Show ad FIRST - will throw error if it fails
+                try {
+                    await adManager.showAd();
+                } catch (adError) {
+                    console.error('Ad failed:', adError);
+                    showToast(adError.message || 'Ad failed to load, please try again', 'error');
                     return;
                 }
                 
+                // Only start mining if ad was successfully watched
                 await startMining();
                 showToast('⛏️ Mining started!', 'success');
                 renderMiningTab(document.getElementById('appContent'));
             } catch (error) {
                 showToast(`Error: ${error.message}`, 'error');
             }
+        }
         }
         
         async function handleClaimMining() {
@@ -2365,14 +2445,16 @@
             }
             
             try {
-                // Show ad before claiming
-                const adShown = await adManager.showAd();
-                
-                if (!adShown) {
-                    showToast('Ad failed to load, please try again', 'error');
+                // Show ad FIRST - will throw error if it fails
+                try {
+                    await adManager.showAd();
+                } catch (adError) {
+                    console.error('Ad failed:', adError);
+                    showToast(adError.message || 'Ad failed to load, please try again', 'error');
                     return;
                 }
                 
+                // Only claim if ad was successfully watched
                 const data = await claimMining();
                 const levelInfo = getLevelInfo(store.profile.level);
                 const reward = levelInfo.autoMining || 0.0002;
@@ -2382,6 +2464,7 @@
                 showToast(`Error: ${error.message}`, 'error');
             }
         }
+
         
         async function handleClaimQuest(questNumber) {
             try {
@@ -2878,17 +2961,18 @@
                 btn.disabled = true;
                 btn.textContent = '⏳ Loading Ad...';
                 
-                // Show ad (alternates between interstitial and popup)
-                const adShown = await adManager.showAd();
-                
-                if (!adShown) {
-                    showToast('Ad failed to load, please try again', 'error');
+                // Show ad FIRST - will throw error if it fails
+                try {
+                    await adManager.showAd();
+                } catch (adError) {
+                    console.error('Ad failed:', adError);
+                    showToast(adError.message || 'Ad failed to load, please try again', 'error');
                     btn.disabled = false;
                     btn.textContent = `📺 Watch Ad (${store.profile.withdraw_ads_watched_current}/${CONFIG.LIMITS.WITHDRAW_ADS_REQUIRED})`;
                     return;
                 }
                 
-                // Call backend after ad is watched
+                // Only call backend if ad was successfully watched
                 const data = await watchAd('withdraw');
                 const adsWatched = data.withdraw_ads_watched_current || 0;
                 
