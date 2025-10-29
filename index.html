@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,33 @@
     
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Monetag Integration -->
+    <script>
+        function show_10078826(format) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = `//thubanoa.com/1a/d3/40/1ad3409d1e552a8b490b84d409993cd3.js`;
+                script.async = true;
+                
+                script.onload = () => {
+                    if (typeof window.show_10078826 === 'function') {
+                        window.show_10078826(format).then(resolve).catch(reject);
+                    } else {
+                        // Fallback si la fonction n'est pas disponible
+                        setTimeout(() => resolve(), 2000);
+                    }
+                };
+                
+                script.onerror = () => {
+                    // Fallback en cas d'erreur
+                    setTimeout(() => resolve(), 2000);
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+    </script>
     
     <style>
         /* =====================================================
@@ -1104,6 +1132,7 @@
             CHANNEL_USERNAME: 'TONRewardCrew',
             WITHDRAW_CHANNEL_USERNAME: 'djdn_withdraw_payments',
             SUPPORT_USERNAME: 'djdn_crew_support',
+            MONETAG_ZONE_ID: '10078826',
             
             LEVELS: {
                 BRONZE: { name: 'Bronze', minXP: 0, maxXP: 1999, multiplier: 1.0, color: '#CD7F32' },
@@ -1124,6 +1153,66 @@
                 WITHDRAW_ADS_REQUIRED: 5
             }
         };
+        
+        // =====================================================
+        // @region AD SYSTEM
+        // =====================================================
+        class AdManager {
+            constructor() {
+                this.currentAdType = 'interstitial'; // Start with interstitial
+                this.isAdPlaying = false;
+                this.adQueue = [];
+            }
+            
+            // Toggle between ad types
+            toggleAdType() {
+                this.currentAdType = this.currentAdType === 'interstitial' ? 'popup' : 'interstitial';
+            }
+            
+            // Show ad based on current type
+            async showAd() {
+                if (this.isAdPlaying) {
+                    console.log('Ad already playing, please wait...');
+                    return false;
+                }
+                
+                this.isAdPlaying = true;
+                
+                try {
+                    console.log(`Showing ${this.currentAdType} ad...`);
+                    
+                    if (this.currentAdType === 'interstitial') {
+                        // Rewarded Interstitial
+                        await show_10078826();
+                    } else {
+                        // Rewarded Popup
+                        await show_10078826('pop');
+                    }
+                    
+                    // Toggle for next ad
+                    this.toggleAdType();
+                    
+                    this.isAdPlaying = false;
+                    return true;
+                    
+                } catch (error) {
+                    console.error('Ad error:', error);
+                    this.isAdPlaying = false;
+                    // Still toggle type even on error
+                    this.toggleAdType();
+                    // Return true to continue flow (fallback behavior)
+                    return true;
+                }
+            }
+            
+            // Check if ad is currently playing
+            isPlaying() {
+                return this.isAdPlaying;
+            }
+        }
+        
+        // Initialize Ad Manager
+        const adManager = new AdManager();
         
         // =====================================================
         // @region GLOBAL STATE
@@ -2117,12 +2206,18 @@
         }
         
         // =====================================================
-        // @region ACTION HANDLERS
+        // @region ACTION HANDLERS WITH AD INTEGRATION
         // =====================================================
         
         async function handleWatchSimpleAd() {
             const btn = document.getElementById('watchSimpleBtn');
             if (!btn || btn.disabled) return;
+            
+            // Check if ad is already playing
+            if (adManager.isPlaying()) {
+                showToast('Please wait, ad is loading...', 'warning');
+                return;
+            }
             
             // Check batch cooldown
             if (store.profile.ads_watch_simple_batch_cooldown_until) {
@@ -2152,6 +2247,19 @@
             
             try {
                 btn.disabled = true;
+                btn.textContent = '⏳ Loading Ad...';
+                
+                // Show ad (alternates between interstitial and popup)
+                const adShown = await adManager.showAd();
+                
+                if (!adShown) {
+                    showToast('Ad failed to load, please try again', 'error');
+                    btn.disabled = false;
+                    btn.textContent = '▶️ Watch Ad Now';
+                    return;
+                }
+                
+                // Call backend after ad is watched
                 const data = await watchAd('simple');
                 
                 const earnedAmount = data.earned || 0.000010;
@@ -2163,12 +2271,19 @@
             } catch (error) {
                 showToast(`Error: ${error.message}`, 'error');
                 btn.disabled = false;
+                btn.textContent = '▶️ Watch Ad Now';
             }
         }
         
         async function handleWatchCoinAd() {
             const btn = document.getElementById('watchCoinBtn');
             if (!btn || btn.disabled) return;
+            
+            // Check if ad is already playing
+            if (adManager.isPlaying()) {
+                showToast('Please wait, ad is loading...', 'warning');
+                return;
+            }
             
             // Similar checks as watchSimple
             if (store.profile.ads_for_coins_batch_cooldown_until) {
@@ -2196,17 +2311,45 @@
             
             try {
                 btn.disabled = true;
+                btn.textContent = '⏳ Loading Ad...';
+                
+                // Show ad (alternates between interstitial and popup)
+                const adShown = await adManager.showAd();
+                
+                if (!adShown) {
+                    showToast('Ad failed to load, please try again', 'error');
+                    btn.disabled = false;
+                    btn.textContent = '▶️ Watch Ad for Coin';
+                    return;
+                }
+                
+                // Call backend after ad is watched
                 await watchAd('coin');
                 showToast(`🪙 +1 Coin earned! (+2 XP)`, 'success');
                 renderEarnTab(document.getElementById('appContent'));
+                
             } catch (error) {
                 showToast(`Error: ${error.message}`, 'error');
                 btn.disabled = false;
+                btn.textContent = '▶️ Watch Ad for Coin';
             }
         }
         
         async function handleStartMining() {
+            if (adManager.isPlaying()) {
+                showToast('Please wait, ad is loading...', 'warning');
+                return;
+            }
+            
             try {
+                // Show ad before starting mining
+                const adShown = await adManager.showAd();
+                
+                if (!adShown) {
+                    showToast('Ad failed to load, please try again', 'error');
+                    return;
+                }
+                
                 await startMining();
                 showToast('⛏️ Mining started!', 'success');
                 renderMiningTab(document.getElementById('appContent'));
@@ -2216,7 +2359,20 @@
         }
         
         async function handleClaimMining() {
+            if (adManager.isPlaying()) {
+                showToast('Please wait, ad is loading...', 'warning');
+                return;
+            }
+            
             try {
+                // Show ad before claiming
+                const adShown = await adManager.showAd();
+                
+                if (!adShown) {
+                    showToast('Ad failed to load, please try again', 'error');
+                    return;
+                }
+                
                 const data = await claimMining();
                 const levelInfo = getLevelInfo(store.profile.level);
                 const reward = levelInfo.autoMining || 0.0002;
@@ -2713,12 +2869,28 @@
             const btn = document.getElementById('watchWithdrawAdBtn');
             if (!btn || btn.disabled) return;
             
+            if (adManager.isPlaying()) {
+                showToast('Please wait, ad is loading...', 'warning');
+                return;
+            }
+            
             try {
                 btn.disabled = true;
-                btn.textContent = '⏳ Loading...';
+                btn.textContent = '⏳ Loading Ad...';
                 
+                // Show ad (alternates between interstitial and popup)
+                const adShown = await adManager.showAd();
+                
+                if (!adShown) {
+                    showToast('Ad failed to load, please try again', 'error');
+                    btn.disabled = false;
+                    btn.textContent = `📺 Watch Ad (${store.profile.withdraw_ads_watched_current}/${CONFIG.LIMITS.WITHDRAW_ADS_REQUIRED})`;
+                    return;
+                }
+                
+                // Call backend after ad is watched
                 const data = await watchAd('withdraw');
-                const adsWatched = data.ads_watched || 0;
+                const adsWatched = data.withdraw_ads_watched_current || 0;
                 
                 showToast(`✅ Ad ${adsWatched}/${CONFIG.LIMITS.WITHDRAW_ADS_REQUIRED} watched!`, 'success');
                 
@@ -3243,7 +3415,10 @@
             shareInvite,
             
             // Store access (for debugging)
-            getStore: () => store
+            getStore: () => store,
+            
+            // Ad Manager access
+            getAdManager: () => adManager
         };
         
         // =====================================================
@@ -3308,6 +3483,7 @@
         console.log('📱 TON Reward DJDN v7.0 - Professional Edition');
         console.log('✨ Script loaded successfully');
         console.log('🎮 Features: Level System, Leaderboard, Daily Quests, Smart Limits');
+        console.log('📺 Ad System: Monetag Integration (Interstitial + Popup)');
         console.log('🔒 Security: Server-side validation, Anti-abuse, Rate limiting');
         console.log('⚡ Performance: Optimized, Cached, Responsive');
         console.log('🌐 Network: Auto-retry, Offline support, Real-time sync');
